@@ -1,0 +1,3 @@
+insert into cd.members (surname, firstname, address, zipcode, telephone, recommendedby, joindate) values ('Rowman', 'Tim', '5 Dragons Way, Winchester', 70, '80743', null, '2010-09-10');
+insert into cd.members (surname, firstname, address, zipcode, telephone, recommendedby, joindate) values ('Joplette', 'Janice', '55 Powdery Street, Boston', 38, '33862', null, '2002-04-15');
+Select distinct  surname From cd.members order by surname limit 10;
