@@ -1,0 +1,3 @@
+insert into cd.facilities (facid,name, membercost, guestcost, initialoutlay, monthlymaintenance) values (13,'Massage Room 6', 10, 35, 300, 200);
+insert into cd.facilities (facid,name, membercost, guestcost, initialoutlay, monthlymaintenance) values (14,'TMassage Room 7', 50, 80, 4000, 3000);
+select name, case when (monthlymaintenance > 100) then 'expensive' else 'cheap' end as cost from cd.facilities; 
