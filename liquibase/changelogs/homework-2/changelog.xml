@@ -61,5 +61,9 @@
     <changeSet id="insert-data-vapeshop" author="Ilya Petushok">
         <sqlFile encoding="utf8" path="./sql/13.dml_for_vapeshop.sql" relativeToChangelogFile="true"/>
     </changeSet>
+    
+    <changeSet id="create_index_for_vapeshop" author="Ilya Petushok">
+        <sqlFile encoding="utf8" path="./sql/14.create_index.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
 </databaseChangeLog> 
