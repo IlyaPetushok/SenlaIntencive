@@ -9,15 +9,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>org.example.main</artifactId>
+    <artifactId>main</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
         <liquibase.version>4.18.0</liquibase.version>
-        <liquibase.pathProperties>src/org.example.main/liquibase/liquibase.properties</liquibase.pathProperties>
-        <liquibase.pathChangeLogMaster>src/org.example.main/liquibase/changelog-master.xml</liquibase.pathChangeLogMaster>
+        <liquibase.pathProperties>src/main/liquibase/liquibase.properties</liquibase.pathProperties>
+        <liquibase.pathChangeLogMaster>src/main/liquibase/changelog-master.xml</liquibase.pathChangeLogMaster>
     </properties>
 
     <dependencies>

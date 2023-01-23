@@ -23,6 +23,7 @@ public class ComponentInstaller {
             if (!objectHashMap.containsKey(cl.getName())) {
                 try {
                     Object obj = AutowiredInstaller.checkAnnotationAutowiredConstructor(cl);
+                    ValueInstaller.processAnnotation(obj);
                     AutowiredInstaller.checkAnnotationAutowiredMethod(obj);
                     AutowiredInstaller.checkAnnotationAutowiredField(obj);
                     objectHashMap.put(cl.getName(), obj);
@@ -51,6 +52,7 @@ public class ComponentInstaller {
         if (!objectHashMap.containsKey(bean.getName())) {
             try {
                 AutowiredInstaller.checkDeadLock(bean, classWitchNeedBean);
+                ValueInstaller.processAnnotation(obj);
                 Object obj = AutowiredInstaller.checkAnnotationAutowiredConstructor(bean);
                 AutowiredInstaller.checkAnnotationAutowiredMethod(obj);
                 AutowiredInstaller.checkAnnotationAutowiredField(obj);

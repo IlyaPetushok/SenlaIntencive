@@ -31,9 +31,6 @@ public class AutowiredInstaller {
 
 
     public static void checkAnnotationAutowiredField(Object bean) throws IllegalAccessException, ClassNotFoundException {
-        if (Stream.of(bean.getClass().getDeclaredFields()).anyMatch(field -> field.isAnnotationPresent(Value.class))) {
-            ValueInstaller.processAnnotation(bean);
-        }
         for (Field field : bean.getClass().getDeclaredFields()) {
             if (field.getAnnotation(Autowired.class) != null) {
                 field.setAccessible(true);
