@@ -1,5 +1,6 @@
 package project.vapeshop.main;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import project.vapeshop.config.SpringConfig;
@@ -22,6 +23,7 @@ public class Main implements Runnable{
 
     public static void main(String[] args) {
 //        ApplicationContext applicationContext=new AnnotationConfigApplicationContext(SpringConfig.class);
+//        SpringLiquibase liquibase=applicationContext.getBean("liquibase",SpringLiquibase.class);
         Main thread1=new Main();
         Main thread2=new Main();
         Thread thread=new Thread(thread1);
