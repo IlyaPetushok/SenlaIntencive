@@ -1,6 +1,7 @@
 package project.vapeshop.holder;
 
 import org.springframework.stereotype.Component;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -14,13 +15,15 @@ public class ConnectionHolder {
     private static final Map<Long, Queue<ConnectionEntity>> connections = new HashMap<>();
 
     public Connection getConnectionTransaction() {
-        ConnectionEntity connectionEntity=null;
+        ConnectionEntity connectionEntity = null;
         checkCreateConnectionsList();
         Queue<ConnectionEntity> connectionEntities = connections.get(Thread.currentThread().getId());
         if (connectionEntities.size() == 0) {
-            createConnection();
-            connectionEntities.peek().setInTransaction(true);
-            return connectionEntities.peek().getConnection();
+            connectionEntity = createConnection().peek();
+            if (connectionEntity != null) {
+                connectionEntity.setInTransaction(true);
+                return connectionEntity.getConnection();
+            }
         }
         for (int i = 0; i < connectionEntities.size(); ) {
             connectionEntity = connectionEntities.poll();
@@ -38,7 +41,7 @@ public class ConnectionHolder {
         return connectionEntity.getConnection();
     }
 
-    public void checkCreateConnectionsList(){
+    public void checkCreateConnectionsList() {
         if (connections.get(Thread.currentThread().getId()) == null) {
             Queue<ConnectionEntity> queue = new LinkedList<>();
             connections.put(Thread.currentThread().getId(), queue);
@@ -47,12 +50,11 @@ public class ConnectionHolder {
 
     public Connection getConnection() {
         checkCreateConnectionsList();
+        ConnectionEntity connectionEntity;
         Queue<ConnectionEntity> connectionEntities = connections.get(Thread.currentThread().getId());
         if (connectionEntities.size() == 0) {
-            createConnection();
-            return connectionEntities.poll().getConnection();
+            return createConnection().poll().getConnection();
         }
-        ConnectionEntity connectionEntity = null;
         for (int i = 0; i < connectionEntities.size(); i++) {
             connectionEntity = connectionEntities.poll();
             if (!connectionEntity.isInTransaction()) {
@@ -60,11 +62,10 @@ public class ConnectionHolder {
             }
             connectionEntities.add(connectionEntity);
         }
-        createConnection();
-        return connectionEntities.poll().getConnection();
+        return createConnection().poll().getConnection();
     }
 
-    public void createConnection() {
+    public Queue<ConnectionEntity> createConnection() {
         Properties properties = loadProperty();
         Connection connection;
         Queue<ConnectionEntity> connectionEntities = connections.get(Thread.currentThread().getId());
@@ -75,6 +76,7 @@ public class ConnectionHolder {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return connectionEntities;
     }
 
     public void putConnection(Connection connection) {
