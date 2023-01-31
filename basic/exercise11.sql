@@ -1,3 +1,0 @@
-insert into cd.members (surname, firstname, address, zipcode, telephone, recommendedby, joindate) values ('Guest', 'Guest', '10 Dragons Way, Winchester', 12384, '(822) 353-9973', null, '2001-01-25');
-insert into cd.members (surname, firstname, address, zipcode, telephone, recommendedby, joindate) values ('Dares', 'Nany', '3 Tunia Drive, Boston', 32678, '(811) 433-2527', null, '2016-03-15');
- Select joindate as latest from cd.members order by joindate desc limit 1;
