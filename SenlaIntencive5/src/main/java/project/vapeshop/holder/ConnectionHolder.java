@@ -1,7 +1,6 @@
 package project.vapeshop.holder;
 
 import org.springframework.stereotype.Component;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -59,6 +58,7 @@ public class ConnectionHolder {
             if (!connectionEntity.isInTransaction()) {
                 return connectionEntity.getConnection();
             }
+            connectionEntities.add(connectionEntity);
         }
         createConnection();
         return connectionEntities.poll().getConnection();
