@@ -5,6 +5,9 @@ public class ItemDTOInfoForCatalog {
     private String photo;
     private String name;
 
+    public ItemDTOInfoForCatalog() {
+    }
+
     public ItemDTOInfoForCatalog(String photo, String name) {
         this.photo = photo;
         this.name = name;

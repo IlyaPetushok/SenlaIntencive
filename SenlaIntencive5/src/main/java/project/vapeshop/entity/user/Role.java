@@ -8,6 +8,9 @@ public class Role {
         this.name = name;
     }
 
+    public Role() {
+    }
+
     public Role(Integer id, String name) {
         this.id = id;
         this.name = name;

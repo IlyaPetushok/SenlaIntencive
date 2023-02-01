@@ -8,6 +8,9 @@ public class LiquideDTO {
     private String typeNicotine;
     private int volume;
 
+    public LiquideDTO() {
+    }
+
     public LiquideDTO(String flavour, int fortress, String typeNicotine, int volume) {
         this.flavour = flavour;
         this.fortress = fortress;

@@ -10,6 +10,9 @@ public class OrderDTOForBasket{
     private String status;
     private double price;
 
+    public OrderDTOForBasket() {
+    }
+
     public OrderDTOForBasket(Date date, String status, double price) {
         this.date = date;
         this.status = status;

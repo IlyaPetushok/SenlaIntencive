@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.mapper.MapperJson;
-import project.vapeshop.service.ItemService;
+import project.vapeshop.service.product.ItemService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

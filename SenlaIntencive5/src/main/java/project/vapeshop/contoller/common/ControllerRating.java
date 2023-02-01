@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import project.vapeshop.dto.common.RatingDTOForProduct;
 import project.vapeshop.dto.common.RatingDTOFullInfo;
 import project.vapeshop.mapper.MapperJson;
-import project.vapeshop.service.RatingService;
+import project.vapeshop.service.common.RatingService;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,7 @@
 package project.vapeshop.config;
 
 import liquibase.integration.spring.SpringLiquibase;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -16,10 +17,14 @@ import java.sql.DriverManager;
 public class SpringConfig {
     Environment environment;
 
-
     @Autowired
     public SpringConfig(Environment environment) {
         this.environment = environment;
+    }
+
+    @Bean
+    public ModelMapper getMapper(){
+        return new ModelMapper();
     }
 
 //    @Bean

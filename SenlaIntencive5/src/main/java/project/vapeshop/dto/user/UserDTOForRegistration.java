@@ -10,6 +10,9 @@ public class UserDTOForRegistration {
     private String mail;
     private Integer idRole;
 
+    public UserDTOForRegistration() {
+    }
+
     public UserDTOForRegistration(String surname, String name, String patronymic, String login, String password, String mail, Integer idRole) {
         this.surname = surname;
         this.name = name;

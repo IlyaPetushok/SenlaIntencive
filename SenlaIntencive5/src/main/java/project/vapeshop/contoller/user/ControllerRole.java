@@ -2,9 +2,8 @@ package project.vapeshop.contoller.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import project.vapeshop.dto.user.RoleDTO;
-import project.vapeshop.entity.user.Role;
 import project.vapeshop.mapper.MapperJson;
-import project.vapeshop.service.RoleService;
+import project.vapeshop.service.user.RoleService;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -11,6 +11,9 @@ public class OrderDTOFullInfo {
     private String status;
     private double price;
 
+    public OrderDTOFullInfo() {
+    }
+
     public OrderDTOFullInfo(Date date, Integer idUser, String status, double price) {
         this.date = date;
         this.idUser = idUser;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import project.vapeshop.dto.product.VapeDTO;
 import project.vapeshop.mapper.MapperJson;
-import project.vapeshop.service.VapeService;
+import project.vapeshop.service.product.VapeService;
 import java.util.ArrayList;
 import java.util.List;
 

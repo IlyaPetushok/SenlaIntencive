@@ -7,6 +7,9 @@ public class RatingDTOFullInfo {
     private Integer idItem;
     private Integer idUser;
 
+    public RatingDTOFullInfo() {
+    }
+
     public RatingDTOFullInfo(String comment, int quantityStar, Integer idItem, Integer idUser) {
         this.comment = comment;
         this.quantityStar = quantityStar;

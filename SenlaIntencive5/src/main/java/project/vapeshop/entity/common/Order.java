@@ -11,6 +11,9 @@ public class Order {
     private String status;
     private double price;
 
+    public Order() {
+    }
+
     public Order(Date date, Integer idUser, String status, double price) {
         this.date = date;
         this.idUser = idUser;

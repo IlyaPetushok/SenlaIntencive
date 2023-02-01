@@ -6,6 +6,9 @@ public class RatingDTOForProduct {
     private int quantityStar;
     private Integer idUser;
 
+    public RatingDTOForProduct() {
+    }
+
     public RatingDTOForProduct(String comment, int quantityStar, Integer idUser) {
         this.comment = comment;
         this.quantityStar = quantityStar;

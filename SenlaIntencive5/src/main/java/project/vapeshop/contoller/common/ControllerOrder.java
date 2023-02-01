@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import project.vapeshop.dto.common.OrderDTOForBasket;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
 import project.vapeshop.mapper.MapperJson;
-import project.vapeshop.service.OrderService;
+import project.vapeshop.service.common.OrderService;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

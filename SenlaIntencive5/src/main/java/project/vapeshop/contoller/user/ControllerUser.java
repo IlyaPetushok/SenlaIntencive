@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.mapper.MapperJson;
-import project.vapeshop.service.UserService;
+import project.vapeshop.service.user.UserService;
 import java.util.ArrayList;
 import java.util.List;
 

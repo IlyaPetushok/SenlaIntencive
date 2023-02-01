@@ -7,6 +7,9 @@ public class Rating {
     private Integer idItem;
     private Integer idUser;
 
+    public Rating() {
+    }
+
     public Rating(String comment, int quantityStar, Integer idItem, Integer idUser) {
         this.comment = comment;
         this.quantityStar = quantityStar;
