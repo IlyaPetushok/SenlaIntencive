@@ -6,12 +6,14 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -41,9 +43,19 @@ public class SpringConfig {
 //        return liquibase;
 //    }
 //
+//    @Bean
+//    public EntityManager entityManager(){
+//        return Persistence.createEntityManagerFactory("enm").createEntityManager();
+//    }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManager() {
+    public EntityManager entityManager(LocalContainerEntityManagerFactoryBean entityManagerFactoryBean){
+        EntityManagerFactory entityManagerFactory=entityManagerFactoryBean.getNativeEntityManagerFactory();
+        return entityManagerFactory.createEntityManager();
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(getDataSource());
         entityManagerFactory.setPersistenceUnitName("enm");
@@ -71,7 +83,7 @@ public class SpringConfig {
     @Bean
     public PlatformTransactionManager transactionManager(){
         JpaTransactionManager transactionManager=new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManager().getObject());
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return transactionManager;
     }
 }

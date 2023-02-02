@@ -4,13 +4,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
 import project.vapeshop.entity.product.Category;
 import project.vapeshop.entity.product.Item;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +39,19 @@ public class ItemProduct implements Dao<Item> {
 //    }
 
 
-    @PersistenceContext(name  = "entityManager")
+    @Autowired
     EntityManager entityManager;
 
 
     @Override
     public boolean insertObject(Item item) {
-        Category category=entityManager.find(Category.class,1);
+//        EntityManager entityManager=entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Category category = entityManager.find(Category.class, 1);
         item.setCategory(category);
-        entityManager.persist(item);
+        entityManager.merge(item);
+        entityManager.getTransaction().commit();
+//        entityManager.persist(item);
 //        Session session=sessionFactory.getCurrentSession();
 //        item.setCategory(session.get(Category.class,1));
 //        session.save(item);
