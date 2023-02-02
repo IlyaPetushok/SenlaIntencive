@@ -9,13 +9,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class UserDao implements Dao<User> {
-    private static final List<User> users = new ArrayList<>();
+public class UserDao extends AbstractDao<User> implements Dao<User> {
+    private static List<User> users = new ArrayList<>();
 
     @Override
     public boolean insertObject(User user) {
-        user.setId(users.size());
-        users.add(user);
+        users=insert(users,user);
         return true;
     }
 
@@ -30,15 +29,12 @@ public class UserDao implements Dao<User> {
 
     @Override
     public List<User> selectObjects() {
-        return users;
+        return selects(users);
     }
 
     @Override
     public User selectObject(int id) {
-        return users.stream()
-                .filter(user -> user.getId() == id)
-                .findAny()
-                .orElse(null);
+        return select(users,id);
     }
 
     @Override

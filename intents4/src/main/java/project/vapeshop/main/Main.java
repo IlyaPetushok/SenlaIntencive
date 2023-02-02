@@ -15,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext=new AnnotationConfigApplicationContext(SpringConfig.class);
-        ControllerLiquide controllerItem =applicationContext.getBean(ControllerLiquide.class);
+        ControllerItem controllerItem =applicationContext.getBean(ControllerItem.class);
         controllerItem.execute();
     }
 }

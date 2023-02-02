@@ -9,13 +9,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class VapeDao implements Dao<Vape> {
-    private static final List<Vape> vapes = new ArrayList<>();
+public class VapeDao extends AbstractDao<Vape> implements Dao<Vape> {
+    private static List<Vape> vapes = new ArrayList<>();
 
     @Override
     public boolean insertObject(Vape vape) {
-        vape.setId(vapes.size());
-        vapes.add(vape);
+        vapes=insert(vapes,vape);
         return true;
     }
 
@@ -30,15 +29,12 @@ public class VapeDao implements Dao<Vape> {
 
     @Override
     public List<Vape> selectObjects() {
-        return vapes;
+        return selects(vapes);
     }
 
     @Override
     public Vape selectObject(int id) {
-        return vapes.stream()
-                .filter(vape -> vape.getId() == id)
-                .findAny()
-                .orElse(null);
+        return select(vapes,id);
     }
 
     @Override

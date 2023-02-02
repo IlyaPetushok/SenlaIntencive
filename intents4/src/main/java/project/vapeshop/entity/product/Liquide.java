@@ -1,6 +1,8 @@
 package project.vapeshop.entity.product;
 
-public class Liquide {
+import project.vapeshop.entity.EntityGetSetId;
+
+public class Liquide implements EntityGetSetId {
     private Integer id;
     private String flavour;
     private int fortress;

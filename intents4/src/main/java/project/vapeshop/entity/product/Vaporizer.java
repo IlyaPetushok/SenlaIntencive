@@ -1,6 +1,8 @@
 package project.vapeshop.entity.product;
 
-public class Vaporizer {
+import project.vapeshop.entity.EntityGetSetId;
+
+public class Vaporizer implements EntityGetSetId {
     private Integer id;
     private double resistance;
 //    Enum mb

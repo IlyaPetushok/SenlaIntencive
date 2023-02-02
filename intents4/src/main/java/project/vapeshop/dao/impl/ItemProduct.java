@@ -10,13 +10,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class ItemProduct implements Dao<Item> {
-    private static final List<Item> items = new ArrayList<>();
+public class ItemProduct extends AbstractDao<Item> implements Dao<Item>{
+    private static List<Item> items = new ArrayList<>();
 
     @Override
     public boolean insertObject(Item item) {
-        item.setId(items.size());
-        items.add(item);
+        items=insert(items,item);
         return true;
     }
 
@@ -31,15 +30,12 @@ public class ItemProduct implements Dao<Item> {
 
     @Override
     public List<Item> selectObjects() {
-        return items;
+        return selects(items);
     }
 
     @Override
     public Item selectObject(int id) {
-        return items.stream()
-                .filter(item -> item.getId() == id)
-                .findAny()
-                .orElse(null);
+        return select(items,id);
     }
 
     @Override

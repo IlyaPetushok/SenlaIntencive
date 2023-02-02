@@ -2,18 +2,18 @@ package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.entity.EntityGetSetId;
 import project.vapeshop.entity.user.Privileges;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class PrivilegesDao implements Dao<Privileges> {
-    private static final List<Privileges> privilegesList=new ArrayList<>();
+public class PrivilegesDao extends AbstractDao<Privileges> implements Dao<Privileges> {
+    private static List<Privileges> privilegesList=new ArrayList<>();
     @Override
     public boolean insertObject(Privileges privileg) {
-        privileg.setId(privilegesList.size());
-        privilegesList.add(privileg);
+        privilegesList=insert(privilegesList,privileg);
         return true;
     }
 
@@ -28,15 +28,12 @@ public class PrivilegesDao implements Dao<Privileges> {
 
     @Override
     public List<Privileges> selectObjects() {
-        return privilegesList;
+        return selects(privilegesList);
     }
 
     @Override
     public Privileges selectObject(int id) {
-        return privilegesList.stream()
-                .filter(priv -> priv.getId() == id)
-                .findAny()
-                .orElse(null);
+        return select(privilegesList,id);
     }
 
     @Override

@@ -2,6 +2,7 @@ package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.entity.EntityGetSetId;
 import project.vapeshop.entity.common.Order;
 
 import java.util.ArrayList;
@@ -9,13 +10,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class OrderDao implements Dao<Order> {
-    private static final List<Order> orders = new ArrayList<>();
+public class OrderDao extends AbstractDao<Order> implements Dao<Order> {
+    private static List<Order> orders = new ArrayList<>();
 
     @Override
     public boolean insertObject(Order order) {
-        order.setId(orders.size());
-        orders.add(order);
+        orders=insert(orders,order);
         return true;
     }
 
@@ -30,15 +30,12 @@ public class OrderDao implements Dao<Order> {
 
     @Override
     public List<Order> selectObjects() {
-        return orders;
+        return selects(orders);
     }
 
     @Override
     public Order selectObject(int id) {
-        return orders.stream()
-                .filter(order -> order.getId() == id)
-                .findAny()
-                .orElse(null);
+        return select(orders,id);
     }
 
     @Override

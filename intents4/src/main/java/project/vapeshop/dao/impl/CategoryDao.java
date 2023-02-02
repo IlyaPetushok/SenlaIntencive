@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class CategoryDao implements Dao<Category> {
-    private static final List<Category> categories = new ArrayList<>();
+public class CategoryDao extends AbstractDao<Category> implements Dao<Category> {
+    private static List<Category> categories = new ArrayList<>();
 
     @Override
     public boolean insertObject(Category category) {
-        category.setId(categories.size());
-        categories.add(category);
+        categories=insert(categories,category);
         return true;
     }
 
@@ -29,15 +28,12 @@ public class CategoryDao implements Dao<Category> {
 
     @Override
     public List<Category> selectObjects() {
-        return categories;
+        return selects(categories);
     }
 
     @Override
     public Category selectObject(int id) {
-        return categories.stream()
-                .filter(category -> category.getId() == id)
-                .findAny()
-                .orElse(null);
+        return select(categories,id);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package project.vapeshop.entity.common;
 
+import project.vapeshop.entity.EntityGetSetId;
+
 import java.util.Date;
 
-public class Order {
+public class Order implements EntityGetSetId {
     private Integer id;
 //    change
     private Date date;

@@ -9,13 +9,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class RoleDao implements Dao<Role> {
-    private static final List<Role> roles = new ArrayList<>();
+public class RoleDao extends AbstractDao<Role> implements Dao<Role> {
+    private static List<Role> roles = new ArrayList<>();
 
     @Override
     public boolean insertObject(Role role) {
-        role.setId(roles.size());
-        roles.add(role);
+        roles=insert(roles,role);
         return true;
     }
 

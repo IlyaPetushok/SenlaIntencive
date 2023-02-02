@@ -1,6 +1,8 @@
 package project.vapeshop.entity.user;
 
-public class User {
+import project.vapeshop.entity.EntityGetSetId;
+
+public class User implements EntityGetSetId {
     private Integer id;
     private String surname;
     private String name;

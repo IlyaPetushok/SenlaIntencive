@@ -36,6 +36,7 @@ public class ControllerItem {
     }
 
     private boolean insert() {
+        itemService.addItem(new ItemDTOFullInfo("photo5", "HotSpot BubleGum", 2, new BigDecimal(Double.toString(23.0)), 15));
         List<ItemDTOFullInfo> items = new ArrayList<>();
         items.add(new ItemDTOFullInfo("photo5", "HotSpot BubleGum", 2, new BigDecimal(Double.toString(23.0)), 15));
         items.add(new ItemDTOFullInfo("photo6", "Husky Apple", 2, new BigDecimal(Double.toString(19.0)), 20));

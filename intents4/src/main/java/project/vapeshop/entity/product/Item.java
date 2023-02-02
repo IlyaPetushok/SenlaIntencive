@@ -1,8 +1,10 @@
 package project.vapeshop.entity.product;
 
+import project.vapeshop.entity.EntityGetSetId;
+
 import java.math.BigDecimal;
 
-public class Item {
+public class Item implements EntityGetSetId {
     private Integer id;
     private String photo;
     private String name;
@@ -30,13 +32,13 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+//    public Integer getId() {
+//        return id;
+//    }
+//
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
 
     public String getPhoto() {
         return photo;
@@ -76,5 +78,15 @@ public class Item {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id=id;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
     }
 }

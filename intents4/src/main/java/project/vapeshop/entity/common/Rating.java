@@ -1,6 +1,8 @@
 package project.vapeshop.entity.common;
 
-public class Rating {
+import project.vapeshop.entity.EntityGetSetId;
+
+public class Rating implements EntityGetSetId {
     private Integer id;
     private String comment;
     private int quantityStar;
