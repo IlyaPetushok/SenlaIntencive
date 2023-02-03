@@ -9,6 +9,9 @@ import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.holder.ConnectionHolder;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -26,22 +29,22 @@ public class ItemService {
 
 
     public ItemDTOFullInfo showItem(int id) {
-        return modelMapper.map(dao.selectObject(id),ItemDTOFullInfo.class);
+        return modelMapper.map(dao.selectObject(id), ItemDTOFullInfo.class);
     }
 
     public List<ItemDTOInfoForCatalog> showItems() {
         return dao.selectObjects().stream()
-                .map(item -> modelMapper.map(item,ItemDTOInfoForCatalog.class))
+                .map(item -> modelMapper.map(item, ItemDTOInfoForCatalog.class))
                 .toList();
     }
 
     @Transaction
     public boolean addItem(ItemDTOFullInfo itemDTO) {
-        return dao.insertObject(modelMapper.map(itemDTO,Item.class));
+        return dao.insertObject(modelMapper.map(itemDTO, Item.class));
     }
 
     public boolean addItems(List<ItemDTOFullInfo> itemDTO) {
-        return dao.insertObjects((itemDTO.stream().map(itemDTOFullInfo -> modelMapper.map(itemDTOFullInfo,Item.class)).toList()));
+        return dao.insertObjects((itemDTO.stream().map(itemDTOFullInfo -> modelMapper.map(itemDTOFullInfo, Item.class)).toList()));
     }
 
     public boolean deleteItem(int id) {
@@ -49,6 +52,6 @@ public class ItemService {
     }
 
     public ItemDTOInfoForCatalog updateItem(ItemDTOFullInfo itemDTOFullInfo) {
-        return modelMapper.map(dao.update(modelMapper.map(itemDTOFullInfo,Item.class)), ItemDTOInfoForCatalog.class);
+        return modelMapper.map(dao.update(modelMapper.map(itemDTOFullInfo, Item.class)), ItemDTOInfoForCatalog.class);
     }
 }

@@ -27,8 +27,9 @@ public class ItemProduct implements Dao<Item> {
 
     @Override
     public boolean insertObject(Item item) {
+
+        Connection connection = connectionHolder.getConnectionTransaction();
         try {
-            Connection connection = connectionHolder.getConnectionTransaction();
             System.out.println(connection.getAutoCommit());
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ITEM);
             preparedStatement.setString(1, item.getPhoto());
@@ -40,11 +41,27 @@ public class ItemProduct implements Dao<Item> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return true;
     }
 
     @Override
     public boolean insertObjects(List<Item> itemEntities) {
+        Item item = itemEntities.get(0);
+        try {
+            Connection connection = connectionHolder.getConnectionTransaction();
+            System.out.println(connection.getAutoCommit());
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ITEM);
+            preparedStatement.setString(1, item.getPhoto());
+            preparedStatement.setString(2, item.getName());
+            preparedStatement.setInt(3, item.getIdCategory());
+            preparedStatement.setBigDecimal(4, item.getPrice());
+            preparedStatement.setInt(5, item.getQuantity());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -68,8 +85,6 @@ public class ItemProduct implements Dao<Item> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            connectionHolder.putConnection(connection);
         }
         return items;
     }
@@ -93,8 +108,6 @@ public class ItemProduct implements Dao<Item> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            connectionHolder.putConnection(connection);
         }
         return item;
     }
@@ -116,8 +129,6 @@ public class ItemProduct implements Dao<Item> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            connectionHolder.putConnection(connection);
         }
         return null;
     }
@@ -135,8 +146,6 @@ public class ItemProduct implements Dao<Item> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            connectionHolder.putConnection(connection);
         }
         return false;
     }

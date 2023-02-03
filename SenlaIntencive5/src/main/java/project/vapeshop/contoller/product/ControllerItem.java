@@ -48,10 +48,10 @@ public class ControllerItem {
     }
 
     public boolean delete() {
-        return itemService.deleteItem(99);
+        return itemService.deleteItem(185);
     }
 
     public ItemDTOInfoForCatalog update() {
-        return itemService.updateItem(new ItemDTOFullInfo(100, "photo123", "HotSpot Banana)", 2, new BigDecimal(Double.toString(15.0)), 5));
+        return itemService.updateItem(new ItemDTOFullInfo(186, "photo123", "HotSpot Banana)", 2, new BigDecimal(Double.toString(15.0)), 5));
     }
 }

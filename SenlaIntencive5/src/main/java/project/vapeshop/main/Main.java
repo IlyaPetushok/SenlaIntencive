@@ -31,6 +31,6 @@ public class Main implements Runnable{
 //        ControllerItem controllerItem =applicationContext.getBean(ControllerItem.class);
 //        controllerItem.execute();
         thread.start();
-        thread22.start();
+//        thread22.start();
     }
 }

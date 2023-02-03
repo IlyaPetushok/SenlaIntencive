@@ -26,9 +26,11 @@ public class TransactionInstaller {
         connection.setAutoCommit(false);
         try {
             proceedingJoinPoint.proceed();
-            connection.commit();
+//            connection.commit();
+            connectionHolder.connectionCommit();
         } catch (Throwable e) {
-            connection.rollback();
+//            connection.rollback();
+            connectionHolder.connectionRollBck();
             e.printStackTrace();
         }
         return  true;

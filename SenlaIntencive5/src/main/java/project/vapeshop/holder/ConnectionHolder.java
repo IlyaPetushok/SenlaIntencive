@@ -14,9 +14,31 @@ import java.util.*;
 public class ConnectionHolder {
     private static final Map<Long, Queue<ConnectionEntity>> connections = new HashMap<>();
 
+    public void connectionCommit() {
+        ConnectionEntity connectionEntity = connections.get(Thread.currentThread().getId()).stream()
+                .filter(ConnectionEntity::isInTransaction)
+                .findAny()
+                .orElse(null);
+        try {
+            connectionEntity.getConnection().commit();
+            connectionEntity.getConnection().setAutoCommit(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        connectionEntity.setInTransaction(false);
+    }
+
+    public void connectionRollBck() {
+        try {
+            getConnectionTransaction().rollback();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Connection getConnectionTransaction() {
         ConnectionEntity connectionEntity = null;
-        checkCreateConnectionsList();
+        connections.computeIfAbsent(Thread.currentThread().getId(), (key) -> new LinkedList<>());
         Queue<ConnectionEntity> connectionEntities = connections.get(Thread.currentThread().getId());
         if (connectionEntities.size() == 0) {
             connectionEntity = createConnection().peek();
@@ -25,15 +47,18 @@ public class ConnectionHolder {
                 return connectionEntity.getConnection();
             }
         }
-        for (int i = 0; i < connectionEntities.size(); ) {
-            connectionEntity = connectionEntities.poll();
-            connectionEntities.add(connectionEntity);
-            if (connectionEntity.isInTransaction()) {
-                return connectionEntity.getConnection();
-            }
-        }
         try {
-            connectionEntity.getConnection().setAutoCommit(false);
+            for (int i = 0; i < connectionEntities.size(); ) {
+                connectionEntity = connectionEntities.peek();
+                if (connectionEntity.isInTransaction()) {
+                    if (connectionEntity.getConnection().isClosed()) {
+                        throw new SQLException("connection was closed");
+                    }
+                    return connectionEntity.getConnection();
+                }
+                connectionEntities.add(connectionEntities.poll());
+            }
+            connectionEntity.getConnection().setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -41,28 +66,21 @@ public class ConnectionHolder {
         return connectionEntity.getConnection();
     }
 
-    public void checkCreateConnectionsList() {
-        if (connections.get(Thread.currentThread().getId()) == null) {
-            Queue<ConnectionEntity> queue = new LinkedList<>();
-            connections.put(Thread.currentThread().getId(), queue);
-        }
-    }
-
     public Connection getConnection() {
-        checkCreateConnectionsList();
+        connections.computeIfAbsent(Thread.currentThread().getId(), (key) -> new LinkedList<>());
         ConnectionEntity connectionEntity;
         Queue<ConnectionEntity> connectionEntities = connections.get(Thread.currentThread().getId());
         if (connectionEntities.size() == 0) {
-            return createConnection().poll().getConnection();
+            return createConnection().peek().getConnection();
         }
         for (int i = 0; i < connectionEntities.size(); i++) {
-            connectionEntity = connectionEntities.poll();
+            connectionEntity = connectionEntities.peek();
             if (!connectionEntity.isInTransaction()) {
                 return connectionEntity.getConnection();
             }
-            connectionEntities.add(connectionEntity);
+            connectionEntities.add(connectionEntities.poll());
         }
-        return createConnection().poll().getConnection();
+        return createConnection().peek().getConnection();
     }
 
     public Queue<ConnectionEntity> createConnection() {
@@ -79,9 +97,6 @@ public class ConnectionHolder {
         return connectionEntities;
     }
 
-    public void putConnection(Connection connection) {
-        connections.get(Thread.currentThread().getId()).add(new ConnectionEntity(connection, false));
-    }
 
     public Properties loadProperty() {
         Properties properties = new Properties();
