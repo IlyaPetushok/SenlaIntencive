@@ -39,8 +39,8 @@ public class ItemProduct implements Dao<Item> {
 //    }
 
 
-    @Autowired
-    EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     @Override

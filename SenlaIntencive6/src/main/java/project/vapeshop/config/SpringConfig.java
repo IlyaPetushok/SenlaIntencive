@@ -48,17 +48,18 @@ public class SpringConfig {
 //        return Persistence.createEntityManagerFactory("enm").createEntityManager();
 //    }
 
-    @Bean
-    public EntityManager entityManager(LocalContainerEntityManagerFactoryBean entityManagerFactoryBean){
-        EntityManagerFactory entityManagerFactory=entityManagerFactoryBean.getNativeEntityManagerFactory();
-        return entityManagerFactory.createEntityManager();
-    }
+//    @Bean
+//    public EntityManager entityManager(LocalContainerEntityManagerFactoryBean entityManagerFactoryBean){
+//        EntityManagerFactory entityManagerFactory=entityManagerFactoryBean.getNativeEntityManagerFactory();
+//        return entityManagerFactory.createEntityManager();
+//    }
 
     @Bean
+//    @Primary
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(getDataSource());
-        entityManagerFactory.setPersistenceUnitName("enm");
+//        entityManagerFactory.setPersistenceUnitName("enm");
         entityManagerFactory.setPackagesToScan("project.vapeshop");
         entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactory.setJpaProperties(getProperties());
