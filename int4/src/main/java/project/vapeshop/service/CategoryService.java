@@ -11,29 +11,29 @@ import java.util.List;
 
 @Service
 public class CategoryService{
-    Dao<Category> dao;
+    Dao<Category,Integer> dao;
     Mapper<Category,CategoryDTO> mapper;
 
     @Autowired
-    public CategoryService(Dao<Category> dao, Mapper<Category,CategoryDTO> mapper) {
+    public CategoryService(Dao<Category,Integer> dao, Mapper<Category,CategoryDTO> mapper) {
         this.dao = dao;
         this.mapper = mapper;
     }
 
     public CategoryDTO showObject(int id) {
-        return mapper.toDTO(dao.selectObject(id));
+        return mapper.toDTO(dao.getByIdObject(id));
     }
 
     public List<CategoryDTO> showObjects() {
-        return mapper.toDTOs(dao.selectObjects());
+        return mapper.toDTOs(dao.gelAllObjects());
     }
 
     public boolean addObject(CategoryDTO categoryDTO) {
-        return dao.insertObject(mapper.toEntity(categoryDTO));
+        return dao.createObject(mapper.toEntity(categoryDTO));
     }
 
     public boolean addObjects(List<CategoryDTO> categoryDTO) {
-        return dao.insertObjects(mapper.toEntities(categoryDTO));
+        return dao.createObjects(mapper.toEntities(categoryDTO));
     }
 
     public boolean deleteObject(int id) {

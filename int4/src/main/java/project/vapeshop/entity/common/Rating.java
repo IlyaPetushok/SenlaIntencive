@@ -2,7 +2,7 @@ package project.vapeshop.entity.common;
 
 import project.vapeshop.entity.Entity;
 
-public class Rating implements Entity {
+public class Rating implements Entity<Integer> {
     private Integer id;
     private String comment;
     private int quantityStar;
@@ -24,12 +24,14 @@ public class Rating implements Entity {
         this.idUser = idUser;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
-        this.id = id;
+        this.id=id;
     }
 
     public String getComment() {

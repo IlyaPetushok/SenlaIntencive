@@ -8,33 +8,32 @@ import project.vapeshop.entity.product.Vaporizer;
 import project.vapeshop.mapper.Mapper;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class VaporizerService {
-    Dao<Vaporizer> dao;
+    Dao<Vaporizer,Integer> dao;
     Mapper<Vaporizer,VaporizerDTO> mapper;
 
     @Autowired
-    public VaporizerService(Dao<Vaporizer> dao, Mapper<Vaporizer, VaporizerDTO> mapper) {
+    public VaporizerService(Dao<Vaporizer,Integer> dao, Mapper<Vaporizer, VaporizerDTO> mapper) {
         this.dao = dao;
         this.mapper = mapper;
     }
 
     public VaporizerDTO showItem(int id) {
-        return mapper.toDTO(dao.selectObject(id));
+        return mapper.toDTO(dao.getByIdObject(id));
     }
 
     public List<VaporizerDTO> showItems() {
-        return mapper.toDTOs(dao.selectObjects());
+        return mapper.toDTOs(dao.gelAllObjects());
     }
 
     public boolean addItem(VaporizerDTO vaporizerDTO) {
-        return dao.insertObject(mapper.toEntity(vaporizerDTO));
+        return dao.createObject(mapper.toEntity(vaporizerDTO));
     }
 
     public boolean addItems(List<VaporizerDTO> vaporizerDTO) {
-        return dao.insertObjects(mapper.toEntities(vaporizerDTO));
+        return dao.createObjects(mapper.toEntities(vaporizerDTO));
     }
 
     public boolean deleteItem(int id) {

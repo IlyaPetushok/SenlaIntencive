@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class VaporizerDao extends AbstrarctDao<Vaporizer> {
+public class VaporizerDao extends AbstrarctDao<Vaporizer,Integer> {
     private static final List<Vaporizer> vaporizers = new ArrayList<>();
 
     public VaporizerDao() {

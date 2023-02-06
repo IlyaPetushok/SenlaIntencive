@@ -10,29 +10,29 @@ import java.util.List;
 
 @Component
 public class LiquideService {
-    Dao<Liquide> dao;
+    Dao<Liquide,Integer> dao;
     Mapper<Liquide,LiquideDTO> mapper;
 
     @Autowired
-    public LiquideService(Dao<Liquide> dao, Mapper<Liquide, LiquideDTO> mapper) {
+    public LiquideService(Dao<Liquide,Integer> dao, Mapper<Liquide, LiquideDTO> mapper) {
         this.dao = dao;
         this.mapper = mapper;
     }
 
     public LiquideDTO showItem(int id) {
-        return  mapper.toDTO(dao.selectObject(id));
+        return  mapper.toDTO(dao.getByIdObject(id));
     }
 
     public List<LiquideDTO> showItems() {
-        return  mapper.toDTOs(dao.selectObjects());
+        return  mapper.toDTOs(dao.gelAllObjects());
     }
 
     public boolean addItem(LiquideDTO liquideDTO) {
-        return dao.insertObject(new Liquide(liquideDTO.getId(), liquideDTO.getFlavour(), liquideDTO.getFortress(), liquideDTO.getTypeNicotine(), liquideDTO.getVolume()));
+        return dao.createObject(new Liquide(liquideDTO.getId(), liquideDTO.getFlavour(), liquideDTO.getFortress(), liquideDTO.getTypeNicotine(), liquideDTO.getVolume()));
     }
 
     public boolean addItems(List<LiquideDTO> liquideDTO) {
-        return dao.insertObjects(mapper.toEntities(liquideDTO));
+        return dao.createObjects(mapper.toEntities(liquideDTO));
     }
 
     public boolean deleteItem(int id) {

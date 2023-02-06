@@ -11,29 +11,29 @@ import java.util.List;
 
 @Component
 public class RoleService {
-    Dao<Role> dao;
+    Dao<Role,Integer> dao;
     Mapper<Role, RoleDTO> mapper;
 
     @Autowired
-    public RoleService(Dao<Role> dao, Mapper<Role, RoleDTO> mapper) {
+    public RoleService(Dao<Role,Integer> dao, Mapper<Role, RoleDTO> mapper) {
         this.dao = dao;
         this.mapper = mapper;
     }
 
     public RoleDTO showObject(int id) {
-        return mapper.toDTO(dao.selectObject(id));
+        return mapper.toDTO(dao.getByIdObject(id));
     }
 
     public List<RoleDTO> showObjects() {
-        return mapper.toDTOs(dao.selectObjects());
+        return mapper.toDTOs(dao.gelAllObjects());
     }
 
     public boolean addObject(RoleDTO roleDTO) {
-        return dao.insertObject(mapper.toEntity(roleDTO));
+        return dao.createObject(mapper.toEntity(roleDTO));
     }
 
     public boolean addObjects(List<RoleDTO> roleDTOS) {
-        return dao.insertObjects(mapper.toEntities(roleDTOS));
+        return dao.createObjects(mapper.toEntities(roleDTOS));
     }
 
     public boolean deleteObject(int id) {

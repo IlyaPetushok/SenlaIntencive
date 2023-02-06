@@ -2,7 +2,7 @@ package project.vapeshop.entity.product;
 
 import project.vapeshop.entity.Entity;
 
-public class Vaporizer implements Entity {
+public class Vaporizer implements Entity<Integer> {
     private Integer id;
     private double resistance;
 //    Enum mb
@@ -22,13 +22,7 @@ public class Vaporizer implements Entity {
         this.type = type;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public double getResistance() {
         return resistance;
@@ -44,5 +38,15 @@ public class Vaporizer implements Entity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id=id;
     }
 }

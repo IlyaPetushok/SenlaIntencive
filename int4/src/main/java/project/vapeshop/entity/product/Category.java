@@ -2,7 +2,7 @@ package project.vapeshop.entity.product;
 
 import project.vapeshop.entity.Entity;
 
-public class Category implements Entity {
+public class Category implements Entity<Integer> {
     private Integer id;
     private String name;
 
@@ -18,12 +18,14 @@ public class Category implements Entity {
         this.name = name;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
-        this.id = id;
+        this.id=id;
     }
 
     public String getName() {

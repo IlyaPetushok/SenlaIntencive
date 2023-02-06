@@ -2,7 +2,7 @@ package project.vapeshop.entity.product;
 
 import project.vapeshop.entity.Entity;
 
-public class Liquide implements Entity {
+public class Liquide implements Entity<Integer> {
     private Integer id;
     private String flavour;
     private int fortress;
@@ -28,13 +28,6 @@ public class Liquide implements Entity {
         this.volume = volume;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getFlavour() {
         return flavour;
@@ -66,5 +59,15 @@ public class Liquide implements Entity {
 
     public void setVolume(int volume) {
         this.volume = volume;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id=id;
     }
 }

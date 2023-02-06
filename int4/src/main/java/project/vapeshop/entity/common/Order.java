@@ -4,7 +4,7 @@ import project.vapeshop.entity.Entity;
 
 import java.util.Date;
 
-public class Order implements Entity {
+public class Order implements Entity<Integer> {
     private Integer id;
 //    change
     private Date date;
@@ -28,11 +28,17 @@ public class Order implements Entity {
         this.price = price;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
+        this.id=id;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -12,31 +12,31 @@ import java.util.List;
 
 @Service
 public class ItemService {
-    Dao<Item> dao;
+    Dao<Item,Integer> dao;
     ItemForCatalogMapper itemForCatalogMapper;
     ItemFullInfoMapper itemFullInfoMapper;
 
     @Autowired
-    public ItemService(Dao<Item> dao, ItemForCatalogMapper itemForCatalogMapper, ItemFullInfoMapper itemFullInfoMapper) {
+    public ItemService(Dao<Item,Integer> dao, ItemForCatalogMapper itemForCatalogMapper, ItemFullInfoMapper itemFullInfoMapper) {
         this.dao = dao;
         this.itemForCatalogMapper = itemForCatalogMapper;
         this.itemFullInfoMapper = itemFullInfoMapper;
     }
 
     public ItemDTOFullInfo showItem(int id) {
-        return itemFullInfoMapper.toDTO(dao.selectObject(id));
+        return itemFullInfoMapper.toDTO(dao.getByIdObject(id));
     }
 
     public List<ItemDTOInfoForCatalog> showItems() {
-        return itemForCatalogMapper.toDTOs(dao.selectObjects());
+        return itemForCatalogMapper.toDTOs(dao.gelAllObjects());
     }
 
     public boolean addItem(ItemDTOFullInfo itemDTO) {
-        return dao.insertObject(itemFullInfoMapper.toEntity(itemDTO));
+        return dao.createObject(itemFullInfoMapper.toEntity(itemDTO));
     }
 
     public boolean addItems(List<ItemDTOFullInfo> itemDTO) {
-        return dao.insertObjects(itemFullInfoMapper.toEntities(itemDTO));
+        return dao.createObjects(itemFullInfoMapper.toEntities(itemDTO));
     }
 
     public boolean deleteItem(int id) {

@@ -2,7 +2,7 @@ package project.vapeshop.entity.product;
 
 import project.vapeshop.entity.Entity;
 
-public class Vape implements Entity {
+public class Vape implements Entity<Integer> {
     private Integer id;
     private int power;
     private int battery;
@@ -29,8 +29,9 @@ public class Vape implements Entity {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
-        this.id = id;
+        this.id=id;
     }
 
     public int getPower() {

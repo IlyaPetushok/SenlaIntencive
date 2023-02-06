@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class RoleDao extends AbstrarctDao<Role> {
+public class RoleDao extends AbstrarctDao<Role,Integer> {
     private static final List<Role> roles = new ArrayList<>();
 
 

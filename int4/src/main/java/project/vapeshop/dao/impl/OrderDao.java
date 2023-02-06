@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class OrderDao extends AbstrarctDao<Order>{
+public class OrderDao extends AbstrarctDao<Order,Integer>{
     private static final List<Order> orders = new ArrayList<>();
 
     public OrderDao() {

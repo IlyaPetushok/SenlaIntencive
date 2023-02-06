@@ -2,7 +2,7 @@ package project.vapeshop.entity.user;
 
 import project.vapeshop.entity.Entity;
 
-public class User implements Entity {
+public class User implements Entity<Integer> {
     private Integer id;
     private String surname;
     private String name;
@@ -33,13 +33,16 @@ public class User implements Entity {
         this.idRole = idRole;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
-        this.id = id;
+        this.id=id;
     }
+
 
     public String getSurname() {
         return surname;

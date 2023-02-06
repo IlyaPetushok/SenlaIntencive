@@ -4,7 +4,7 @@ import project.vapeshop.entity.Entity;
 
 import java.math.BigDecimal;
 
-public class Item implements Entity {
+public class Item implements Entity<Integer> {
     private Integer id;
     private String photo;
     private String name;
@@ -32,13 +32,7 @@ public class Item implements Entity {
         this.quantity = quantity;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getPhoto() {
         return photo;
@@ -78,5 +72,15 @@ public class Item implements Entity {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id=id;
     }
 }

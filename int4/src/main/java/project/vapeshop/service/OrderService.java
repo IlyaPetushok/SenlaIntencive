@@ -13,31 +13,31 @@ import java.util.List;
 
 @Component
 public class OrderService {
-    Dao<Order> dao;
+    Dao<Order,Integer> dao;
     OrderForBasketMapper orderForBasketMapper;
     OrderFullInfoMapper orderFullInfoMapper;
 
     @Autowired
-    public OrderService(Dao<Order> dao, OrderForBasketMapper orderForBasketMapper, OrderFullInfoMapper orderFullInfoMapper) {
+    public OrderService(Dao<Order,Integer> dao, OrderForBasketMapper orderForBasketMapper, OrderFullInfoMapper orderFullInfoMapper) {
         this.dao = dao;
         this.orderForBasketMapper = orderForBasketMapper;
         this.orderFullInfoMapper = orderFullInfoMapper;
     }
 
     public OrderDTOForBasket showObject(int id) {
-        return orderForBasketMapper.toDTO(dao.selectObject(id));
+        return orderForBasketMapper.toDTO(dao.getByIdObject(id));
     }
 
     public List<OrderDTOForBasket> showObjects() {
-        return orderForBasketMapper.toDTOs(dao.selectObjects());
+        return orderForBasketMapper.toDTOs(dao.gelAllObjects());
     }
 
     public boolean addObject(OrderDTOFullInfo orderDTOFullInfo) {
-        return dao.insertObject(orderFullInfoMapper.toEntity(orderDTOFullInfo));
+        return dao.createObject(orderFullInfoMapper.toEntity(orderDTOFullInfo));
     }
 
     public boolean addObjects(List<OrderDTOFullInfo> orderDTOFullInfos) {
-        return dao.insertObjects(orderFullInfoMapper.toEntities(orderDTOFullInfos));
+        return dao.createObjects(orderFullInfoMapper.toEntities(orderDTOFullInfos));
     }
 
     public boolean deleteObject(int id) {

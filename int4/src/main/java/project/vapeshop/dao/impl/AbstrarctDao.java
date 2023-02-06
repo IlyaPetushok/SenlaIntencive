@@ -2,12 +2,11 @@ package project.vapeshop.dao.impl;
 
 import project.vapeshop.dao.Dao;
 import project.vapeshop.entity.Entity;
-import project.vapeshop.entity.product.Item;
 
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstrarctDao<T extends Entity> implements Dao<T> {
+public abstract class AbstrarctDao<T extends Entity,C> implements Dao<T,C> {
 
     List<T> tList;
     public AbstrarctDao(List<T> tList) {
@@ -15,27 +14,26 @@ public abstract class AbstrarctDao<T extends Entity> implements Dao<T> {
     }
 
     @Override
-    public boolean insertObject(T t) {
+    public boolean createObject(T t) {
         t.setId(tList.size());
         tList.add(t);
         return false;
     }
 
     @Override
-    public boolean insertObjects(List<T> tList) {
+    public boolean createObjects(List<T> tList) {
         for (T t : tList) {
-            this.insertObject(t);
+            this.createObject(t);
         }
         return true;
     }
 
     @Override
-    public List<T> selectObjects() {
+    public List<T> gelAllObjects() {
         return tList;
     }
 
-    @Override
-    public T selectObject(int id) {
+    public T getByIdObject(C id) {
         return tList.stream()
                 .filter(t -> t.getId() == id)
                 .findAny()
@@ -49,18 +47,17 @@ public abstract class AbstrarctDao<T extends Entity> implements Dao<T> {
                 .findAny()
                 .orElse(null);
         if (t1 != null) {
-            delete(t1.getId());
+            delete((C) t1.getId());
             tList.add(t);
             return t;
         }
         return null;
     }
 
-    @Override
-    public boolean delete(int id) {
-        Integer i = tList.stream()
+    public boolean delete(C id) {
+        Integer i = (Integer) tList.stream()
                 .filter(t -> Objects.equals(t.getId(), id))
-                .map(t -> t.getId()).findFirst()
+                .map(Entity::getId).findFirst()
                 .orElse(null);
         if (i != null) {
             tList.remove(i.intValue());

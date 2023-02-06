@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class CategoryDao extends AbstrarctDao<Category> {
+public class CategoryDao extends AbstrarctDao<Category,Integer> {
     private static final List<Category> categories = new ArrayList<>();
 
     public CategoryDao() {
