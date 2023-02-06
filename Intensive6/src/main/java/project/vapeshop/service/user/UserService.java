@@ -11,6 +11,7 @@ import project.vapeshop.entity.user.User;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UserService {
@@ -31,7 +32,7 @@ public class UserService {
     public List<UserDTOAfterAuthorization> showItems() {
         return dao.selectObjects().stream()
                 .map(user -> modelMapper.map(user,UserDTOAfterAuthorization.class))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public boolean addItem(UserDTOForRegistration userDTOForRegistration) {
@@ -41,7 +42,7 @@ public class UserService {
     public boolean addItems(List<UserDTOForRegistration> userDTOForRegistrations) {
         return dao.insertObjects(userDTOForRegistrations.stream()
                 .map(userDTOForRegistration -> modelMapper.map(userDTOForRegistration,User.class))
-                .toList());
+                .collect(Collectors.toList()));
     }
 
     public boolean deleteItem(int id) {

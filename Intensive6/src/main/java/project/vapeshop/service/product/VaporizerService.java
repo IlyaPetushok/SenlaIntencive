@@ -7,6 +7,7 @@ import project.vapeshop.dao.Dao;
 import project.vapeshop.dto.product.VaporizerDTO;
 import project.vapeshop.entity.product.Vaporizer;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class VaporizerService {
@@ -27,7 +28,7 @@ public class VaporizerService {
     public List<VaporizerDTO> showItems() {
         return dao.selectObjects().stream()
                 .map(vaporizer -> modelMapper.map(vaporizer, VaporizerDTO.class))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public boolean addItem(VaporizerDTO vaporizerDTO) {
@@ -37,7 +38,7 @@ public class VaporizerService {
     public boolean addItems(List<VaporizerDTO> vaporizerDTO) {
         return dao.insertObjects(vaporizerDTO.stream()
                 .map(vaporizerDTO1 -> modelMapper.map(vaporizerDTO1, Vaporizer.class))
-                .toList());
+                .collect(Collectors.toList()));
     }
 
 

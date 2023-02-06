@@ -10,6 +10,7 @@ import project.vapeshop.entity.common.Order;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class OrderService {
@@ -29,7 +30,7 @@ public class OrderService {
     public List<OrderDTOForBasket> showObjects() {
         return dao.selectObjects().stream()
                 .map(order -> modelMapper.map(order,OrderDTOForBasket.class))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public boolean addObject(OrderDTOFullInfo orderDTOFullInfo) {
@@ -39,7 +40,7 @@ public class OrderService {
     public boolean addObjects(List<OrderDTOFullInfo> orderDTOFullInfos) {
         return dao.insertObjects(orderDTOFullInfos.stream()
                 .map(orderDTOFullInfo -> modelMapper.map(orderDTOFullInfo,Order.class))
-                .toList());
+                .collect(Collectors.toList()));
     }
 
     public boolean deleteObject(int id) {

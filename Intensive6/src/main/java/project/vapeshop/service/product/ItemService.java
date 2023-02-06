@@ -3,28 +3,28 @@ package project.vapeshop.service.product;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.vapeshop.annotation.Transaction;
+import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.entity.product.Item;
-import project.vapeshop.holder.ConnectionHolder;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
     Dao<Item> dao;
     ModelMapper modelMapper;
-    ConnectionHolder connectionHolder;
+//    ConnectionHolder connectionHolder;
 
     @Autowired
-    public ItemService(Dao<Item> dao, ModelMapper modelMapper, ConnectionHolder connectionHolder) {
+    public ItemService(Dao<Item> dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
-        this.connectionHolder = connectionHolder;
+//        this.connectionHolder = connectionHolder;
     }
 
 
@@ -35,16 +35,17 @@ public class ItemService {
     public List<ItemDTOInfoForCatalog> showItems() {
         return dao.selectObjects().stream()
                 .map(item -> modelMapper.map(item, ItemDTOInfoForCatalog.class))
-                .toList();
+                .collect(Collectors.toList());
     }
 
-    @Transaction
+    @Transactional
     public boolean addItem(ItemDTOFullInfo itemDTO) {
         return dao.insertObject(modelMapper.map(itemDTO, Item.class));
     }
 
     public boolean addItems(List<ItemDTOFullInfo> itemDTO) {
-        return dao.insertObjects((itemDTO.stream().map(itemDTOFullInfo -> modelMapper.map(itemDTOFullInfo, Item.class)).toList()));
+        return dao.insertObjects((itemDTO.stream()
+                .map(itemDTOFullInfo -> modelMapper.map(itemDTOFullInfo, Item.class)).collect(Collectors.toList())));
     }
 
     public boolean deleteItem(int id) {

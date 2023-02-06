@@ -8,6 +8,7 @@ import project.vapeshop.dto.product.LiquideDTO;
 import project.vapeshop.entity.product.Liquide;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class LiquideService {
@@ -27,7 +28,7 @@ public class LiquideService {
     public List<LiquideDTO> showItems() {
         return dao.selectObjects().stream()
                 .map(liquide -> modelMapper.map(liquide,LiquideDTO.class))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public boolean addItem(LiquideDTO liquideDTO) {
@@ -37,7 +38,7 @@ public class LiquideService {
     public boolean addItems(List<LiquideDTO> liquideDTO) {
         return dao.insertObjects(liquideDTO.stream()
                 .map(liquideDTO1 -> modelMapper.map(liquideDTO1,Liquide.class))
-                .toList());
+                .collect(Collectors.toList()));
     }
 
     public boolean deleteItem(int id) {

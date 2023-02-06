@@ -8,6 +8,7 @@ import project.vapeshop.dto.product.CategoryDTO;
 import project.vapeshop.entity.product.Category;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService{
@@ -25,7 +26,7 @@ public class CategoryService{
     }
 
     public List<CategoryDTO> showObjects() {
-        return dao.selectObjects().stream().map(category -> modelMapper.map(category,CategoryDTO.class)).toList();
+        return dao.selectObjects().stream().map(category -> modelMapper.map(category,CategoryDTO.class)).collect(Collectors.toList());
     }
 
     public boolean addObject(CategoryDTO categoryDTO) {
@@ -33,7 +34,7 @@ public class CategoryService{
     }
 
     public boolean addObjects(List<CategoryDTO> categoryDTO) {
-        return dao.insertObjects(categoryDTO.stream().map(categoryDTO1 -> modelMapper.map(categoryDTO1,Category.class)).toList());
+        return dao.insertObjects(categoryDTO.stream().map(categoryDTO1 -> modelMapper.map(categoryDTO1,Category.class)).collect(Collectors.toList()));
     }
 
     public boolean deleteObject(int id) {

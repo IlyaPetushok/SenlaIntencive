@@ -1,11 +1,25 @@
 package project.vapeshop.entity.product;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="Vape")
 public class Vape {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_vape")
     private Integer id;
+    @Column(name="power_vape")
     private int power;
+    @Column(name = "battery")
     private int battery;
 //    Enum
+    @Column(name = "type_vape")
     private String type;
+
+    @OneToOne
+    @JoinColumn(name = "vape_id",referencedColumnName = "id_item")
+    private Item itemForVape;
 
     public Vape() {
     }
@@ -21,6 +35,14 @@ public class Vape {
         this.power = power;
         this.battery = battery;
         this.type = type;
+    }
+
+    public Item getItemForVape() {
+        return itemForVape;
+    }
+
+    public void setItemForVape(Item itemForVape) {
+        this.itemForVape = itemForVape;
     }
 
     public Integer getId() {

@@ -9,6 +9,7 @@ import project.vapeshop.entity.user.Role;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class RoleService {
@@ -28,7 +29,7 @@ public class RoleService {
     public List<RoleDTO> showObjects() {
         return dao.selectObjects().stream()
                 .map(role -> modelMapper.map(role,RoleDTO.class))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public boolean addObject(RoleDTO roleDTO) {
@@ -38,7 +39,7 @@ public class RoleService {
     public boolean addObjects(List<RoleDTO> roleDTOS) {
         return dao.insertObjects(roleDTOS.stream()
                 .map(roleDTO -> modelMapper.map(roleDTO,Role.class))
-                .toList());
+                .collect(Collectors.toList()));
     }
 
     public boolean deleteObject(int id) {

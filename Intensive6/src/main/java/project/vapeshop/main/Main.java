@@ -1,6 +1,5 @@
 package project.vapeshop.main;
 
-import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import project.vapeshop.config.SpringConfig;

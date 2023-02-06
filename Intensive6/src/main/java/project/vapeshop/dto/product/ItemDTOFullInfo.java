@@ -1,31 +1,33 @@
 package project.vapeshop.dto.product;
 
+import project.vapeshop.entity.product.Category;
+
 import java.math.BigDecimal;
 
 public class ItemDTOFullInfo {
     private Integer id;
     private String photo;
     private String name;
-    private Integer idCategory;
+    private Category category;
     private BigDecimal price;
     private int quantity;
 
     public ItemDTOFullInfo() {
     }
 
-    public ItemDTOFullInfo(String photo, String name, Integer idCategory, BigDecimal price, int quantity) {
+    public ItemDTOFullInfo(Integer id, String photo, String name, Category category, BigDecimal price, int quantity) {
+        this.id = id;
         this.photo = photo;
         this.name = name;
-        this.idCategory = idCategory;
+        this.category = category;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public ItemDTOFullInfo(int id, String photo, String name, Integer idCategory, BigDecimal price, int quantity) {
-        this.id = id;
+    public ItemDTOFullInfo(String photo, String name, Category category, BigDecimal price, int quantity) {
         this.photo = photo;
         this.name = name;
-        this.idCategory = idCategory;
+        this.category = category;
         this.price = price;
         this.quantity = quantity;
     }
@@ -54,13 +56,21 @@ public class ItemDTOFullInfo {
         this.name = name;
     }
 
-    public Integer getIdCategory() {
-        return idCategory;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setIdCategory(Integer nameCategory) {
-        this.idCategory = nameCategory;
+    public void setCategory(Category category) {
+        this.category = category;
     }
+
+    //    public Integer getIdCategory() {
+//        return idCategory;
+//    }
+//
+//    public void setIdCategory(Integer nameCategory) {
+//        this.idCategory = nameCategory;
+//    }
 
     public BigDecimal getPrice() {
         return price;

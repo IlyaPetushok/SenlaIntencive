@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
+import project.vapeshop.entity.product.Category;
 import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.product.ItemService;
 import java.math.BigDecimal;
@@ -25,18 +26,18 @@ public class ControllerItem {
         if(insert()){
             System.out.println("Объекты юыли добавлены");
         }
-        System.out.println(read());
-        if(delete()){
-            System.out.println("Объекты были удалны");
-        }
-        if (update() != null) {
-            System.out.println("Был обнавлён");
-        }
-        System.out.println(read());
+//        System.out.println(read());
+//        if(delete()){
+//            System.out.println("Объекты были удалны");
+//        }
+//        if (update() != null) {
+//            System.out.println("Был обнавлён");
+//        }
+//        System.out.println(read());
     }
 
     private boolean insert() {
-        return itemService.addItem(new ItemDTOFullInfo("photo5", "HotSpot BubleGum", 1, new BigDecimal(Double.toString(23.0)), 15));
+        return itemService.addItem(new ItemDTOFullInfo("photo111", "HotSpot BubleGum", new Category(), new BigDecimal(Double.toString(23.0)), 15));
     }
 
     public List<String> read() {
@@ -52,6 +53,6 @@ public class ControllerItem {
     }
 
     public ItemDTOInfoForCatalog update() {
-        return itemService.updateItem(new ItemDTOFullInfo(186, "photo123", "HotSpot Banana)", 2, new BigDecimal(Double.toString(15.0)), 5));
+        return itemService.updateItem(new ItemDTOFullInfo(186, "photo123", "HotSpot Banana)", new Category(), new BigDecimal(Double.toString(15.0)), 5));
     }
 }

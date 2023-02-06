@@ -1,11 +1,27 @@
 package project.vapeshop.entity.product;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "liquide")
 public class Liquide {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_liquide")
     private Integer id;
+
+    @OneToOne
+    @JoinColumn(name = "liquide_id_item",referencedColumnName = "id_item")
+    private Item itemForLiquide;
+
+    @Column(name = "flavour")
     private String flavour;
+    @Column(name = "fortress")
     private int fortress;
 //    Enum mb
+    @Column(name="type_nicotine")
     private String typeNicotine;
+    @Column(name="volume")
     private int volume;
 
     public Liquide() {
@@ -64,5 +80,13 @@ public class Liquide {
 
     public void setVolume(int volume) {
         this.volume = volume;
+    }
+
+    public Item getItemForLiquide() {
+        return itemForLiquide;
+    }
+
+    public void setItemForLiquide(Item itemForLiquide) {
+        this.itemForLiquide = itemForLiquide;
     }
 }

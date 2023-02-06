@@ -9,6 +9,7 @@ import project.vapeshop.dto.common.RatingDTOFullInfo;
 import project.vapeshop.entity.common.Rating;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RatingService {
@@ -29,7 +30,7 @@ public class RatingService {
     public List<RatingDTOForProduct> showObjects() {
         return dao.selectObjects().stream()
                 .map(rating -> modelMapper.map(rating,RatingDTOForProduct.class))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public boolean addObject(RatingDTOFullInfo ratingDTOFullInfo) {
@@ -39,7 +40,7 @@ public class RatingService {
     public boolean addObjects(List<RatingDTOFullInfo> ratingDTOFullInfos) {
         return dao.insertObjects(ratingDTOFullInfos.stream()
                 .map(ratingDTOFullInfo -> modelMapper.map(ratingDTOFullInfo,Rating.class))
-                .toList());
+                .collect(Collectors.toList()));
     }
 
     public boolean deleteObject(int id) {

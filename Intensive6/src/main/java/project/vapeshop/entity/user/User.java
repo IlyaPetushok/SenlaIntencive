@@ -1,29 +1,57 @@
 package project.vapeshop.entity.user;
 
+import project.vapeshop.entity.common.Order;
+import project.vapeshop.entity.common.Rating;
+
+import javax.persistence.*;
+import java.util.List;
+import java.util.Random;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user")
     private Integer id;
+    @Column(name = "surname")
     private String surname;
+    @Column(name = "name")
     private String name;
+    @Column(name="patronymic")
     private String patronymic;
+    @Column(name = "login")
     private String login;
+    @Column(name = "password")
     private String password;
+    @Column(name="mail")
     private String mail;
-    private Integer idRole;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id_role",referencedColumnName = "id_role")
+    private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Rating> ratings;
 
     public User() {
     }
 
-    public User(String surname, String name, String patronymic, String login, String password, String mail, int idRole) {
+    public User(String surname, String name, String patronymic, String login, String password, String mail, Role role, List<Rating> ratings) {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
         this.login = login;
         this.password = password;
         this.mail = mail;
-        this.idRole = idRole;
+        this.role = role;
+        this.ratings = ratings;
     }
 
-    public User(Integer id, String surname, String name, String patronymic, String login, String password, String mail, int idRole) {
+    public User(Integer id, String surname, String name, String patronymic, String login, String password, String mail, Role role, List<Rating> ratings) {
         this.id = id;
         this.surname = surname;
         this.name = name;
@@ -31,7 +59,8 @@ public class User {
         this.login = login;
         this.password = password;
         this.mail = mail;
-        this.idRole = idRole;
+        this.role = role;
+        this.ratings = ratings;
     }
 
     public Integer getId() {
@@ -90,11 +119,19 @@ public class User {
         this.mail = mail;
     }
 
-    public Integer getIdRole() {
-        return idRole;
+    public Role getRole() {
+        return role;
     }
 
-    public void setIdRole(Integer idRole) {
-        this.idRole = idRole;
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
     }
 }

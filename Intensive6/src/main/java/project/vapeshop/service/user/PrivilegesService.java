@@ -9,6 +9,7 @@ import project.vapeshop.entity.user.Privileges;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PrivilegesService {
@@ -28,7 +29,7 @@ public class PrivilegesService {
     public List<PrivilegesDTO> showObjects() {
         return dao.selectObjects().stream()
                 .map(privileges -> modelMapper.map(privileges,PrivilegesDTO.class))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public boolean addObject(PrivilegesDTO privilegesDTO) {
@@ -38,7 +39,7 @@ public class PrivilegesService {
     public boolean addObjects(List<PrivilegesDTO> privilegesDTOS) {
         return dao.insertObjects(privilegesDTOS.stream()
                 .map(privilegesDTO -> modelMapper.map(privilegesDTO,Privileges.class))
-                .toList());
+                .collect(Collectors.toList()));
     }
 
     public boolean deleteObject(int id) {
