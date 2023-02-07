@@ -1,3 +1,0 @@
-insert into cd.members (surname, firstname, address, zipcode, telephone, recommendedby, joindate) values ('Jindracek', 'Glenn', '23 Highway Way, Boston', 70, '904-859-0818', null, '2022-06-25');
-insert into cd.members (surname, firstname, address, zipcode, telephone, recommendedby, joindate) values ('McVity', 'Amberly', 'Bloomsbury Close, New York', 38, '542-157-5069', null, '2022-09-25');
-Select memid,surname,firstname,joindate From cd.members where joindate >= '2012-09-01';

@@ -1,3 +1,0 @@
-insert into cd.facilities (facid,name, membercost, guestcost, initialoutlay, monthlymaintenance) values (7,'Massage Room 3', 35, 0, 400, 1000);
-insert into cd.facilities (facid,name, membercost, guestcost, initialoutlay, monthlymaintenance) values (8,'Squash Court 3', 50, 200, 2500, 5000);
-Select facid,name,membercost,monthlymaintenance From cd.facilities Where  membercost<(monthlymaintenance/50) and membercost>0;
