@@ -1,8 +1,8 @@
 package project.vapeshop.entity.product;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-import org.springframework.stereotype.Component;
+//import org.hibernate.annotations.LazyToOne;
+//import org.hibernate.annotations.LazyToOneOption;
+//import org.springframework.stereotype.Component;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
@@ -53,9 +53,6 @@ public class Item implements EntityId<Integer> {
     private List<Order> order;
 
     @OneToOne(mappedBy = "itemForLiquide",fetch = FetchType.LAZY)
-//    @LazyToOne(value = LazyToOneOption.NO_PROXY)
-
-//    @JoinColumn(name = "id_item",referencedColumnName = "liquide_id_item")
     private Liquide liquide;
 
     @OneToOne(mappedBy = "itemForVaporizer", fetch = FetchType.LAZY)

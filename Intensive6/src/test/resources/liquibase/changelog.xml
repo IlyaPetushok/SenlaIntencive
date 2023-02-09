@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd"
-        logicalFilePath="../liquibase">
+        logicalFilePath="liquibase">
 
     <changeSet id="category-for-item" author="Ilya Petushok">
         <sqlFile encoding="utf8" path="script_sql/01.create_table_category.sql" relativeToChangelogFile="true"/>

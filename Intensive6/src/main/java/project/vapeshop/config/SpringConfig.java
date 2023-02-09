@@ -2,8 +2,12 @@ package project.vapeshop.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -20,8 +24,26 @@ import java.util.Properties;
 @EnableTransactionManagement
 @PropertySource("classpath:aplication.properties")
 public class SpringConfig {
-    @Autowired
-    Environment environment;
+//    @Autowired
+//    Environment environment;
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Value("${db.driver}")
+    private String driver;
+    @Value("${db.url}")
+    private String url;
+    @Value("${db.password}")
+    private String password;
+    @Value("${db.username}")
+    private String username;
+//    @Value("${liquibase.change-log}")
+//    private String pathLiquibase;
+    @Value("${hibernate.dialect}")
+    private String dialect;
 
     public SpringConfig() {
     }
@@ -47,10 +69,14 @@ public class SpringConfig {
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(environment.getProperty("db.driver"));
-        dataSource.setUsername(environment.getProperty("db.username"));
-        dataSource.setPassword(environment.getProperty("db.password"));
-        dataSource.setUrl(environment.getProperty("db.url"));
+//        dataSource.setDriverClassName(environment.getProperty("db.driver"));
+//        dataSource.setUsername(environment.getProperty("db.username"));
+//        dataSource.setPassword(environment.getProperty("db.password"));
+//        dataSource.setUrl(environment.getProperty("db.url"));
+        dataSource.setDriverClassName(driver);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        dataSource.setUrl(url);
         return dataSource;
 
     }
@@ -59,9 +85,9 @@ public class SpringConfig {
     @Bean
     public Properties getProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect",environment.getProperty("hibernate.dialect"));
+        properties.put("hibernate.dialect",dialect);
         properties.put("hibernate.show_sql", true);
-        System.out.println("env"+environment.getProperty("hibernate.hbm2ddl.auto"));
+//        System.out.println("env"+environment.getProperty("hibernate.hbm2ddl.auto"));
 //        properties.put("hibernate.hbm2ddl.auto",environment.getProperty("hibernate.hbm2ddl.auto"));
         return properties;
     }

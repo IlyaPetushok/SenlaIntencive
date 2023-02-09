@@ -1,7 +1,7 @@
 package project.vapeshop.entity.product;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
+//import org.hibernate.annotations.LazyToOne;
+//import org.hibernate.annotations.LazyToOneOption;
 import project.vapeshop.entity.EntityId;
 
 import javax.persistence.*;
@@ -22,7 +22,6 @@ public class Liquide implements EntityId<Integer> {
 
     @OneToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "liquide_id_item",referencedColumnName = "id_item")
-    @LazyToOne(value = LazyToOneOption.NO_PROXY)
     private Item itemForLiquide;
 
 //    @Column(name="liquide_id_item")

@@ -1,10 +1,14 @@
-package config;
+package vapeshop.test.config;
 
+import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,12 +20,31 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan("project.vapeshop")
+//@ComponentScan("vapeshop.test")
 @EnableTransactionManagement
-@PropertySource("classpath:aplication.properties")
+@EnableJpaRepositories(basePackages = "project.vapeshop.dao")
+@PropertySource("classpath:application.properties")
 public class JpaConfig {
-    @Autowired
-    Environment environment;
+
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Value("${db.driver}")
+    private String driver;
+    @Value("${db.url}")
+    private String url;
+    @Value("${db.password}")
+    private String password;
+    @Value("${db.username}")
+    private String username;
+    @Value("${spring.liquibase.change-log}")
+    private String pathLiquibase;
+    @Value("${hibernate.dialect}")
+    private String dialect;
+
 
     public JpaConfig() {
     }
@@ -40,18 +63,20 @@ public class JpaConfig {
 
     @Bean
     public DataSource getDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();;
-        dataSource.setDriverClassName(environment.getProperty("db.driver"));
-        dataSource.setUsername(environment.getProperty("db.username"));
-        dataSource.setPassword(environment.getProperty("db.password"));
-        dataSource.setUrl(environment.getProperty("db.url"));
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driver);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        dataSource.setUrl(url);
         return dataSource;
     }
 
     @Bean
-    public SpringLiquibase liquibase() {
+    public SpringLiquibase liquibase()  {
         SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setChangeLog(environment.getProperty("liquibase.change-log"));
+        System.out.println(pathLiquibase);
+        System.out.println("classpath:application.properties");
+        liquibase.setChangeLog(pathLiquibase);
         liquibase.setDataSource(getDataSource());
         return liquibase;
     }
@@ -60,14 +85,15 @@ public class JpaConfig {
     @Bean
     public Properties getProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect",environment.getProperty("hibernate.dialect"));
+        properties.put("hibernate.dialect", dialect);
         properties.put("hibernate.show_sql", true);
+        properties.put("hibernate.hbm2ddl.auto","create");
         return properties;
     }
 
 
     @Bean
-    public PlatformTransactionManager transactionManager(){
+    public PlatformTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
         return transactionManager;
