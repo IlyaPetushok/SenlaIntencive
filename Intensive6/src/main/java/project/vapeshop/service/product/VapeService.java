@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class VapeService {
-    Dao<Vape> dao;
+    Dao<Vape,Integer> dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public VapeService(Dao<Vape> dao, ModelMapper modelMapper) {
+    public VapeService(Dao<Vape,Integer> dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }

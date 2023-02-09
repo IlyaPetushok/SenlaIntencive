@@ -1,69 +1,35 @@
 package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
 import project.vapeshop.entity.product.Category;
+
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class CategoryDao implements Dao<Category> {
-    private static final List<Category> categories = new ArrayList<>();
-
-    @Override
-    public boolean insertObject(Category category) {
-        category.setId(categories.size());
-        categories.add(category);
-        return true;
-    }
-
-    @Override
-    public boolean insertObjects(List<Category> categoryEntities) {
-        for (Category categoryEntity : categoryEntities) {
-            categoryEntity.setId(categories.size());
-            categories.add(categoryEntity);
-        }
-        return true;
-    }
+public class CategoryDao extends AbstractDao<Category,Integer> {
 
     @Override
     public List<Category> selectObjects() {
-        return categories;
+        Query query= entityManager.createQuery("SELECT cat FROM Category as cat");
+        return query.getResultList();
     }
 
     @Override
-    public Category selectObject(int id) {
-        return categories.stream()
-                .filter(category -> category.getId() == id)
-                .findAny()
-                .orElse(null);
+    public Category selectObject(Integer id) {
+        Query query= entityManager.createQuery("SELECT cat FROM Category as cat where cat.id=?1");
+        query.setParameter(1,id);
+        return (Category) query.getSingleResult();
     }
 
     @Override
     public Category update(Category category) {
-        Category category1 = categories.stream()
-                .filter(categorySt -> categorySt.getId() == category.getId())
-                .findAny()
-                .orElse(null);
-        if (category1 != null) {
-            delete(category1.getId());
-            categories.add(category);
-            return category;
-        }
-        return null;
-    }
-
-    @Override
-    public boolean delete(int id) {
-        Integer i=categories.stream()
-                .filter(category -> Objects.equals(category.getId(), id))
-                .map(Category::getId).findFirst()
-                .orElse(null);
-        if(i!=null){
-        categories.remove(i.intValue());
-        return true;
-        }
-        return false;
+        Category category1=entityManager.find(Category.class,category.getId());
+        category1.setName("Одноразки");
+        return category1;
     }
 }

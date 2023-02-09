@@ -20,15 +20,12 @@ import java.util.Properties;
 @EnableTransactionManagement
 @PropertySource("classpath:aplication.properties")
 public class SpringConfig {
+    @Autowired
     Environment environment;
 
     public SpringConfig() {
     }
 
-    @Autowired
-    public SpringConfig(Environment environment) {
-        this.environment = environment;
-    }
 
     @Bean
     public ModelMapper getMapper(){
@@ -50,19 +47,22 @@ public class SpringConfig {
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("root");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/VapeShop");
+        dataSource.setDriverClassName(environment.getProperty("db.driver"));
+        dataSource.setUsername(environment.getProperty("db.username"));
+        dataSource.setPassword(environment.getProperty("db.password"));
+        dataSource.setUrl(environment.getProperty("db.url"));
         return dataSource;
+
     }
 
 
     @Bean
     public Properties getProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.put("hibernate.dialect",environment.getProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", true);
+        System.out.println("env"+environment.getProperty("hibernate.hbm2ddl.auto"));
+//        properties.put("hibernate.hbm2ddl.auto",environment.getProperty("hibernate.hbm2ddl.auto"));
         return properties;
     }
 

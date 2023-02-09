@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserService {
-    Dao<User> dao;
+    Dao<User,Integer> dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public UserService(Dao<User> dao, ModelMapper modelMapper) {
+    public UserService(Dao<User,Integer> dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }

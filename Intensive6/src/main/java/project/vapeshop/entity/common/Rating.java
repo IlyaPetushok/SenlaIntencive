@@ -1,5 +1,6 @@
 package project.vapeshop.entity.common;
 
+import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
 
@@ -7,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "rating")
-public class Rating {
+public class Rating implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_rating")
@@ -17,11 +18,11 @@ public class Rating {
     @Column(name = "quantity_stars")
     private int quantityStar;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rating_id_item",referencedColumnName = "id_item")
     private Item item;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rating_id_user",referencedColumnName = "id_user")
     private User user;
 

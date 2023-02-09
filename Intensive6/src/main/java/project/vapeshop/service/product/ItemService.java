@@ -2,13 +2,17 @@ package project.vapeshop.service.product;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.impl.AbstractDao;
+import project.vapeshop.dao.impl.ItemProduct;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.entity.product.Item;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
@@ -16,12 +20,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
-    Dao<Item> dao;
+    Dao<Item, Integer> dao;
+//    AbstractDao<Item,Integer> dao;
     ModelMapper modelMapper;
 //    ConnectionHolder connectionHolder;
+//    @Autowired
+//    @Qualifier("itemProduct")
+//    ItemProduct itemProduct;
 
     @Autowired
-    public ItemService(Dao<Item> dao, ModelMapper modelMapper) {
+    public ItemService(Dao<Item,Integer> dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
 //        this.connectionHolder = connectionHolder;
@@ -33,6 +41,7 @@ public class ItemService {
     }
 
     public List<ItemDTOInfoForCatalog> showItems() {
+//        itemProduct.selectItemWithCategoryProduct();
         return dao.selectObjects().stream()
                 .map(item -> modelMapper.map(item, ItemDTOInfoForCatalog.class))
                 .collect(Collectors.toList());

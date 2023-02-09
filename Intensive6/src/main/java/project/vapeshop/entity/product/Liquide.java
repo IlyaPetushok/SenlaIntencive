@@ -1,18 +1,32 @@
 package project.vapeshop.entity.product;
 
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import project.vapeshop.entity.EntityId;
+
 import javax.persistence.*;
 
+@NamedEntityGraph(
+        name = "liquide-with-item",
+        attributeNodes = {
+                @NamedAttributeNode("itemForLiquide"),
+        }
+)
 @Entity
 @Table(name = "liquide")
-public class Liquide {
+public class Liquide implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_liquide")
     private Integer id;
 
-    @OneToOne
+    @OneToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "liquide_id_item",referencedColumnName = "id_item")
+    @LazyToOne(value = LazyToOneOption.NO_PROXY)
     private Item itemForLiquide;
+
+//    @Column(name="liquide_id_item")
+//    private Integer itemForLiquide;
 
     @Column(name = "flavour")
     private String flavour;
@@ -82,6 +96,7 @@ public class Liquide {
         this.volume = volume;
     }
 
+
     public Item getItemForLiquide() {
         return itemForLiquide;
     }
@@ -89,4 +104,12 @@ public class Liquide {
     public void setItemForLiquide(Item itemForLiquide) {
         this.itemForLiquide = itemForLiquide;
     }
+
+//    public Integer getItemForLiquide() {
+//        return itemForLiquide;
+//    }
+//
+//    public void setItemForLiquide(Integer itemForLiquide) {
+//        this.itemForLiquide = itemForLiquide;
+//    }
 }

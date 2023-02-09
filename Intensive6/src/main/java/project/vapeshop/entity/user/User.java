@@ -1,5 +1,6 @@
 package project.vapeshop.entity.user;
 
+import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
 
@@ -9,7 +10,7 @@ import java.util.Random;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
@@ -27,14 +28,14 @@ public class User {
     @Column(name="mail")
     private String mail;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Order> orders;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id_role",referencedColumnName = "id_role")
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Rating> ratings;
 
     public User() {
@@ -63,10 +64,12 @@ public class User {
         this.ratings = ratings;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }

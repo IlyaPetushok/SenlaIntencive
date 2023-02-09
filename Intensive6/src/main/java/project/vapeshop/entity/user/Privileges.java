@@ -1,11 +1,13 @@
 package project.vapeshop.entity.user;
 
+import project.vapeshop.entity.EntityId;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name="privileges")
-public class Privileges {
+public class Privileges implements EntityId<Integer> {
     @Id
     @Column(name="id_privelege")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,9 +15,8 @@ public class Privileges {
     @Column(name="name_privelege")
     private String name;
 
-    @ManyToMany(mappedBy = "privileges")
+    @ManyToMany(mappedBy = "privileges",fetch = FetchType.LAZY)
     private List<Role> roleList;
-
 
 
     public Privileges(String name) {
@@ -30,10 +31,12 @@ public class Privileges {
         this.name = name;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }

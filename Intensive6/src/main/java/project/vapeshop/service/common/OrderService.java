@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class OrderService {
-    Dao<Order> dao;
+    Dao<Order,Integer> dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public OrderService(Dao<Order> dao, ModelMapper modelMapper) {
+    public OrderService(Dao<Order,Integer> dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }

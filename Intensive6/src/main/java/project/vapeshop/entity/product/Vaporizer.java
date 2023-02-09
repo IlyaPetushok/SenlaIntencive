@@ -1,11 +1,13 @@
 package project.vapeshop.entity.product;
 
 
+import project.vapeshop.entity.EntityId;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="vaporizer")
-public class Vaporizer {
+public class Vaporizer implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_vaporizer")
@@ -17,7 +19,7 @@ public class Vaporizer {
     @Column(name = "type_vaporizer")
     private String type;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vaporizer_id_item",referencedColumnName = "id_item")
     private Item itemForVaporizer;
 
@@ -35,10 +37,12 @@ public class Vaporizer {
         this.type = type;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }

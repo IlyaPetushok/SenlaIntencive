@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class RoleService {
-    Dao<Role> dao;
+    Dao<Role,Integer> dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public RoleService(Dao<Role> dao, ModelMapper modelMapper) {
+    public RoleService(Dao<Role,Integer> dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }

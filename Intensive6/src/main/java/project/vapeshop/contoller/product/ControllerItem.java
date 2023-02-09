@@ -23,10 +23,11 @@ public class ControllerItem {
 
 
     public void execute() {
-        if(insert()){
-            System.out.println("Объекты юыли добавлены");
-        }
-//        System.out.println(read());
+//        if(insert()){
+//            System.out.println("Объекты юыли добавлены");
+//        }
+        System.out.println(readId());
+//        update();
 //        if(delete()){
 //            System.out.println("Объекты были удалны");
 //        }
@@ -48,11 +49,17 @@ public class ControllerItem {
         return stringList;
     }
 
+    public String readId() {
+        return MapperJson.mapperToJson(itemService.showItem(1));
+    }
+
+
+
     public boolean delete() {
         return itemService.deleteItem(185);
     }
 
     public ItemDTOInfoForCatalog update() {
-        return itemService.updateItem(new ItemDTOFullInfo(186, "photo123", "HotSpot Banana)", new Category(), new BigDecimal(Double.toString(15.0)), 5));
+        return itemService.updateItem(new ItemDTOFullInfo(199, "path/photo4", "baby lus", new Category(), new BigDecimal(Double.toString(15.0)), 10));
     }
 }

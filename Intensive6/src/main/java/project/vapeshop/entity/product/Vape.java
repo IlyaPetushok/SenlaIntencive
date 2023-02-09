@@ -1,10 +1,13 @@
 package project.vapeshop.entity.product;
 
+import project.vapeshop.entity.EntityId;
+
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 
 @Entity
 @Table(name="Vape")
-public class Vape {
+public class Vape implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_vape")
@@ -17,7 +20,7 @@ public class Vape {
     @Column(name = "type_vape")
     private String type;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vape_id",referencedColumnName = "id_item")
     private Item itemForVape;
 

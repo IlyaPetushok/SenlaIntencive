@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class RatingService {
-    Dao<Rating> dao;
+    Dao<Rating,Integer> dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public RatingService(Dao<Rating> dao, ModelMapper modelMapper) {
+    public RatingService(Dao<Rating,Integer> dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }

@@ -4,67 +4,33 @@ import org.springframework.stereotype.Repository;
 import project.vapeshop.dao.Dao;
 import project.vapeshop.entity.common.Order;
 
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class OrderDao implements Dao<Order> {
-    private static final List<Order> orders = new ArrayList<>();
-
-    @Override
-    public boolean insertObject(Order order) {
-        order.setId(orders.size());
-        orders.add(order);
-        return true;
-    }
-
-    @Override
-    public boolean insertObjects(List<Order> order) {
-        for (Order order1 : order) {
-            order1.setId(orders.size());
-            orders.add(order1);
-        }
-        return true;
-    }
-
+public class OrderDao extends AbstractDao<Order,Integer> {
     @Override
     public List<Order> selectObjects() {
-        return orders;
+        Query query= entityManager.createQuery("Select ord from Order as ord");
+        return query.getResultList();
     }
 
     @Override
-    public Order selectObject(int id) {
-        return orders.stream()
-                .filter(order -> order.getId() == id)
-                .findAny()
-                .orElse(null);
+    public Order selectObject(Integer id) {
+        Query query= entityManager.createQuery("Select ord from Order as ord where ord.id=?1");
+        query.setParameter(1,id);
+        return (Order) query.getSingleResult();
     }
 
     @Override
     public Order update(Order order) {
-        Order order1 = orders.stream()
-                .filter(or -> or.getId() == order.getId())
-                .findAny()
-                .orElse(null);
-        if (order1 != null) {
-            delete(order1.getId());
-            orders.add(order);
-            return order;
-        }
-        return null;
-    }
-
-    @Override
-    public boolean delete(int id) {
-        Integer i = orders.stream()
-                .filter(order -> Objects.equals(order.getId(), id))
-                .map(Order::getId).findFirst()
-                .orElse(null);
-        if (i != null) {
-            orders.remove(i.intValue());
-            return true;
-        }
-        return false;
+        Order order1=entityManager.find(Order.class,order);
+        order1.setDate(order.getDate());
+        order1.setPrice(order.getPrice());
+        order1.setStatus(order1.getStatus());
+        order1.setUser(order.getUser());
+        return order1;
     }
 }

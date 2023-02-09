@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class VaporizerService {
-    Dao<Vaporizer> dao;
+    Dao<Vaporizer,Integer> dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public VaporizerService(Dao<Vaporizer> dao, ModelMapper modelMapper) {
+    public VaporizerService(Dao<Vaporizer,Integer> dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }

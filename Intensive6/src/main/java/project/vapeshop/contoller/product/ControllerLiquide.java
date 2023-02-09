@@ -20,16 +20,16 @@ public class ControllerLiquide {
 
 
     public void execute() {
-        if (insert()) {
-            System.out.println("Объекты юыли добавлены");
-        }
-        System.out.println(read());
+//        if (insert()) {
+//            System.out.println("Объекты юыли добавлены");
+//        }
+//        System.out.println(read());
         if (delete()) {
             System.out.println("Объекты были удалны");
         }
-        if (update() != null) {
-            System.out.println("Был обнавлён");
-        }
+//        if (update() != null) {
+//            System.out.println("Был обнавлён");
+//        }
         System.out.println(read());
     }
 
@@ -49,10 +49,10 @@ public class ControllerLiquide {
     }
 
     public boolean delete() {
-        return service.deleteItem(1);
+        return service.deleteItem(7);
     }
 
     public LiquideDTO update() {
-        return service.updateItem(new LiquideDTO(0, "Малина с Лимонов", 20, "солевой", 30));
+        return service.updateItem(new LiquideDTO(3, "Малина с Лимоном", 20, "солевой", 30));
     }
 }

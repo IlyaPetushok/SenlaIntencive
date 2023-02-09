@@ -4,67 +4,34 @@ import org.springframework.stereotype.Repository;
 import project.vapeshop.dao.Dao;
 import project.vapeshop.entity.common.Rating;
 
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class RatingDao implements Dao<Rating> {
-    private static final List<Rating> ratings = new ArrayList<>();
-
-    @Override
-    public boolean insertObject(Rating rating) {
-        rating.setId(ratings.size());
-        ratings.add(rating);
-        return true;
-    }
-
-    @Override
-    public boolean insertObjects(List<Rating> t) {
-        for (Rating rating : t) {
-            rating.setId(ratings.size());
-            ratings.add(rating);
-        }
-        return true;
-    }
+public class RatingDao extends AbstractDao<Rating,Integer> {
 
     @Override
     public List<Rating> selectObjects() {
-        return ratings;
+        Query query= entityManager.createQuery("select rat from Rating as rat");
+        return query.getResultList();
     }
 
     @Override
-    public Rating selectObject(int id) {
-        return ratings.stream()
-                .filter(rating -> rating.getId() == id)
-                .findAny()
-                .orElse(null);
+    public Rating selectObject(Integer id) {
+        Query query= entityManager.createQuery("select rat from Rating as rat where rat=?1");
+        query.setParameter(1,id);
+        return (Rating) query.getSingleResult();
     }
 
     @Override
     public Rating update(Rating rating) {
-        Rating rating1 = ratings.stream()
-                .filter(r -> Objects.equals(r.getId(), rating.getId()))
-                .findAny()
-                .orElse(null);
-        if (rating1 != null) {
-            delete(rating1.getId());
-            ratings.add(rating);
-            return rating;
-        }
-        return null;
-    }
-
-    @Override
-    public boolean delete(int id) {
-        Integer i = ratings.stream()
-                .filter(rating -> Objects.equals(rating.getId(), id))
-                .map(rating -> rating.getId()).findFirst()
-                .orElse(null);
-        if (i != null) {
-            ratings.remove(i.intValue());
-            return true;
-        }
-        return false;
+        Rating rating1=entityManager.find(Rating.class,rating.getId());
+        rating1.setComment(rating.getComment());
+        rating1.setItem(rating.getItem());
+        rating1.setUser(rating.getUser());
+        rating1.setQuantityStar(rating.getQuantityStar());
+        return rating1;
     }
 }

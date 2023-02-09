@@ -1,5 +1,6 @@
 package project.vapeshop.entity.common;
 
+import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name="orders")
-public class Order {
+public class Order implements EntityId<Integer> {
     @Id
     @Column(name="id_order")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +19,7 @@ public class Order {
     @Column(name="data_order")
     private Date date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id_user",referencedColumnName = "id_user")
     private User user;
 //    Enum
@@ -28,7 +29,7 @@ public class Order {
     @Column(name="total_price")
     private double price;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "order_item",
     joinColumns = @JoinColumn(name = "ot_id_order"),
     inverseJoinColumns = @JoinColumn(name="ot_id_item"))
