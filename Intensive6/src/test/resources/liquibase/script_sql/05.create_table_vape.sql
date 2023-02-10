@@ -1,5 +1,6 @@
 create table vape(
-	vape_id integer not null unique,
+    id_vape integer not null auto_increment,
+	vape_id integer not null,
 	power_vape integer not null,
 	battery integer not null,
 	type_vape character varying(30),

@@ -1,7 +1,7 @@
 Insert Into category (name) values ('Жидкости'),('Испарители,Картриджы,Койлы'),('Вейпы и подики');
 
 Insert Into item(photo,name,id_category,price,quantity) values ('path\photo1','Мишки 3в1',1,21.5,14);
-Insert Into item(photo,name,id_category,price,quantity) values ('path\photo2','Испаритель Charon Buttlestar',2,9,30);
+Insert Into item(photo,name,id_category,price,quantity) values ('path\photo2','Испаритель Charon',2,9,30);
 Insert Into item(photo,name,id_category,price,quantity) values ('path\photo3','IJoy Captain 226',3,159.99,3);
 
 Insert Into liquide(liquide_id_item,flavour,fortress,type_nicotine,volume) values (1,'Кофе 3в1',50,'солевой',30);
@@ -20,9 +20,9 @@ Insert Into users(surname,name,patronymic,login,password,mail,user_id_role)
 values ('Петушок','Илья','Александрович','login','password','mail@mail.com',1);
 
 Insert Into rating(comment,quantity_stars,rating_id_item,rating_id_user) 
-values ('Очень вкусная жижа,отлично передаёт вкус кофе и не сильно сладкая',5,1,1);
+values ('Очень вкусная жижа',5,1,1);
 Insert Into rating(comment,quantity_stars,rating_id_item,rating_id_user) 
-values ('Неплохой подик очень удобный и хорошо лежит в руке.Но немного протекает картридж',4,3,1)
+values ('Неплохой подик очень удобный',4,3,1);
 
 Insert Into orders(data_order,order_id_user,status_order,total_price) values ('2023-11-01 18:20:59',1,'принят',168.99);
 

@@ -1,5 +1,5 @@
 create table users(
-	id_user integer primary key generated always as identity,
+	id_user integer primary key auto_increment,
 	surname character varying(30) not null,
 	name character varying(30) not null,
 	patronymic character varying(30) not null,
@@ -7,4 +7,4 @@ create table users(
 	password character varying(30) not null,
 	mail character varying(30) not null unique,
 	user_id_role integer references role(id_role) on delete cascade
-)
+);

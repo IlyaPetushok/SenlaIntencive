@@ -1,4 +1,5 @@
 create table vaporizer (
+    id_vaporizer integer auto_increment,
 	vaporizer_id_item integer not null unique,
 	resistance numeric(4,2) not null,
 	type_vaporizer character varying(15) 
