@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ public class ConnectionHolder {
                 .findAny()
                 .orElse(null);
         try {
+            assert connectionEntity != null:"connection commit dont perhaps because connection is null";
             connectionEntity.getConnection().commit();
             connectionEntity.getConnection().setAutoCommit(true);
         } catch (SQLException e) {
@@ -29,11 +31,18 @@ public class ConnectionHolder {
     }
 
     public void connectionRollBck() {
+        ConnectionEntity connectionEntity = connections.get(Thread.currentThread().getId()).stream()
+                .filter(ConnectionEntity::isInTransaction)
+                .findAny()
+                .orElse(null);
         try {
-            getConnectionTransaction().rollback();
+            assert connectionEntity != null:"connection commit dont perhaps because connection is null";
+            connectionEntity.getConnection().setAutoCommit(false);
+            connectionEntity.getConnection().rollback();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        connectionEntity.setInTransaction(false);
     }
 
     public Connection getConnectionTransaction() {
@@ -50,14 +59,12 @@ public class ConnectionHolder {
         try {
             for (int i = 0; i < connectionEntities.size(); ) {
                 connectionEntity = connectionEntities.peek();
-                if (connectionEntity.isInTransaction()) {
-                    if (connectionEntity.getConnection().isClosed()) {
-                        throw new SQLException("connection was closed");
-                    }
+                if (connectionEntity.isInTransaction() && !connectionEntity.getConnection().isClosed()) {
                     return connectionEntity.getConnection();
                 }
                 connectionEntities.add(connectionEntities.poll());
             }
+            assert connectionEntity != null:"connection  is null";
             connectionEntity.getConnection().setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -71,7 +78,9 @@ public class ConnectionHolder {
         ConnectionEntity connectionEntity;
         Queue<ConnectionEntity> connectionEntities = connections.get(Thread.currentThread().getId());
         if (connectionEntities.size() == 0) {
-            return createConnection().peek().getConnection();
+            connectionEntity=createConnection().peek();
+            assert connectionEntity!=null:"connection  is null";
+            return connectionEntity.getConnection();
         }
         for (int i = 0; i < connectionEntities.size(); i++) {
             connectionEntity = connectionEntities.peek();
@@ -80,28 +89,28 @@ public class ConnectionHolder {
             }
             connectionEntities.add(connectionEntities.poll());
         }
-        return createConnection().peek().getConnection();
+        connectionEntity=createConnection().peek();
+        assert connectionEntity!=null:"connection  is null";
+        return connectionEntity.getConnection();
     }
 
     public Queue<ConnectionEntity> createConnection() {
         Properties properties = loadProperty();
         Connection connection;
-        Queue<ConnectionEntity> connectionEntities = connections.get(Thread.currentThread().getId());
         try {
             connection = DriverManager.getConnection(properties.getProperty("db.url"), properties.getProperty("db.username"), properties.getProperty("db.password"));
-            connectionEntities.add(new ConnectionEntity(connection, false));
-            connections.put(Thread.currentThread().getId(), connectionEntities);
+            connections.get(Thread.currentThread().getId()).add(new ConnectionEntity(connection, false));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return connectionEntities;
+        return connections.get(Thread.currentThread().getId());
     }
 
 
     public Properties loadProperty() {
         Properties properties = new Properties();
-        try {
-            properties.load(new FileInputStream("src/main/resources/aplication.properties"));
+        try(InputStream inputStream=new FileInputStream("src/main/resources/aplication.properties")){
+            properties.load(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }

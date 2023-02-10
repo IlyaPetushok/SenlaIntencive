@@ -20,12 +20,13 @@ public class TransactionInstaller {
     }
 
     @Around(value = "@annotation(project.vapeshop.annotation.Transaction)")
-    public boolean transactional(ProceedingJoinPoint proceedingJoinPoint) throws SQLException {
+    public Object transactional(ProceedingJoinPoint proceedingJoinPoint) throws SQLException {
+        Object object = null;
         System.out.println(Thread.currentThread().getId());
         Connection connection= connectionHolder.getConnectionTransaction();
         connection.setAutoCommit(false);
         try {
-            proceedingJoinPoint.proceed();
+            object=proceedingJoinPoint.proceed();
 //            connection.commit();
             connectionHolder.connectionCommit();
         } catch (Throwable e) {
@@ -33,6 +34,6 @@ public class TransactionInstaller {
             connectionHolder.connectionRollBck();
             e.printStackTrace();
         }
-        return  true;
+        return object;
     }
 }
