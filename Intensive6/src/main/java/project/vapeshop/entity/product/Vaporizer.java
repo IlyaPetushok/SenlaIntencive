@@ -26,15 +26,17 @@ public class Vaporizer implements EntityId<Integer> {
     public Vaporizer() {
     }
 
-    public Vaporizer(double resistance, String type) {
-        this.resistance = resistance;
-        this.type = type;
-    }
-
-    public Vaporizer(Integer id, double resistance, String type) {
+    public Vaporizer(Integer id, double resistance, String type, Item itemForVaporizer) {
         this.id = id;
         this.resistance = resistance;
         this.type = type;
+        this.itemForVaporizer = itemForVaporizer;
+    }
+
+    public Vaporizer(double resistance, String type, Item itemForVaporizer) {
+        this.resistance = resistance;
+        this.type = type;
+        this.itemForVaporizer = itemForVaporizer;
     }
 
     @Override
@@ -61,5 +63,13 @@ public class Vaporizer implements EntityId<Integer> {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Item getItemForVaporizer() {
+        return itemForVaporizer;
+    }
+
+    public void setItemForVaporizer(Item itemForVaporizer) {
+        this.itemForVaporizer = itemForVaporizer;
     }
 }

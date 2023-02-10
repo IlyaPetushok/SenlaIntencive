@@ -3,6 +3,7 @@ package project.vapeshop.contoller.product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import project.vapeshop.dto.product.LiquideDTO;
+import project.vapeshop.entity.product.Item;
 import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.product.LiquideService;
 
@@ -35,8 +36,8 @@ public class ControllerLiquide {
 
     private boolean insert() {
         List<LiquideDTO> liquideDTOList = new ArrayList<>();
-        liquideDTOList.add(new LiquideDTO("Ежевика", 45, "солевой", 30));
-        liquideDTOList.add(new LiquideDTO("Тропический чай", 50, "солевой", 30));
+        liquideDTOList.add(new LiquideDTO(new Item(1),"Ежевика", 45, "солевой", 30));
+        liquideDTOList.add(new LiquideDTO(new Item(2),"Тропический чай", 50, "солевой", 30));
         return service.addItems(liquideDTOList);
     }
 
@@ -53,6 +54,6 @@ public class ControllerLiquide {
     }
 
     public LiquideDTO update() {
-        return service.updateItem(new LiquideDTO(1, "Малина с Лимоном", 20, "солевой", 30));
+        return service.updateItem(new LiquideDTO(1,new Item(1), "Малина с Лимоном", 20, "солевой", 30));
     }
 }

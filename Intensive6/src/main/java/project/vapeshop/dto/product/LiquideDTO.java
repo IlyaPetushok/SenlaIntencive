@@ -1,7 +1,10 @@
 package project.vapeshop.dto.product;
 
+import project.vapeshop.entity.product.Item;
+
 public class LiquideDTO {
     private Integer id;
+    private Item item;
     private String flavour;
     private int fortress;
     //    Enum mb
@@ -11,15 +14,17 @@ public class LiquideDTO {
     public LiquideDTO() {
     }
 
-    public LiquideDTO(String flavour, int fortress, String typeNicotine, int volume) {
+    public LiquideDTO(Integer id, Item item, String flavour, int fortress, String typeNicotine, int volume) {
+        this.id = id;
+        this.item = item;
         this.flavour = flavour;
         this.fortress = fortress;
         this.typeNicotine = typeNicotine;
         this.volume = volume;
     }
 
-    public LiquideDTO(Integer id, String flavour, int fortress, String typeNicotine, int volume) {
-        this.id = id;
+    public LiquideDTO(Item item, String flavour, int fortress, String typeNicotine, int volume) {
+        this.item = item;
         this.flavour = flavour;
         this.fortress = fortress;
         this.typeNicotine = typeNicotine;

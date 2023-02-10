@@ -40,15 +40,17 @@ public class Liquide implements EntityId<Integer> {
     public Liquide() {
     }
 
-    public Liquide(String flavour, int fortress, String typeNicotine, int volume) {
+    public Liquide(Integer id, Item itemForLiquide, String flavour, int fortress, String typeNicotine, int volume) {
+        this.id = id;
+        this.itemForLiquide = itemForLiquide;
         this.flavour = flavour;
         this.fortress = fortress;
         this.typeNicotine = typeNicotine;
         this.volume = volume;
     }
 
-    public Liquide(Integer id, String flavour, int fortress, String typeNicotine, int volume) {
-        this.id = id;
+    public Liquide(Item itemForLiquide, String flavour, int fortress, String typeNicotine, int volume) {
+        this.itemForLiquide = itemForLiquide;
         this.flavour = flavour;
         this.fortress = fortress;
         this.typeNicotine = typeNicotine;

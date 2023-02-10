@@ -45,7 +45,7 @@ public class User implements EntityId<Integer> {
         this.id = id;
     }
 
-    public User(String surname, String name, String patronymic, String login, String password, String mail, Role role, List<Rating> ratings) {
+    public User(String surname, String name, String patronymic, String login, String password, String mail, Role role) {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
@@ -53,10 +53,9 @@ public class User implements EntityId<Integer> {
         this.password = password;
         this.mail = mail;
         this.role = role;
-        this.ratings = ratings;
     }
 
-    public User(Integer id, String surname, String name, String patronymic, String login, String password, String mail, Role role, List<Rating> ratings) {
+    public User(Integer id, String surname, String name, String patronymic, String login, String password, String mail, Role role) {
         this.id = id;
         this.surname = surname;
         this.name = name;
@@ -65,7 +64,6 @@ public class User implements EntityId<Integer> {
         this.password = password;
         this.mail = mail;
         this.role = role;
-        this.ratings = ratings;
     }
 
     @Override

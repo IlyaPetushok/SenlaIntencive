@@ -27,17 +27,19 @@ public class Vape implements EntityId<Integer> {
     public Vape() {
     }
 
-    public Vape(int power, int battery, String type) {
+    public Vape(int power, int battery, String type, Item itemForVape) {
         this.power = power;
         this.battery = battery;
         this.type = type;
+        this.itemForVape = itemForVape;
     }
 
-    public Vape(Integer id, int power, int battery, String type) {
+    public Vape(Integer id, int power, int battery, String type, Item itemForVape) {
         this.id = id;
         this.power = power;
         this.battery = battery;
         this.type = type;
+        this.itemForVape = itemForVape;
     }
 
     public Item getItemForVape() {

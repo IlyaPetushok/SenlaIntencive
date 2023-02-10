@@ -3,6 +3,7 @@ package project.vapeshop.contoller.product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import project.vapeshop.dto.product.VapeDTO;
+import project.vapeshop.entity.product.Item;
 import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.product.VapeService;
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class ControllerVape {
 
     private boolean insert() {
         List<VapeDTO> vapeDTOList=new ArrayList<>();
-        vapeDTOList.add(new VapeDTO(120,22450,"Мод"));
-        vapeDTOList.add(new VapeDTO(30,5000,"Подик"));
+        vapeDTOList.add(new VapeDTO(120,22450,"Мод",new Item(2)));
+        vapeDTOList.add(new VapeDTO(30,5000,"Подик",new Item(3)));
         return service.addItems(vapeDTOList);
     }
 
@@ -49,6 +50,6 @@ public class ControllerVape {
     }
 
     public VapeDTO update() {
-        return service.updateItem(new VapeDTO(4,225,8000,"Мод"));
+        return service.updateItem(new VapeDTO(4,225,8000,"Мод",new Item(4)));
     }
 }

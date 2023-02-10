@@ -13,11 +13,9 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
     @Override
     public boolean insertObject(Liquide liquide) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Object> criteriaQuery=criteriaBuilder.createQuery();
+        CriteriaQuery<Item> criteriaQuery=criteriaBuilder.createQuery(Item.class);
         Root<Item> itemRoot=criteriaQuery.from(Item.class);
-        Root<Liquide> liquideRoot= criteriaQuery.from(Liquide.class);
-        criteriaQuery.select(itemRoot)
-                .where(criteriaBuilder.equal(itemRoot.get(Item_.liquide),liquideRoot.get(Liquide_.id)));
+        criteriaQuery.where(criteriaBuilder.equal(itemRoot.get(Item_.id),liquide.getItemForLiquide().getId()));
         Query query= entityManager.createQuery(criteriaQuery);
         Item item= (Item) query.getSingleResult();
         liquide.setItemForLiquide(item);
