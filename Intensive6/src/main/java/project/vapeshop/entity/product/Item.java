@@ -65,6 +65,9 @@ public class Item implements EntityId<Integer> {
     public Item() {
     }
 
+    public Item(Integer id) {
+        this.id = id;
+    }
 
     public Item(Integer id, String photo, String name, Category category, BigDecimal price, int quantity) {
         this.id = id;

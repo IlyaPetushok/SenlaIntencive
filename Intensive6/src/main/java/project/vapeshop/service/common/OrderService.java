@@ -7,6 +7,7 @@ import project.vapeshop.dao.Dao;
 import project.vapeshop.dto.common.OrderDTOForBasket;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
 import project.vapeshop.entity.common.Order;
+import project.vapeshop.entity.product.Item;
 
 
 import java.util.List;
@@ -34,13 +35,19 @@ public class OrderService {
     }
 
     public boolean addObject(OrderDTOFullInfo orderDTOFullInfo) {
-        return dao.insertObject(modelMapper.map(orderDTOFullInfo,Order.class));
+        Order order=modelMapper.map(orderDTOFullInfo,Order.class);
+        order.setItems(orderDTOFullInfo.getItemList());
+        return dao.insertObject(order);
     }
 
     public boolean addObjects(List<OrderDTOFullInfo> orderDTOFullInfos) {
-        return dao.insertObjects(orderDTOFullInfos.stream()
+        List<Order> order=orderDTOFullInfos.stream()
                 .map(orderDTOFullInfo -> modelMapper.map(orderDTOFullInfo,Order.class))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+        for (int i = 0; i < order.size(); i++) {
+            order.get(i).setItems(orderDTOFullInfos.get(i).getItemList());
+        }
+        return dao.insertObjects(order);
     }
 
     public boolean deleteObject(int id) {
@@ -48,6 +55,8 @@ public class OrderService {
     }
 
     public OrderDTOForBasket updateObject(OrderDTOFullInfo orderDTOFullInfo) {
-        return modelMapper.map(dao.update(modelMapper.map(orderDTOFullInfo,Order.class)),OrderDTOForBasket.class);
+        Order order=modelMapper.map(orderDTOFullInfo,Order.class);
+        order.setItems(orderDTOFullInfo.getItemList());
+        return modelMapper.map(dao.update(order),OrderDTOForBasket.class);
     }
 }

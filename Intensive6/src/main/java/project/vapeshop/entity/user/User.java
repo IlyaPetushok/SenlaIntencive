@@ -41,6 +41,10 @@ public class User implements EntityId<Integer> {
     public User() {
     }
 
+    public User(Integer id) {
+        this.id = id;
+    }
+
     public User(String surname, String name, String patronymic, String login, String password, String mail, Role role, List<Rating> ratings) {
         this.surname = surname;
         this.name = name;

@@ -1,23 +1,26 @@
 package project.vapeshop.dto.common;
 
+import project.vapeshop.entity.product.Item;
+import project.vapeshop.entity.user.User;
+
 public class RatingDTOFullInfo {
     private Integer id;
     private String comment;
     private int quantityStar;
-    private Integer idItem;
-    private Integer idUser;
+    private Item idItem;
+    private User idUser;
 
     public RatingDTOFullInfo() {
     }
 
-    public RatingDTOFullInfo(String comment, int quantityStar, Integer idItem, Integer idUser) {
+    public RatingDTOFullInfo(String comment, int quantityStar, Item idItem, User idUser) {
         this.comment = comment;
         this.quantityStar = quantityStar;
         this.idItem = idItem;
         this.idUser = idUser;
     }
 
-    public RatingDTOFullInfo(Integer id, String comment, int quantityStar, Integer idItem, Integer idUser) {
+    public RatingDTOFullInfo(Integer id, String comment, int quantityStar, Item idItem, User idUser) {
         this.id = id;
         this.comment = comment;
         this.quantityStar = quantityStar;
@@ -49,19 +52,19 @@ public class RatingDTOFullInfo {
         this.quantityStar = quantityStar;
     }
 
-    public Integer getIdItem() {
+    public Item getIdItem() {
         return idItem;
     }
 
-    public void setIdItem(Integer idItem) {
+    public void setIdItem(Item idItem) {
         this.idItem = idItem;
     }
 
-    public Integer getIdUser() {
+    public User getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(Integer idUser) {
+    public void setIdUser(User idUser) {
         this.idUser = idUser;
     }
 }
