@@ -18,16 +18,11 @@ public class ControllerVape {
     }
 
     public void execute() {
-        if(insert()){
-            System.out.println("Объекты юыли добавлены");
-        }
+        insert();
+        System.out.println(readId());
+        update();
+        delete();
         System.out.println(read());
-        if(delete()){
-            System.out.println("Объекты были удалны");
-        }
-        if (update() != null) {
-            System.out.println("Был обнавлён");
-        }        System.out.println(read());
     }
 
     private boolean insert() {
@@ -35,6 +30,10 @@ public class ControllerVape {
         vapeDTOList.add(new VapeDTO(120,22450,"Мод"));
         vapeDTOList.add(new VapeDTO(30,5000,"Подик"));
         return service.addItems(vapeDTOList);
+    }
+
+    public String readId(){
+        return MapperJson.mapperToJson(service.showItem(2));
     }
 
     public List<String> read() {
@@ -50,6 +49,6 @@ public class ControllerVape {
     }
 
     public VapeDTO update() {
-        return service.updateItem(new VapeDTO(0,100,8000,"Подик"));
+        return service.updateItem(new VapeDTO(4,225,8000,"Мод"));
     }
 }

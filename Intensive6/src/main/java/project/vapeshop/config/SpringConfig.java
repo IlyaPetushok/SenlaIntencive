@@ -24,8 +24,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 @PropertySource("classpath:aplication.properties")
 public class SpringConfig {
-//    @Autowired
-//    Environment environment;
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
@@ -40,8 +38,6 @@ public class SpringConfig {
     private String password;
     @Value("${db.username}")
     private String username;
-//    @Value("${liquibase.change-log}")
-//    private String pathLiquibase;
     @Value("${hibernate.dialect}")
     private String dialect;
 
@@ -65,14 +61,9 @@ public class SpringConfig {
         return entityManagerFactory;
     }
 
-
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName(environment.getProperty("db.driver"));
-//        dataSource.setUsername(environment.getProperty("db.username"));
-//        dataSource.setPassword(environment.getProperty("db.password"));
-//        dataSource.setUrl(environment.getProperty("db.url"));
         dataSource.setDriverClassName(driver);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
@@ -81,14 +72,11 @@ public class SpringConfig {
 
     }
 
-
     @Bean
     public Properties getProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect",dialect);
         properties.put("hibernate.show_sql", true);
-//        System.out.println("env"+environment.getProperty("hibernate.hbm2ddl.auto"));
-//        properties.put("hibernate.hbm2ddl.auto",environment.getProperty("hibernate.hbm2ddl.auto"));
         return properties;
     }
 
@@ -99,22 +87,4 @@ public class SpringConfig {
         transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
         return transactionManager;
     }
-
-//    @Bean
-//    public SpringLiquibase liquibase(){
-//        SpringLiquibase liquibase=new SpringLiquibase();
-//        liquibase.setChangeLog("src/main/liquibase/changelog-master.xml");
-//        liquibase.setDataSource(getDataSource());
-//        return liquibase;
-//    }
-//
-//    @Bean
-//    public DataSource getDataSource(){
-//        DriverManagerDataSource dataSource=new DriverManagerDataSource();
-//        dataSource.setDriverClassName(environment.getRequiredProperty("db.driver"));
-//        dataSource.setUsername(environment.getRequiredProperty("db.username"));
-//        dataSource.setPassword(environment.getRequiredProperty("db.password"));
-//        dataSource.setUrl(environment.getRequiredProperty("db.url"));
-//        return dataSource;
-//    }
 }

@@ -7,6 +7,7 @@ public class VapeDTO {
     //    Enum
     private String type;
 
+
     public VapeDTO() {
     }
 

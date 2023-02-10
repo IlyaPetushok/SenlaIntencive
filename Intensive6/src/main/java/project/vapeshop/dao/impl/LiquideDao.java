@@ -16,13 +16,10 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
         CriteriaQuery<Object> criteriaQuery=criteriaBuilder.createQuery();
         Root<Item> itemRoot=criteriaQuery.from(Item.class);
         Root<Liquide> liquideRoot= criteriaQuery.from(Liquide.class);
-//        Join<Liquide,Item> liquideItemJoin=liquideRoot.join(Liquide_.itemForLiquide);
-//        System.out.println(l);
         criteriaQuery.select(itemRoot)
                 .where(criteriaBuilder.equal(itemRoot.get(Item_.liquide),liquideRoot.get(Liquide_.id)));
         Query query= entityManager.createQuery(criteriaQuery);
         Item item= (Item) query.getSingleResult();
-//        liquide.setItemForLiquide(item.getId());
         liquide.setItemForLiquide(item);
         return super.insertObject(liquide);
     }
@@ -30,7 +27,6 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
     @Transactional
     @Override
     public List<Liquide> selectObjects() {
-//        CriteriaBuilder
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> criteriaQuery=criteriaBuilder.createQuery();
         Root<Liquide> liquideRoot= criteriaQuery.from(Liquide.class);

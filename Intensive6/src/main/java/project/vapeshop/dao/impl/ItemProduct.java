@@ -1,5 +1,6 @@
 package project.vapeshop.dao.impl;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.entity.product.*;
@@ -16,6 +17,19 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
     private static final String LIQUIDE ="Жидкости";
     private static final String VAPORIZER ="Испарители,Картриджы,Койлы";
     private static final String VAPE ="Вейпы и подики";
+
+
+    @Override
+    public boolean insertObject(Item item) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Category> criteriaQuery=criteriaBuilder.createQuery(Category.class);
+        Root<Category> categoryRoot= criteriaQuery.from(Category.class);
+        criteriaQuery.where(criteriaBuilder.equal(categoryRoot.get(Category_.name),item.getCategory().getName()));
+        Query query=entityManager.createQuery(criteriaQuery);
+        item.setCategory((Category) query.getSingleResult());
+        return super.insertObject(item);
+    }
+
     @Transactional
     @Override
     public List<Item> selectObjects() {
@@ -54,21 +68,25 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
         CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
         CriteriaQuery<Item> criteriaQuery= criteriaBuilder.createQuery(Item.class);
         Root<Item> itemRoot= criteriaQuery.from(Item.class);
-        criteriaQuery.where(criteriaBuilder.equal(itemRoot.get(Item_.id),2));
+        criteriaQuery.where(criteriaBuilder.equal(itemRoot.get(Item_.id),id));
         TypedQuery<Item> typedQuery= entityManager.createQuery(criteriaQuery);
         typedQuery.setHint("javax.persistence.loadgraph",entityGraph);
-        Item item1=typedQuery.getSingleResult();
         return itemGetWithProductCategory(typedQuery.getSingleResult());
     }
 
     @Transactional
     @Override
     public Item update(Item item) {
-        Item item1=selectObject(item.getId());
-        item1.setQuantity(item.getQuantity());
-        item1.setPrice(item.getPrice());
-        item1.setName(item.getName());
-        item1.setPhoto(item.getPhoto());
-        return item1;
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaUpdate<Item> criteriaQuery= criteriaBuilder.createCriteriaUpdate(Item.class);
+        Root<Item> itemRoot= criteriaQuery.from(Item.class);
+        criteriaQuery.where(criteriaBuilder.equal(itemRoot.get(Item_.id),item.getId()));
+        criteriaQuery.set(Item_.name,item.getName());
+        criteriaQuery.set(Item_.photo,item.getPhoto());
+        criteriaQuery.set(Item_.quantity,item.getQuantity());
+        criteriaQuery.set(Item_.price,item.getPrice());
+        Query query= entityManager.createQuery(criteriaQuery);
+        query.executeUpdate();
+        return item;
     }
 }

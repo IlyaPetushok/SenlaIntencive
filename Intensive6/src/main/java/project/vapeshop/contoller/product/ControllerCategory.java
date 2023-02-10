@@ -19,18 +19,21 @@ public class ControllerCategory {
     }
 
     public void execute() {
-//        insert();
-        System.out.println(read());
-        delete();
+        insert();
+        System.out.println(readId());
         update();
+        delete();
         System.out.println(read());
     }
 
     private boolean insert() {
         List<CategoryDTO> categoryDTOList = new ArrayList<>();
-        categoryDTOList.add(new CategoryDTO("Вейп"));
-        categoryDTOList.add(new CategoryDTO("Жидкость"));
+        categoryDTOList.add(new CategoryDTO("Одноразки"));
         return service.addObjects(categoryDTOList);
+    }
+
+    public String readId(){
+        return MapperJson.mapperToJson(service.showObject(18));
     }
 
     public List<String> read() {
@@ -38,15 +41,14 @@ public class ControllerCategory {
         for (CategoryDTO categoryDTO : service.showObjects()) {
             stringList.add(MapperJson.mapperToJson(categoryDTO));
         }
-        System.out.println("selid"+MapperJson.mapperToJson(service.showObject(1)));
         return stringList;
     }
 
     public boolean delete() {
-        return service.deleteObject(4);
+        return service.deleteObject(18);
     }
 
     public CategoryDTO update() {
-        return service.updateObject(new CategoryDTO(4,"Испаритель"));
+        return service.updateObject(new CategoryDTO(19,"Одноразовые сигареты"));
     }
 }

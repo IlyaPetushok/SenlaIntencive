@@ -18,16 +18,11 @@ public class ControllerVaporizer {
     }
 
     public void execute() {
-        if(insert()){
-            System.out.println("Объекты юыли добавлены");
-        }
+        insert();
         System.out.println(read());
-        if(delete()){
-            System.out.println("Объекты были удалны");
-        }
-        if (update() != null) {
-            System.out.println("Был обнавлён");
-        }        System.out.println(read());
+        update();
+        delete();
+        System.out.println(read());
     }
 
     private boolean insert() {
@@ -46,10 +41,10 @@ public class ControllerVaporizer {
     }
 
     public boolean delete() {
-       return service.deleteItem(1);
+       return service.deleteItem(3);
     }
 
     public VaporizerDTO update() {
-        return  service.updateItem(new VaporizerDTO(0,1.8,"картридж"));
+        return  service.updateItem(new VaporizerDTO(2,1.8,"картридж"));
     }
 }
