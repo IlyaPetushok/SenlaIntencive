@@ -44,11 +44,7 @@ public class OrderDao extends AbstractDao<Order, Integer> {
 
     @Override
     public Order selectObject(Integer id) {
-        EntityGraph<?> entityGraph = entityManager.getEntityGraph("order_items");
-        Query query = entityManager.createQuery(SELECT_ORD_WHERE_ID);
-        query.setParameter(1, id);
-        query.setHint("javax.persistence.loadgraph",entityGraph);
-        return (Order) query.getSingleResult();
+        return entityManager.find(Order.class,id);
     }
 
     @Transactional

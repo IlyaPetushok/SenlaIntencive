@@ -1,14 +1,9 @@
 package vapeshop.test.config;
 
-import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -20,10 +15,9 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-//@ComponentScan("vapeshop.test")
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "project.vapeshop.dao")
-@PropertySource("classpath:application.properties")
+@ComponentScan("project.vapeshop")
+@PropertySource("classpath:test.properties")
 public class JpaConfig {
 
 
@@ -32,17 +26,17 @@ public class JpaConfig {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-    @Value("${db.driver}")
+    @Value("${test.driver}")
     private String driver;
-    @Value("${db.url}")
+    @Value("${test.url}")
     private String url;
-    @Value("${db.password}")
+    @Value("${test.password}")
     private String password;
-    @Value("${db.username}")
+    @Value("${test.username}")
     private String username;
     @Value("${spring.liquibase.change-log}")
     private String pathLiquibase;
-    @Value("${hibernate.dialect}")
+    @Value("${test.hibernate.dialect}")
     private String dialect;
 
 
@@ -74,8 +68,6 @@ public class JpaConfig {
     @Bean
     public SpringLiquibase liquibase()  {
         SpringLiquibase liquibase = new SpringLiquibase();
-        System.out.println(pathLiquibase);
-        System.out.println("classpath:application.properties");
         liquibase.setChangeLog(pathLiquibase);
         liquibase.setDataSource(getDataSource());
         return liquibase;
@@ -87,7 +79,7 @@ public class JpaConfig {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", dialect);
         properties.put("hibernate.show_sql", true);
-        properties.put("hibernate.hbm2ddl.auto","create");
+//        properties.put("hibernate.hbm2ddl.auto","create");
         return properties;
     }
 
