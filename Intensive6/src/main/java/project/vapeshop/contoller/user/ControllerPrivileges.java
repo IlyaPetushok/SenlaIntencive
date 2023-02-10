@@ -18,16 +18,11 @@ public class ControllerPrivileges {
     }
 
     public void execute() {
-        if(insert()){
-            System.out.println("Объекты юыли добавлены");
-        }
+        insert();
         System.out.println(read());
-        if(delete()){
-            System.out.println("Объекты были удалны");
-        }
-        if (update() != null) {
-            System.out.println("Был обнавлён");
-        }        System.out.println(read());
+        update();
+        delete();
+        System.out.println(read());
     }
 
     private boolean insert() {
@@ -46,10 +41,10 @@ public class ControllerPrivileges {
     }
 
     public boolean delete() {
-        return service.deleteObject(1);
+        return service.deleteObject(3);
     }
 
     public PrivilegesDTO update() {
-        return service.updateObject(new PrivilegesDTO(0,"DeleteUserAndChangeStatus"));
+        return service.updateObject(new PrivilegesDTO(2,"DeleteUserAndChangeStatus"));
     }
 }

@@ -1,5 +1,7 @@
 package project.vapeshop.dto.user;
 
+import project.vapeshop.entity.user.Role;
+
 public class UserDTOForRegistration {
     private Integer id;
     private String surname;
@@ -8,12 +10,12 @@ public class UserDTOForRegistration {
     private String login;
     private String password;
     private String mail;
-    private Integer idRole;
+    private Role idRole;
 
     public UserDTOForRegistration() {
     }
 
-    public UserDTOForRegistration(String surname, String name, String patronymic, String login, String password, String mail, Integer idRole) {
+    public UserDTOForRegistration(String surname, String name, String patronymic, String login, String password, String mail, Role idRole) {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
@@ -23,7 +25,7 @@ public class UserDTOForRegistration {
         this.idRole = idRole;
     }
 
-    public UserDTOForRegistration(Integer id, String surname, String name, String patronymic, String login, String password, String mail, Integer idRole) {
+    public UserDTOForRegistration(Integer id, String surname, String name, String patronymic, String login, String password, String mail, Role idRole) {
         this.id = id;
         this.surname = surname;
         this.name = name;
@@ -90,11 +92,11 @@ public class UserDTOForRegistration {
         this.mail = mail;
     }
 
-    public Integer getIdRole() {
+    public Role getIdRole() {
         return idRole;
     }
 
-    public void setIdRole(Integer idRole) {
+    public void setIdRole(Role idRole) {
         this.idRole = idRole;
     }
 }

@@ -17,22 +17,15 @@ public class ControllerRole {
     }
 
     public void execute() {
-        if(insert()){
-            System.out.println("Объекты юыли добавлены");
-        }
-        System.out.println(read());
-        if(delete()){
-            System.out.println("Объекты были удалны");
-        }
-        if (update() != null) {
-            System.out.println("Был обнавлён");
-        }        System.out.println(read());
+//        insert();
+//        read();
+        update();
+//        delete();
     }
 
     private boolean insert() {
         List<RoleDTO> roleDTOS=new ArrayList<>();
         roleDTOS.add(new RoleDTO("Admin"));
-        roleDTOS.add(new RoleDTO("User"));
         return service.addObjects(roleDTOS);
     }
 
@@ -45,10 +38,10 @@ public class ControllerRole {
     }
 
     public boolean delete() {
-        return service.deleteObject(1);
+        return service.deleteObject(4);
     }
 
     public RoleDTO update() {
-        return service.updateObject(new RoleDTO(0,"zamAdmin"));
+        return service.updateObject(new RoleDTO(5,"zamAdmin"));
     }
 }

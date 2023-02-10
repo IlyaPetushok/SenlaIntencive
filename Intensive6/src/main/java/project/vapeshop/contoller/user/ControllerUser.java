@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
+import project.vapeshop.entity.user.Role;
 import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.user.UserService;
 import java.util.ArrayList;
@@ -19,22 +20,17 @@ public class ControllerUser {
     }
 
     public void execute() {
-        if(insert()){
-            System.out.println("Объекты юыли добавлены");
-        }
-        System.out.println(read());
-        if(delete()){
-            System.out.println("Объекты были удалны");
-        }
-        if (update() != null) {
-            System.out.println("Был обнавлён");
-        }        System.out.println(read());
+//        insert();
+//        System.out.println(read());
+        update();
+//        delete();
+//        System.out.println(read());
     }
 
     private boolean insert() {
         List<UserDTOForRegistration> userDTOForRegistrations=new ArrayList<>();
-        userDTOForRegistrations.add(new UserDTOForRegistration("Petushok","Ilya","Aleksandrovich","login","pass","a33@mail",0));
-        userDTOForRegistrations.add(new UserDTOForRegistration("Cluch","Vasya","Pupkin","login2","pass2","vasya@mail",0));
+        userDTOForRegistrations.add(new UserDTOForRegistration("Petushok","Ilya","Aleksandrovich","login","pass","a33@mail",new Role(1)));
+        userDTOForRegistrations.add(new UserDTOForRegistration("Cluch","Vasya","Pupkin","login2","pass2","vasya@mail",new Role(1)));
         return service.addItems(userDTOForRegistrations);
     }
 
@@ -51,7 +47,7 @@ public class ControllerUser {
     }
 
     public UserDTOAfterAuthorization update() {
-        return service.updateItem(new UserDTOForRegistration(0,"Cluch","ghgjfdr","Pupkin","log","password","vasya@mail",1));
+        return service.updateItem(new UserDTOForRegistration(3,"Cluch","ghgjfdr","Pupkin","log","password","vasya@mail",new Role(2)));
 
     }
 }

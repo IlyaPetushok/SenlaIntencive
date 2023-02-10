@@ -26,6 +26,10 @@ public class Role implements EntityId<Integer> {
             inverseJoinColumns = @JoinColumn(name = "rp_id_privileges"))
     private List<Privileges> privileges;
 
+    public Role(Integer id) {
+        this.id = id;
+    }
+
     public Role(String name) {
         this.name = name;
     }
