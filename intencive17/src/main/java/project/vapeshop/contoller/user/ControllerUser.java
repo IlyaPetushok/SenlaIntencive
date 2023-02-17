@@ -1,16 +1,14 @@
 package project.vapeshop.contoller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import project.vapeshop.dto.user.UserDTOAfterAuthorization;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.user.UserDTOForRegistration;
-import project.vapeshop.entity.user.Role;
-import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.user.UserService;
-import java.util.ArrayList;
-import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/user")
 public class ControllerUser {
     UserService service;
 
@@ -19,35 +17,45 @@ public class ControllerUser {
         this.service = service;
     }
 
-    public void execute() {
-//        insert();
-//        System.out.println(read());
-        update();
-//        delete();
-//        System.out.println(read());
-    }
 
-    private boolean insert() {
-        List<UserDTOForRegistration> userDTOForRegistrations=new ArrayList<>();
-        userDTOForRegistrations.add(new UserDTOForRegistration("Petushok","Ilya","Aleksandrovich","login","pass","a33@mail",new Role(1)));
-        userDTOForRegistrations.add(new UserDTOForRegistration("Cluch","Vasya","Pupkin","login2","pass2","vasya@mail",new Role(1)));
-        return service.addItems(userDTOForRegistrations);
-    }
-
-    public List<String> read() {
-        List<String> stringList=new ArrayList<>();
-        for(UserDTOAfterAuthorization userDTOAfterAuthorization: service.showItems()){
-            stringList.add(MapperJson.mapperToJson(userDTOAfterAuthorization));
+    @PostMapping("/add")
+    private ResponseEntity<?> insert(@RequestBody UserDTOForRegistration userDTOForRegistration) {
+        try {
+            return new ResponseEntity<>(service.addItem(userDTOForRegistration), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return stringList;
     }
 
-    public boolean delete() {
-        return service.deleteItem(1);
+    @GetMapping("/getAll")
+    public ResponseEntity<?> read() {
+        try {
+            return new ResponseEntity<>(service.showItems(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public UserDTOAfterAuthorization update() {
-        return service.updateItem(new UserDTOForRegistration(3,"Cluch","ghgjfdr","Pupkin","log","password","vasya@mail",new Role(2)));
+    @PostMapping("/delete/{id}")
+    public boolean delete(@PathVariable("id") Integer id) {
+        return service.deleteItem(id);
+    }
 
+    @GetMapping("/find/{id}")
+    public ResponseEntity<?> read(@PathVariable("id") Integer id) {
+        try {
+            return new ResponseEntity<>(service.showItem(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> update(@RequestBody UserDTOForRegistration userDTOForRegistration) {
+        try {
+            return new ResponseEntity<>(service.updateItem(userDTOForRegistration), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

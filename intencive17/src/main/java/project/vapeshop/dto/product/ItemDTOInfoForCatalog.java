@@ -8,6 +8,10 @@ public class ItemDTOInfoForCatalog {
     public ItemDTOInfoForCatalog() {
     }
 
+    public ItemDTOInfoForCatalog(Integer id) {
+        this.id = id;
+    }
+
     public ItemDTOInfoForCatalog(String photo, String name) {
         this.photo = photo;
         this.name = name;

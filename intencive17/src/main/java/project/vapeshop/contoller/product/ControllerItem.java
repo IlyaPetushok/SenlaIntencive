@@ -1,7 +1,11 @@
 package project.vapeshop.contoller.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.product.CategoryDTO;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
@@ -14,7 +18,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/item")
 public class ControllerItem {
     ItemService itemService;
     CategoryService categoryService;
@@ -25,35 +30,47 @@ public class ControllerItem {
     }
 
 
-    public void execute() {
-//        insert();
-        System.out.println(readId());
-//        update();
-//        delete();
-        System.out.println(read());
-    }
-
-    private boolean insert() {
-        return itemService.addItem(new ItemDTOFullInfo("photo4", "HotSpot BubleGum", new Category("Жидкости"), new BigDecimal(Double.toString(23.0)), 15));
-    }
-
-    public List<String> read() {
-        List<String> stringList = new ArrayList<>();
-        for (ItemDTOInfoForCatalog itemDTOInfoForCatalog : itemService.showItems()) {
-            stringList.add(MapperJson.mapperToJson(itemDTOInfoForCatalog));
+    @PostMapping("/add")
+    private ResponseEntity<?> insert(@RequestBody ItemDTOFullInfo item) {
+        try {
+            ItemDTOFullInfo itemDTOFullInfo=itemService.addItem(item);
+            return new ResponseEntity<>(itemDTOFullInfo, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return stringList;
     }
 
-    public String readId() {
-        return MapperJson.mapperToJson(itemService.showItem(20));
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<ItemDTOInfoForCatalog>> read() {
+        try {
+            return new ResponseEntity<>(itemService.showItems(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public boolean delete() {
-        return itemService.deleteItem(16);
+    @GetMapping("/find/{id}")
+    public ResponseEntity<?> readId(@PathVariable("id") Integer id) {
+        try {
+            return new ResponseEntity<>(itemService.showItem(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public ItemDTOInfoForCatalog update() {
-        return itemService.updateItem(new ItemDTOFullInfo(19, "path/photo4", "Baby Plus", new Category(), new BigDecimal(Double.toString(15.0)), 10));
+    @GetMapping("/delete/{id}")
+    public boolean delete(@PathVariable("id") Integer id) {
+        return itemService.deleteItem(id);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> update(@RequestBody ItemDTOFullInfo itemDTOFullInfo) {
+        try {
+            return new ResponseEntity<>(itemService.updateItem(itemDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+//        return itemService.updateItem(new ItemDTOFullInfo(19, "path/photo4", "Baby Plus", new Category(), new BigDecimal(Double.toString(15.0)), 10));
     }
 }

@@ -37,11 +37,11 @@ public class OrderDTOFullInfo {
         this.items = items;
     }
 
-    public List<Item> getItemList() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItemList(List<Item> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 

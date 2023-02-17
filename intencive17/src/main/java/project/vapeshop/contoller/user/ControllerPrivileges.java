@@ -1,14 +1,14 @@
 package project.vapeshop.contoller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.user.PrivilegesDTO;
-import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.user.PrivilegesService;
-import java.util.ArrayList;
-import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/privilege")
 public class ControllerPrivileges {
     PrivilegesService service;
 
@@ -17,34 +17,44 @@ public class ControllerPrivileges {
         this.service = service;
     }
 
-    public void execute() {
-        insert();
-        System.out.println(read());
-        update();
-        delete();
-        System.out.println(read());
-    }
 
-    private boolean insert() {
-        List<PrivilegesDTO> privilegesDTOS=new ArrayList<>();
-        privilegesDTOS.add(new PrivilegesDTO("DeleteUser"));
-        privilegesDTOS.add(new PrivilegesDTO("Add Product"));
-        return service.addObjects(privilegesDTOS);
-    }
-
-    public List<String> read() {
-        List<String> stringList=new ArrayList<>();
-        for(PrivilegesDTO privilegesDTO:service.showObjects()){
-            stringList.add(MapperJson.mapperToJson(privilegesDTO));
+    @PostMapping("/add")
+    private ResponseEntity<?> insert(@RequestBody PrivilegesDTO privilegesDTO) {
+        try {
+            return new ResponseEntity<>(service.addObject(privilegesDTO), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return stringList;
     }
 
-    public boolean delete() {
-        return service.deleteObject(3);
+    @GetMapping("/getAll")
+    public ResponseEntity<?> read() {
+        try {
+            return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public PrivilegesDTO update() {
-        return service.updateObject(new PrivilegesDTO(2,"DeleteUserAndChangeStatus"));
+    @GetMapping("/find/{id}")
+    public ResponseEntity<?> read(@PathVariable("id") Integer id) {
+        try {
+            return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
+    @PostMapping("/delete/{id}")
+    public boolean delete(@PathVariable("id") Integer id) {
+        return service.deleteObject(id);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> update(@RequestBody PrivilegesDTO privilegesDTO) {
+        try {
+            return new ResponseEntity<>(service.updateObject(privilegesDTO), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }    }
 }

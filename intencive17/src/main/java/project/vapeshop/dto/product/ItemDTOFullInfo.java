@@ -15,6 +15,7 @@ public class ItemDTOFullInfo {
     public ItemDTOFullInfo() {
     }
 
+
     public ItemDTOFullInfo(Integer id, String photo, String name, Category category, BigDecimal price, int quantity) {
         this.id = id;
         this.photo = photo;
@@ -63,14 +64,6 @@ public class ItemDTOFullInfo {
     public void setCategory(Category category) {
         this.category = category;
     }
-
-    //    public Integer getIdCategory() {
-//        return idCategory;
-//    }
-//
-//    public void setIdCategory(Integer nameCategory) {
-//        this.idCategory = nameCategory;
-//    }
 
     public BigDecimal getPrice() {
         return price;

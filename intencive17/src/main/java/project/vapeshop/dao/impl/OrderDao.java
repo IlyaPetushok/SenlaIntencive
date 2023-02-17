@@ -20,15 +20,12 @@ import java.util.Objects;
 @Repository
 public class OrderDao extends AbstractDao<Order, Integer> {
 
-    public static final String SELECT_ORD_WHERE_ID = "Select ord from Order as ord where ord.id=?1";
-
+    @Transactional
     @Override
-    public boolean insertObject(Order order) {
+    public Order insertObject(Order order) {
         User user = entityManager.find(User.class, order.getUser().getId());
         order.setUser(user);
-        Order order1 = entityManager.merge(order);
-        order1.setItems(order.getItems());
-        return true;
+        return entityManager.merge(order);
     }
 
     @Override

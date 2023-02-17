@@ -4,14 +4,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.entity.product.*;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
 public class LiquideDao extends AbstractDao<Liquide,Integer> {
     @Override
-    public boolean insertObject(Liquide liquide) {
+    public Liquide insertObject(Liquide liquide) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Item> criteriaQuery=criteriaBuilder.createQuery(Item.class);
         Root<Item> itemRoot=criteriaQuery.from(Item.class);
@@ -25,11 +27,12 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
     @Transactional
     @Override
     public List<Liquide> selectObjects() {
+        EntityGraph<?> entityGraph= entityManager.getEntityGraph("liquide-with-item");
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Object> criteriaQuery=criteriaBuilder.createQuery();
-        Root<Liquide> liquideRoot= criteriaQuery.from(Liquide.class);
-        criteriaQuery.select(liquideRoot);
-        Query query= entityManager.createQuery(criteriaQuery);
+        CriteriaQuery<Liquide> criteriaQuery=criteriaBuilder.createQuery(Liquide.class);
+        Root<Liquide> liquideRoot=criteriaQuery.from(Liquide.class);
+        TypedQuery<Liquide> query= entityManager.createQuery(criteriaQuery);
+        query.setHint("javax.persistence.loadgraph",entityGraph);
         return query.getResultList();
     }
 
@@ -48,13 +51,15 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
     @Transactional
     @Override
     public  Liquide selectObject(Integer id) {
+        EntityGraph<?> entityGraph= entityManager.getEntityGraph("liquide-with-item");
         CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
-        CriteriaQuery<Object> criteriaQuery= criteriaBuilder.createQuery();
+        CriteriaQuery<Liquide> criteriaQuery= criteriaBuilder.createQuery(Liquide.class);
         Root<Liquide> liquideRoot= criteriaQuery.from(Liquide.class);
         criteriaQuery.select(liquideRoot)
                 .where(criteriaBuilder.equal(liquideRoot.get(Liquide_.id),id));
-        Query query= entityManager.createQuery(criteriaQuery);
-        return (Liquide) query.getSingleResult();
+        TypedQuery<Liquide> query= entityManager.createQuery(criteriaQuery);
+        query.setHint("javax.persistence.loadgraph",entityGraph);
+        return query.getSingleResult();
     }
 
     @Transactional

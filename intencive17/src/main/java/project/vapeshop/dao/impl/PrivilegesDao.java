@@ -1,6 +1,7 @@
 package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
 import project.vapeshop.entity.user.Privileges;
 
@@ -24,6 +25,7 @@ public class PrivilegesDao extends AbstractDao<Privileges,Integer> {
         return (Privileges) query.getSingleResult();
     }
 
+    @Transactional
     @Override
     public Privileges update(Privileges privileges) {
         Privileges privileges1=entityManager.find(Privileges.class,privileges.getId());

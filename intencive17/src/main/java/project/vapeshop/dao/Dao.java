@@ -7,9 +7,9 @@ import java.util.List;
 
 @Repository
 public interface Dao<T, С> {
-    boolean insertObject(T t);
+    T insertObject(T t);
 
-    boolean insertObjects(List<T> t);
+    List<T> insertObjects(List<T> t);
 
     List<T> selectObjects();
 

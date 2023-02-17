@@ -5,6 +5,13 @@ import project.vapeshop.entity.EntityId;
 
 import javax.persistence.*;
 
+@NamedEntityGraph(
+        name = "entity-graph-item-vaporizer",
+        attributeNodes = {
+                @NamedAttributeNode("itemForVaporizer"),
+        }
+)
+
 @Entity
 @Table(name="vaporizer")
 public class Vaporizer implements EntityId<Integer> {

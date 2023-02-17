@@ -2,27 +2,25 @@ package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import project.vapeshop.dao.Dao;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.product.Item_;
 import project.vapeshop.entity.product.Vaporizer;
+import project.vapeshop.entity.product.Vaporizer_;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class VaporizerDao extends AbstractDao<Vaporizer, Integer> {
 
-    public static final String SELECT_VPOR = "select vpor from Vaporizer as vpor";
-    public static final String SELECT_VPOR_FROM_VAPORIZER_AS_VPOR_WHERE_VPOR_ID_1 = "select vpor from Vaporizer  as vpor where vpor.id=?1";
 
     @Override
-    public boolean insertObject(Vaporizer vaporizer) {
+    public Vaporizer insertObject(Vaporizer vaporizer) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Item> criteriaQuery=criteriaBuilder.createQuery(Item.class);
         Root<Item> itemRoot=criteriaQuery.from(Item.class);
@@ -35,15 +33,24 @@ public class VaporizerDao extends AbstractDao<Vaporizer, Integer> {
 
     @Override
     public List<Vaporizer> selectObjects() {
-        Query query=entityManager.createQuery(SELECT_VPOR);
-        return query.getResultList();
+        EntityGraph<?> entityGraph= entityManager.getEntityGraph("entity-graph-item-vaporizer");
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaQuery<Vaporizer> criteriaQuery= criteriaBuilder.createQuery(Vaporizer.class);
+        TypedQuery<Vaporizer> typedQuery=entityManager.createQuery(criteriaQuery);
+        typedQuery.setHint("javax.persistence.loadgraph",entityGraph);
+        return typedQuery.getResultList();
     }
 
     @Override
     public Vaporizer selectObject(Integer id) {
-        Query query=entityManager.createQuery(SELECT_VPOR_FROM_VAPORIZER_AS_VPOR_WHERE_VPOR_ID_1);
-        query.setParameter(1,id);
-        return (Vaporizer) query.getSingleResult();
+        EntityGraph<?> entityGraph= entityManager.getEntityGraph("entity-graph-item-vaporizer");
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaQuery<Vaporizer> criteriaQuery= criteriaBuilder.createQuery(Vaporizer.class);
+        Root<Vaporizer> vaporizerRoot= criteriaQuery.from(Vaporizer.class);
+        criteriaQuery.where(criteriaBuilder.equal(vaporizerRoot.get(Vaporizer_.id),id));
+        TypedQuery<Vaporizer> typedQuery=entityManager.createQuery(criteriaQuery);
+        typedQuery.setHint("javax.persistence.loadgraph",entityGraph);
+        return typedQuery.getSingleResult();
     }
 
     @Transactional
@@ -52,6 +59,7 @@ public class VaporizerDao extends AbstractDao<Vaporizer, Integer> {
         Vaporizer vaporizer1=entityManager.find(Vaporizer.class,vaporizer.getId());
         vaporizer1.setResistance(vaporizer.getResistance());
         vaporizer1.setType(vaporizer.getType());
+        vaporizer1.setItemForVaporizer(entityManager.find(Item.class,vaporizer.getItemForVaporizer().getId()));
         return vaporizer1;
     }
 }

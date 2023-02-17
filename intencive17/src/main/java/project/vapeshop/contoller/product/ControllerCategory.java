@@ -1,7 +1,11 @@
 package project.vapeshop.contoller.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
 import project.vapeshop.dto.product.CategoryDTO;
 import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.product.CategoryService;
@@ -9,7 +13,8 @@ import project.vapeshop.service.product.CategoryService;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/category")
 public class ControllerCategory {
     CategoryService service;
 
@@ -18,37 +23,45 @@ public class ControllerCategory {
         this.service = service;
     }
 
-    public void execute() {
-        insert();
-        System.out.println(readId());
-        update();
-        delete();
-        System.out.println(read());
-    }
 
-    private boolean insert() {
-        List<CategoryDTO> categoryDTOList = new ArrayList<>();
-        categoryDTOList.add(new CategoryDTO("Одноразки"));
-        return service.addObjects(categoryDTOList);
-    }
-
-    public String readId(){
-        return MapperJson.mapperToJson(service.showObject(18));
-    }
-
-    public List<String> read() {
-        List<String> stringList=new ArrayList<>();
-        for (CategoryDTO categoryDTO : service.showObjects()) {
-            stringList.add(MapperJson.mapperToJson(categoryDTO));
+    @PostMapping("/add")
+    private ResponseEntity<?> insert(@RequestBody CategoryDTO categoryDTO) {
+        try {
+            return new ResponseEntity<>(service.addObject(categoryDTO), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return stringList;
     }
 
-    public boolean delete() {
-        return service.deleteObject(18);
+    @GetMapping("/find/{id}")
+    public ResponseEntity<?> readId(@PathVariable("id") Integer id){
+        try {
+            return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public CategoryDTO update() {
-        return service.updateObject(new CategoryDTO(19,"Одноразовые сигареты"));
+    @GetMapping("/getAll")
+    public ResponseEntity<?> read() {
+        try {
+            return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/delete/{id}")
+    public boolean delete(@PathVariable("id") Integer id) {
+        return service.deleteObject(id);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> update(@RequestBody CategoryDTO categoryDTO) {
+        try {
+            return new ResponseEntity<>(service.updateObject(categoryDTO), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

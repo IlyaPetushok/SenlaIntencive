@@ -4,7 +4,7 @@ import project.vapeshop.entity.product.Item;
 
 public class LiquideDTO {
     private Integer id;
-    private Item item;
+    private ItemDTOInfoForCatalog item;
     private String flavour;
     private int fortress;
     //    Enum mb
@@ -14,7 +14,11 @@ public class LiquideDTO {
     public LiquideDTO() {
     }
 
-    public LiquideDTO(Integer id, Item item, String flavour, int fortress, String typeNicotine, int volume) {
+    public LiquideDTO(Integer id) {
+        this.id = id;
+    }
+
+    public LiquideDTO(Integer id, ItemDTOInfoForCatalog item, String flavour, int fortress, String typeNicotine, int volume) {
         this.id = id;
         this.item = item;
         this.flavour = flavour;
@@ -23,8 +27,18 @@ public class LiquideDTO {
         this.volume = volume;
     }
 
-    public LiquideDTO(Item item, String flavour, int fortress, String typeNicotine, int volume) {
+
+
+    public LiquideDTO(ItemDTOInfoForCatalog item, String flavour, int fortress, String typeNicotine, int volume) {
         this.item = item;
+        this.flavour = flavour;
+        this.fortress = fortress;
+        this.typeNicotine = typeNicotine;
+        this.volume = volume;
+    }
+
+    public LiquideDTO(Integer id, String flavour, int fortress, String typeNicotine, int volume) {
+        this.id = id;
         this.flavour = flavour;
         this.fortress = fortress;
         this.typeNicotine = typeNicotine;
@@ -69,5 +83,13 @@ public class LiquideDTO {
 
     public void setVolume(int volume) {
         this.volume = volume;
+    }
+
+    public ItemDTOInfoForCatalog getItemForLiquide() {
+        return item;
+    }
+
+    public void setItemForLiquide(ItemDTOInfoForCatalog item) {
+        this.item = item;
     }
 }

@@ -8,22 +8,22 @@ public class VaporizerDTO {
     //    Enum mb
     private String type;
 
-    private Item item;
+    private ItemDTOInfoForCatalog itemForVaporizer;
 
     public VaporizerDTO() {
     }
 
-    public VaporizerDTO(Integer id, double resistance, String type, Item item) {
+    public VaporizerDTO(Integer id, double resistance, String type, ItemDTOInfoForCatalog itemForVaporizer) {
         this.id = id;
         this.resistance = resistance;
         this.type = type;
-        this.item = item;
+        this.itemForVaporizer = itemForVaporizer;
     }
 
-    public VaporizerDTO(double resistance, String type, Item item) {
+    public VaporizerDTO(double resistance, String type, ItemDTOInfoForCatalog itemForVaporizer) {
         this.resistance = resistance;
         this.type = type;
-        this.item = item;
+        this.itemForVaporizer = itemForVaporizer;
     }
 
     public Integer getId() {
@@ -46,12 +46,12 @@ public class VaporizerDTO {
         return type;
     }
 
-    public Item getItem() {
-        return item;
+    public ItemDTOInfoForCatalog getItemForVaporizer() {
+        return itemForVaporizer;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItemForVaporizer(ItemDTOInfoForCatalog itemForVaporizer) {
+        this.itemForVaporizer = itemForVaporizer;
     }
 
     public void setType(String type) {

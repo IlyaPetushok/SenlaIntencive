@@ -32,14 +32,17 @@ public class RoleService {
                 .collect(Collectors.toList());
     }
 
-    public boolean addObject(RoleDTO roleDTO) {
-        return dao.insertObject(modelMapper.map(roleDTO,Role.class));
+    public RoleDTO addObject(RoleDTO roleDTO) {
+        return modelMapper.map(dao.insertObject(modelMapper.map(roleDTO,Role.class)),RoleDTO.class);
     }
 
-    public boolean addObjects(List<RoleDTO> roleDTOS) {
-        return dao.insertObjects(roleDTOS.stream()
+    public List<RoleDTO> addObjects(List<RoleDTO> roleDTOS) {
+        List<Role> roles= dao.insertObjects(roleDTOS.stream()
                 .map(roleDTO -> modelMapper.map(roleDTO,Role.class))
                 .collect(Collectors.toList()));
+        return roles.stream()
+                .map(role -> modelMapper.map(role,RoleDTO.class))
+                .collect(Collectors.toList());
     }
 
     public boolean deleteObject(int id) {

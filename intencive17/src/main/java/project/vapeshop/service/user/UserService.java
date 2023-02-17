@@ -35,14 +35,17 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public boolean addItem(UserDTOForRegistration userDTOForRegistration) {
-        return dao.insertObject(modelMapper.map(userDTOForRegistration,User.class));
+    public UserDTOForRegistration addItem(UserDTOForRegistration userDTOForRegistration) {
+        return modelMapper.map(dao.insertObject(modelMapper.map(userDTOForRegistration,User.class)),UserDTOForRegistration.class);
     }
 
-    public boolean addItems(List<UserDTOForRegistration> userDTOForRegistrations) {
-        return dao.insertObjects(userDTOForRegistrations.stream()
+    public List<UserDTOForRegistration> addItems(List<UserDTOForRegistration> userDTOForRegistrations) {
+        List<User> users=dao.insertObjects(userDTOForRegistrations.stream()
                 .map(userDTOForRegistration -> modelMapper.map(userDTOForRegistration,User.class))
                 .collect(Collectors.toList()));
+        return users.stream()
+                .map(user -> modelMapper.map(user,UserDTOForRegistration.class))
+                .collect(Collectors.toList());
     }
 
     public boolean deleteItem(int id) {

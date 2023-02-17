@@ -1,7 +1,11 @@
 package project.vapeshop.contoller.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
+import project.vapeshop.dto.common.OrderDTOFullInfo;
 import project.vapeshop.dto.common.RatingDTOForProduct;
 import project.vapeshop.dto.common.RatingDTOFullInfo;
 import project.vapeshop.entity.product.Item;
@@ -12,7 +16,8 @@ import project.vapeshop.service.common.RatingService;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/rating")
 public class ControllerRating {
     RatingService service;
 
@@ -21,33 +26,46 @@ public class ControllerRating {
         this.service = service;
     }
 
-    public void execute() {
-//        insert();
-//        System.out.println(read());
-//        update();
-        delete();
-    }
 
-    private boolean insert() {
-        List<RatingDTOFullInfo> ratingDTOFullInfos = new ArrayList<>();
-        ratingDTOFullInfos.add(new RatingDTOFullInfo("good", 5, new Item(1), new User(1)));
-        ratingDTOFullInfos.add(new RatingDTOFullInfo("not bad", 3, new Item(1), new User(2)));
-        return service.addObjects(ratingDTOFullInfos);
-    }
-
-    public List<String> read() {
-        List<String> stringList = new ArrayList<>();
-        for (RatingDTOForProduct ratingDTOForProduct : service.showObjects()) {
-            stringList.add(MapperJson.mapperToJson(ratingDTOForProduct));
+    @PostMapping("/add")
+    private ResponseEntity<?> insert(@RequestBody RatingDTOFullInfo ratingDTOFullInfo) {
+        try {
+            return new ResponseEntity<>(service.addObject(ratingDTOFullInfo), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return stringList;
     }
 
-    public boolean delete() {
-        return service.deleteObject(4);
+    @GetMapping("/getAll")
+    public ResponseEntity<?> read() {
+        try {
+            return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public RatingDTOForProduct update() {
-        return service.updateObject(new RatingDTOFullInfo(4, "good", 3, new Item(1), new User(2)));
+    @GetMapping("/find/{id}")
+    public ResponseEntity<?> readId(@PathVariable("id") Integer id) {
+        try {
+            return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/delete/{id}")
+    public boolean delete(@PathVariable("id") Integer id) {
+        return service.deleteObject(id);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> update(@RequestBody RatingDTOFullInfo ratingDTOFullInfo) {
+        try {
+            return new ResponseEntity<>(service.updateObject(ratingDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+//        return service.updateObject(new RatingDTOFullInfo(4, "good", 3, new Item(1), new User(2)));
     }
 }

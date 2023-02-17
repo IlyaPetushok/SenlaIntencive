@@ -1,7 +1,5 @@
 package project.vapeshop.dto.product;
 
-import project.vapeshop.entity.product.Item;
-
 public class VapeDTO {
     private Integer id;
     private int power;
@@ -9,26 +7,26 @@ public class VapeDTO {
     //    Enum
     private String type;
 
-    private Item item;
+    private ItemDTOInfoForCatalog itemForVape;
 
 
     public VapeDTO() {
     }
 
 
-    public VapeDTO(Integer id, int power, int battery, String type, Item item) {
+    public VapeDTO(Integer id, int power, int battery, String type, ItemDTOInfoForCatalog itemForVape) {
         this.id = id;
         this.power = power;
         this.battery = battery;
         this.type = type;
-        this.item = item;
+        this.itemForVape = itemForVape;
     }
 
-    public VapeDTO(int power, int battery, String type, Item item) {
+    public VapeDTO(int power, int battery, String type, ItemDTOInfoForCatalog itemForVape) {
         this.power = power;
         this.battery = battery;
         this.type = type;
-        this.item = item;
+        this.itemForVape = itemForVape;
     }
 
     public Integer getId() {
@@ -61,5 +59,13 @@ public class VapeDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public ItemDTOInfoForCatalog getItemForVape() {
+        return itemForVape;
+    }
+
+    public void setItemForVape(ItemDTOInfoForCatalog itemForVape) {
+        this.itemForVape = itemForVape;
     }
 }

@@ -1,7 +1,5 @@
 package project.vapeshop.entity.product;
 
-//import org.hibernate.annotations.LazyToOne;
-//import org.hibernate.annotations.LazyToOneOption;
 import project.vapeshop.entity.EntityId;
 
 import javax.persistence.*;
@@ -20,12 +18,9 @@ public class Liquide implements EntityId<Integer> {
     @Column(name="id_liquide")
     private Integer id;
 
-    @OneToOne(optional = false,fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "liquide_id_item",referencedColumnName = "id_item")
     private Item itemForLiquide;
-
-//    @Column(name="liquide_id_item")
-//    private Integer itemForLiquide;
 
     @Column(name = "flavour")
     private String flavour;
@@ -106,11 +101,4 @@ public class Liquide implements EntityId<Integer> {
         this.itemForLiquide = itemForLiquide;
     }
 
-//    public Integer getItemForLiquide() {
-//        return itemForLiquide;
-//    }
-//
-//    public void setItemForLiquide(Integer itemForLiquide) {
-//        this.itemForLiquide = itemForLiquide;
-//    }
 }

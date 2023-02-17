@@ -3,6 +3,7 @@ package project.vapeshop.dao.impl;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.entity.product.*;
 
 import javax.persistence.EntityGraph;
@@ -20,13 +21,14 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
 
 
     @Override
-    public boolean insertObject(Item item) {
+    public Item insertObject(Item item) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Category> criteriaQuery=criteriaBuilder.createQuery(Category.class);
         Root<Category> categoryRoot= criteriaQuery.from(Category.class);
         criteriaQuery.where(criteriaBuilder.equal(categoryRoot.get(Category_.name),item.getCategory().getName()));
         Query query=entityManager.createQuery(criteriaQuery);
-        item.setCategory((Category) query.getSingleResult());
+        Category category=(Category) query.getSingleResult();
+        item.setCategory(category);
         return super.insertObject(item);
     }
 
@@ -34,11 +36,11 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
     @Override
     public List<Item> selectObjects() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Object> criteriaQuery=criteriaBuilder.createQuery();
+        CriteriaQuery<Item> criteriaQuery=criteriaBuilder.createQuery(Item.class);
         Root<Item> itemRoot= criteriaQuery.from(Item.class);
-        criteriaQuery.select(itemRoot);
-        Query query= entityManager.createQuery(criteriaQuery);
-        return query.getResultList();
+        criteriaQuery.select(itemRoot).orderBy(criteriaBuilder.asc(itemRoot.get(Item_.id)));
+        TypedQuery<Item> typedQuery= entityManager.createQuery(criteriaQuery);
+        return typedQuery.getResultList();
     }
 
     public Item itemGetWithProductCategory(Item item){
@@ -55,9 +57,13 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
             case VAPE:
                 itemRoot.join(Item_.vape,JoinType.INNER);
                 break;
+//            default:criteriaQuery.where(criteriaBuilder.equal(itemRoot.get(Item_.id),item.getId()));
+//                TypedQuery<Item> typedQuery=entityManager.createQuery(criteriaQuery);
+//                return typedQuery.getSingleResult();
         }
         criteriaQuery.where(criteriaBuilder.equal(itemRoot.get(Item_.id),item.getId()));
         TypedQuery<Item> typedQuery=entityManager.createQuery(criteriaQuery);
+        Item item1=typedQuery.getSingleResult();
         return typedQuery.getSingleResult();
     }
 
@@ -87,6 +93,19 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
         criteriaQuery.set(Item_.price,item.getPrice());
         Query query= entityManager.createQuery(criteriaQuery);
         query.executeUpdate();
-        return item;
+        return selectObject(item.getId());
+    }
+
+    @Transactional
+    @Override
+    public boolean delete(Integer id) {
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaQuery<Item> itemCriteriaDelete= criteriaBuilder.createQuery(Item.class);
+        Root<Item> itemRoot= itemCriteriaDelete.from(Item.class);
+        itemCriteriaDelete.where(criteriaBuilder.equal(itemRoot.get(Item_.id),id));
+        Query query=entityManager.createQuery(itemCriteriaDelete);
+        Item item= (Item) query.getSingleResult();
+        entityManager.remove(item);
+        return true;
     }
 }

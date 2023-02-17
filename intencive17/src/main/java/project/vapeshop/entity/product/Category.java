@@ -14,7 +14,7 @@ public class Category implements EntityId<Integer> {
     private Integer id;
     @Column(name="name")
     private String name;
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Item> itemList;
 
     public Category() {

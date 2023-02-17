@@ -34,20 +34,21 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public boolean addObject(OrderDTOFullInfo orderDTOFullInfo) {
-        Order order=modelMapper.map(orderDTOFullInfo,Order.class);
-        order.setItems(orderDTOFullInfo.getItemList());
-        return dao.insertObject(order);
+    public OrderDTOForBasket addObject(OrderDTOFullInfo orderDTOFullInfo) {
+//        OrderDTOFullInfo orderDTOFullInfo1=modelMapper.map(dao.insertObject(modelMapper.map(orderDTOFullInfo,Order.class)),OrderDTOFullInfo.class);
+        return modelMapper.map(dao.insertObject(modelMapper.map(orderDTOFullInfo,Order.class)),OrderDTOForBasket.class);
     }
 
-    public boolean addObjects(List<OrderDTOFullInfo> orderDTOFullInfos) {
+    public List<OrderDTOFullInfo> addObjects(List<OrderDTOFullInfo> orderDTOFullInfos) {
         List<Order> order=orderDTOFullInfos.stream()
                 .map(orderDTOFullInfo -> modelMapper.map(orderDTOFullInfo,Order.class))
                 .collect(Collectors.toList());
         for (int i = 0; i < order.size(); i++) {
-            order.get(i).setItems(orderDTOFullInfos.get(i).getItemList());
+            order.get(i).setItems(orderDTOFullInfos.get(i).getItems());
         }
-        return dao.insertObjects(order);
+        return dao.insertObjects(order).stream()
+                .map(order1 -> modelMapper.map(order1,OrderDTOFullInfo.class))
+                .collect(Collectors.toList());
     }
 
     public boolean deleteObject(int id) {
@@ -56,7 +57,7 @@ public class OrderService {
 
     public OrderDTOForBasket updateObject(OrderDTOFullInfo orderDTOFullInfo) {
         Order order=modelMapper.map(orderDTOFullInfo,Order.class);
-        order.setItems(orderDTOFullInfo.getItemList());
+        order.setItems(orderDTOFullInfo.getItems());
         return modelMapper.map(dao.update(order),OrderDTOForBasket.class);
     }
 }

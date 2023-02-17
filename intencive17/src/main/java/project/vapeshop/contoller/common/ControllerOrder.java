@@ -1,19 +1,14 @@
 package project.vapeshop.contoller.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import project.vapeshop.dto.common.OrderDTOForBasket;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
-import project.vapeshop.entity.product.Item;
-import project.vapeshop.entity.user.User;
-import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.common.OrderService;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/order")
 public class ControllerOrder {
     OrderService service;
 
@@ -24,38 +19,46 @@ public class ControllerOrder {
     }
 
 
-    public void execute() {
-//        insert();
-//        System.out.println(read());
-//        update();
-        delete();
-    }
-
-    private boolean insert() {
-        List<Item> itemList=new ArrayList<>();
-        itemList.add(new Item(1));
-        itemList.add(new Item(2));
-        List<OrderDTOFullInfo> orderDTOFullInfos=new ArrayList<>();
-        orderDTOFullInfos.add(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26),"отправлен",150.0,new User(1),itemList));
-        orderDTOFullInfos.add(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,25),"принят",150.0,new User(2),itemList));
-        return service.addObjects(orderDTOFullInfos);
-    }
-
-    public List<String> read() {
-        List<String> stringList=new ArrayList<>();
-        for (OrderDTOForBasket showObject : service.showObjects()) {
-            stringList.add(MapperJson.mapperToJson(showObject));
+    @PostMapping("/add")
+    private ResponseEntity<?> insert(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
+        try {
+//            OrderDTOFullInfo orderDTOFullInfo1=service.addObject(orderDTOFullInfo);
+            return new ResponseEntity<>(service.addObject(orderDTOFullInfo), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return stringList;
     }
 
-    public boolean delete() {
-        return service.deleteObject(25);
+    @GetMapping("/getAll")
+    public ResponseEntity<?> read() {
+        try {
+            return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public OrderDTOForBasket update() {
-        List<Item> itemList=new ArrayList<>();
-        itemList.add(new Item(1));
-        return service.updateObject(new OrderDTOFullInfo(2,new Date(2022, Calendar.FEBRUARY,25),"прибыл",150.0,new User(1),itemList));
+    @GetMapping("/find/{id}")
+    public ResponseEntity<?> read(@PathVariable("id") Integer id) {
+        try {
+            return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/delete/{id}")
+    public boolean delete(@PathVariable("id") int id) {
+        return service.deleteObject(id);
+    }
+
+
+    @PostMapping("/update")
+    private ResponseEntity<?> update(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
+        try {
+            return new ResponseEntity<>(service.updateObject(orderDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

@@ -1,10 +1,13 @@
 package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
-import project.vapeshop.entity.product.Item;
-import project.vapeshop.entity.product.Item_;
-import project.vapeshop.entity.product.Vape;
+import org.springframework.transaction.annotation.Transactional;
+import project.vapeshop.entity.product.*;
+
+import javax.persistence.Entity;
+import javax.persistence.EntityGraph;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -13,11 +16,10 @@ import java.util.List;
 @Repository
 public class VapeDao extends AbstractDao<Vape,Integer> {
 
-    public static final String SELECT_VAPE_WHERE_VAPE_ID = "SELECT vape from Vape as vape where vape.id=?1";
     public static final String SELECT_VAPE = "select vape from Vape as vape";
 
     @Override
-    public boolean insertObject(Vape vape) {
+    public Vape insertObject(Vape vape) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Item> criteriaQuery=criteriaBuilder.createQuery(Item.class);
         Root<Item> itemRoot=criteriaQuery.from(Item.class);
@@ -36,11 +38,18 @@ public class VapeDao extends AbstractDao<Vape,Integer> {
 
     @Override
     public Vape selectObject(Integer id) {
-        Query query= entityManager.createQuery(SELECT_VAPE_WHERE_VAPE_ID);
-        query.setParameter(1,id);
-        return (Vape) query.getSingleResult();
+        EntityGraph<?> entityGraph= entityManager.getEntityGraph("entity-graph-item");
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaQuery<Vape> criteriaQuery= criteriaBuilder.createQuery(Vape.class);
+        Root<Vape> vapeRoot= criteriaQuery.from(Vape.class);
+        criteriaQuery.select(vapeRoot)
+                .where(criteriaBuilder.equal(vapeRoot.get(Vape_.id),id));
+        TypedQuery<Vape> query= entityManager.createQuery(criteriaQuery);
+        query.setHint("javax.persistence.loadgraph",entityGraph);
+        return query.getSingleResult();
     }
 
+    @Transactional
     @Override
     public Vape update(Vape vape) {
         Vape vape1=entityManager.find(Vape.class,vape.getId());

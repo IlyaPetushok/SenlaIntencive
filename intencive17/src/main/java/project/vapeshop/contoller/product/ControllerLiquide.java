@@ -1,7 +1,10 @@
 package project.vapeshop.contoller.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.product.LiquideDTO;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.mapper.MapperJson;
@@ -10,7 +13,8 @@ import project.vapeshop.service.product.LiquideService;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/liquide")
 public class ControllerLiquide {
     LiquideService service;
 
@@ -20,40 +24,44 @@ public class ControllerLiquide {
     }
 
 
-    public void execute() {
-//        if (insert()) {
-//            System.out.println("Объекты юыли добавлены");
-//        }
-//        System.out.println(read());
-//        if (delete()) {
-//            System.out.println("Объекты были удалны");
-//        }
-        if (update() != null) {
-            System.out.println("Был обнавлён");
+    @PostMapping("/add")
+    private ResponseEntity<?> insert(@RequestBody LiquideDTO liquideDTO) {
+        try {
+            return new ResponseEntity<>(service.addItem(liquideDTO), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        System.out.println(read());
     }
 
-    private boolean insert() {
-        List<LiquideDTO> liquideDTOList = new ArrayList<>();
-        liquideDTOList.add(new LiquideDTO(new Item(1),"Ежевика", 45, "солевой", 30));
-        liquideDTOList.add(new LiquideDTO(new Item(2),"Тропический чай", 50, "солевой", 30));
-        return service.addItems(liquideDTOList);
-    }
-
-    public List<String> read() {
-        List<String> stringList = new ArrayList<>();
-        for (LiquideDTO liquideDTO : service.showItems()) {
-            stringList.add(MapperJson.mapperToJson(liquideDTO));
+    @GetMapping("/find/{id}")
+    public ResponseEntity<?> readId(@PathVariable("id") Integer id){
+        try {
+            return new ResponseEntity<>(service.showItem(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return stringList;
     }
 
-    public boolean delete() {
-        return service.deleteItem(7);
+    @GetMapping("/getAll")
+    public ResponseEntity<?> read() {
+        try {
+            return new ResponseEntity<>(service.showItems(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public LiquideDTO update() {
-        return service.updateItem(new LiquideDTO(1,new Item(1), "Малина с Лимоном", 20, "солевой", 30));
+    @PostMapping("/delete/{id}")
+    public boolean delete(@PathVariable("id") Integer id) {
+        return service.deleteItem(id);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> update(@RequestBody LiquideDTO liquideDTO) {
+        try {
+            return new ResponseEntity<>(service.updateItem(liquideDTO), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

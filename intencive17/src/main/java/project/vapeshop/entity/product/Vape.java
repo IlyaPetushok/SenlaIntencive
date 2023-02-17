@@ -5,23 +5,31 @@ import project.vapeshop.entity.EntityId;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 
+
+@NamedEntityGraph(
+        name = "entity-graph-item",
+        attributeNodes = {
+                @NamedAttributeNode("itemForVape"),
+        }
+)
+
 @Entity
-@Table(name="Vape")
+@Table(name = "Vape")
 public class Vape implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_vape")
     private Integer id;
-    @Column(name="power_vape")
+    @Column(name = "power_vape")
     private int power;
     @Column(name = "battery")
     private int battery;
-//    Enum
+    //    Enum
     @Column(name = "type_vape")
     private String type;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vape_id",referencedColumnName = "id_item")
+    @JoinColumn(name = "vape_id", referencedColumnName = "id_item")
     private Item itemForVape;
 
     public Vape() {

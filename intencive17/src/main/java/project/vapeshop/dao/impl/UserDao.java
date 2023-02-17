@@ -14,7 +14,7 @@ import java.util.Objects;
 @Repository
 public class UserDao extends AbstractDao<User,Integer> {
     @Override
-    public boolean insertObject(User user) {
+    public User insertObject(User user) {
         Role role=entityManager.find(Role.class,user.getRole().getId());
         user.setRole(role);
         return super.insertObject(user);
@@ -42,6 +42,7 @@ public class UserDao extends AbstractDao<User,Integer> {
         user1.setLogin(user.getLogin());
         user1.setName(user.getName());
         user1.setMail(user.getMail());
+        user1.setPassword(user.getPassword());
         user1.setSurname(user.getSurname());
         user1.setPatronymic(user.getPatronymic());
         Role role=entityManager.find(Role.class,user.getRole().getId());

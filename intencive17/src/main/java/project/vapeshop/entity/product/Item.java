@@ -1,8 +1,5 @@
 package project.vapeshop.entity.product;
 
-//import org.hibernate.annotations.LazyToOne;
-//import org.hibernate.annotations.LazyToOneOption;
-//import org.springframework.stereotype.Component;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
@@ -52,13 +49,14 @@ public class Item implements EntityId<Integer> {
     @ManyToMany(mappedBy = "items", fetch = FetchType.LAZY)
     private List<Order> order;
 
-    @OneToOne(mappedBy = "itemForLiquide",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "itemForLiquide",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Liquide liquide;
 
-    @OneToOne(mappedBy = "itemForVaporizer", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "itemForVaporizer", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     private Vaporizer vaporizer;
 
-    @OneToOne(mappedBy = "itemForVape", fetch = FetchType.LAZY)
+
+    @OneToOne(mappedBy = "itemForVape", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     private Vape vape;
 
 
@@ -69,6 +67,12 @@ public class Item implements EntityId<Integer> {
         this.id = id;
     }
 
+    public Item(Integer id, String photo, String name) {
+        this.id = id;
+        this.photo = photo;
+        this.name = name;
+    }
+
     public Item(Integer id, String photo, String name, Category category, BigDecimal price, int quantity) {
         this.id = id;
         this.photo = photo;
@@ -77,6 +81,7 @@ public class Item implements EntityId<Integer> {
         this.price = price;
         this.quantity = quantity;
     }
+
 
     public Item(String photo, String name, Category category, BigDecimal price, int quantity) {
         this.photo = photo;

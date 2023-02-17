@@ -1,13 +1,13 @@
 package project.vapeshop.contoller.user;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.user.RoleDTO;
-import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.user.RoleService;
-import java.util.ArrayList;
-import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/role")
 public class ControllerRole {
     RoleService service;
 
@@ -16,32 +16,46 @@ public class ControllerRole {
         this.service = service;
     }
 
-    public void execute() {
-//        insert();
-//        read();
-        update();
-//        delete();
-    }
 
-    private boolean insert() {
-        List<RoleDTO> roleDTOS=new ArrayList<>();
-        roleDTOS.add(new RoleDTO("Admin"));
-        return service.addObjects(roleDTOS);
-    }
-
-    public List<String> read() {
-        List<String> stringList=new ArrayList<>();
-        for(RoleDTO roleDTO:service.showObjects()){
-            stringList.add(MapperJson.mapperToJson(roleDTO));
+    @PostMapping("/add")
+    private ResponseEntity<?> insert(@RequestBody RoleDTO roleDTO) {
+        try {
+            return new ResponseEntity<>(service.addObject(roleDTO), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return stringList;
     }
 
-    public boolean delete() {
-        return service.deleteObject(4);
+    @GetMapping("/getAll")
+    public ResponseEntity<?> read() {
+        try {
+            return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public RoleDTO update() {
-        return service.updateObject(new RoleDTO(5,"zamAdmin"));
+    @GetMapping("/find/{id}")
+    public ResponseEntity<?> read(@PathVariable("id") Integer id) {
+        try {
+            return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @PostMapping("/delete/{id}")
+    public boolean delete(@PathVariable("id") Integer id) {
+        return service.deleteObject(id);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> update(@RequestBody RoleDTO roleDTO) {
+        try {
+            return new ResponseEntity<>(service.updateObject(roleDTO), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

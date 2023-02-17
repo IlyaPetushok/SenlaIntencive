@@ -4,7 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dto.product.ItemDTOFullInfo;
+import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.product.VapeDTO;
+import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.product.Vape;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +24,6 @@ public class VapeService {
         this.modelMapper = modelMapper;
     }
 
-
     public VapeDTO showItem(int id) {
         return modelMapper.map(dao.selectObject(id),VapeDTO.class);
     }
@@ -32,14 +34,18 @@ public class VapeService {
                 .collect(Collectors.toList());
     }
 
-    public boolean addItem(VapeDTO vapeDTO) {
-        return dao.insertObject(modelMapper.map(vapeDTO,Vape.class));
+    public VapeDTO addItem(VapeDTO vapeDTO) {
+        VapeDTO vapeDTO1=modelMapper.map(dao.insertObject(modelMapper.map(vapeDTO,Vape.class)),VapeDTO.class);
+        return vapeDTO1;
     }
 
-    public boolean addItems(List<VapeDTO> vapeDTO) {
-        return dao.insertObjects(vapeDTO.stream()
+    public List<VapeDTO> addItems(List<VapeDTO> vapeDTO) {
+        List<Vape> vape=dao.insertObjects(vapeDTO.stream()
                 .map(vapeDTO1 -> modelMapper.map(vapeDTO1,Vape.class))
                 .collect(Collectors.toList()));
+        return vape.stream()
+                .map(vape1 -> modelMapper.map(vape1,VapeDTO.class))
+                .collect(Collectors.toList());
     }
 
     public boolean deleteItem(int id) {

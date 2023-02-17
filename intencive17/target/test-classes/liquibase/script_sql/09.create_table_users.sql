@@ -1,5 +1,5 @@
 create table users(
-	id_user integer primary key auto_increment,
+	id_user int primary key  auto_increment,
 	surname character varying(30) not null,
 	name character varying(30) not null,
 	patronymic character varying(30) not null,

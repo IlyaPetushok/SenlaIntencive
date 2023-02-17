@@ -11,6 +11,10 @@ public class UserDTOAfterAuthorization {
     public UserDTOAfterAuthorization() {
     }
 
+    public UserDTOAfterAuthorization(int id) {
+        this.id = id;
+    }
+
     public UserDTOAfterAuthorization(String surname, String name, String patronymic, String mail, Integer idRole) {
         this.surname = surname;
         this.name = name;

@@ -4,7 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.product.VaporizerDTO;
+import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.product.Vaporizer;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,23 +24,29 @@ public class VaporizerService {
 
 
     public VaporizerDTO showItem(int id) {
-        return modelMapper.map(dao.selectObject(id), VaporizerDTO.class);
+        VaporizerDTO vaporizerDTO=modelMapper.map(dao.selectObject(id), VaporizerDTO.class);
+        return vaporizerDTO;
     }
 
     public List<VaporizerDTO> showItems() {
-        return dao.selectObjects().stream()
+        List<VaporizerDTO> vaporizerDTOS=dao.selectObjects().stream()
                 .map(vaporizer -> modelMapper.map(vaporizer, VaporizerDTO.class))
                 .collect(Collectors.toList());
+        return vaporizerDTOS;
     }
 
-    public boolean addItem(VaporizerDTO vaporizerDTO) {
-        return dao.insertObject(modelMapper.map(vaporizerDTO, Vaporizer.class));
+    public VaporizerDTO addItem(VaporizerDTO vaporizerDTO) {
+        VaporizerDTO vaporizerDTO1=modelMapper.map(dao.insertObject(modelMapper.map(vaporizerDTO, Vaporizer.class)),VaporizerDTO.class);
+        return vaporizerDTO1;
     }
 
-    public boolean addItems(List<VaporizerDTO> vaporizerDTO) {
-        return dao.insertObjects(vaporizerDTO.stream()
+    public List<VaporizerDTO> addItems(List<VaporizerDTO> vaporizerDTO) {
+        List<Vaporizer> vaporizers=dao.insertObjects(vaporizerDTO.stream()
                 .map(vaporizerDTO1 -> modelMapper.map(vaporizerDTO1, Vaporizer.class))
                 .collect(Collectors.toList()));
+        return vaporizers.stream()
+                .map(vaporizer -> modelMapper.map(vaporizer, VaporizerDTO.class))
+                .collect(Collectors.toList());
     }
 
 
@@ -47,6 +55,7 @@ public class VaporizerService {
     }
 
     public VaporizerDTO updateItem(VaporizerDTO vaporizerDTO) {
-        return modelMapper.map(dao.update(modelMapper.map(vaporizerDTO,Vaporizer.class)),VaporizerDTO.class);
+        VaporizerDTO vaporizerDTO1=modelMapper.map(dao.update(modelMapper.map(vaporizerDTO,Vaporizer.class)),VaporizerDTO.class);
+        return vaporizerDTO1;
     }
 }

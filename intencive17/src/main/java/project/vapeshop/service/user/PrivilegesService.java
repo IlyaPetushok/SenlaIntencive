@@ -32,14 +32,17 @@ public class PrivilegesService {
                 .collect(Collectors.toList());
     }
 
-    public boolean addObject(PrivilegesDTO privilegesDTO) {
-        return dao.insertObject(modelMapper.map(privilegesDTO,Privileges.class));
+    public PrivilegesDTO addObject(PrivilegesDTO privilegesDTO) {
+        return modelMapper.map(dao.insertObject(modelMapper.map(privilegesDTO,Privileges.class)),PrivilegesDTO.class);
     }
 
-    public boolean addObjects(List<PrivilegesDTO> privilegesDTOS) {
-        return dao.insertObjects(privilegesDTOS.stream()
+    public List<PrivilegesDTO> addObjects(List<PrivilegesDTO> privilegesDTOS) {
+        List<Privileges> privileges=dao.insertObjects(privilegesDTOS.stream()
                 .map(privilegesDTO -> modelMapper.map(privilegesDTO,Privileges.class))
                 .collect(Collectors.toList()));
+        return privileges.stream()
+                .map(privileges1 -> modelMapper.map(privileges1,PrivilegesDTO.class))
+                .collect(Collectors.toList());
     }
 
     public boolean deleteObject(int id) {
