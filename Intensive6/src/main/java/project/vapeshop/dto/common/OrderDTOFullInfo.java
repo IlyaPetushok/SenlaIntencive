@@ -1,5 +1,6 @@
 package project.vapeshop.dto.common;
 
+import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
 
@@ -8,11 +9,10 @@ import java.util.List;
 
 public class OrderDTOFullInfo {
     private Integer id;
-    //    change
+
     private Date date;
-//    private Integer idUser;
-    //    Enum
-    private String status;
+
+    private StatusOrder status;
     private double price;
     private User user;
     private List<Item> items;
@@ -20,7 +20,7 @@ public class OrderDTOFullInfo {
     public OrderDTOFullInfo() {
     }
 
-    public OrderDTOFullInfo(Integer id, Date date, String status, double price, User user, List<Item> items) {
+    public OrderDTOFullInfo(Integer id, Date date, StatusOrder status, double price, User user, List<Item> items) {
         this.id = id;
         this.date = date;
         this.status = status;
@@ -29,7 +29,7 @@ public class OrderDTOFullInfo {
         this.items = items;
     }
 
-    public OrderDTOFullInfo(Date date, String status, double price, User user, List<Item> items) {
+    public OrderDTOFullInfo(Date date, StatusOrder status, double price, User user, List<Item> items) {
         this.date = date;
         this.status = status;
         this.price = price;
@@ -61,11 +61,11 @@ public class OrderDTOFullInfo {
         this.date = date;
     }
 
-    public String getStatus() {
+    public StatusOrder getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusOrder status) {
         this.status = status;
     }
 

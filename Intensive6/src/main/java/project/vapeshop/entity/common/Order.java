@@ -1,6 +1,5 @@
 package project.vapeshop.entity.common;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
@@ -28,7 +27,7 @@ public class Order implements EntityId<Integer> {
     @Column(name = "id_order")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    //    change
+
     @Column(name = "data_order")
     private Date date;
 
@@ -37,7 +36,7 @@ public class Order implements EntityId<Integer> {
     private User user;
     //    Enum
     @Column(name = "status_order")
-    private String status;
+    private StatusOrder status;
 
     @Column(name = "total_price")
     private double price;
@@ -51,7 +50,7 @@ public class Order implements EntityId<Integer> {
     public Order() {
     }
 
-    public Order(Integer id, Date date, User user, String status, double price, List<Item> items) {
+    public Order(Integer id, Date date, User user, StatusOrder status, double price, List<Item> items) {
         this.id = id;
         this.date = date;
         this.user = user;
@@ -60,7 +59,7 @@ public class Order implements EntityId<Integer> {
         this.items = items;
     }
 
-    public Order(Date date, User user, String status, double price, List<Item> items) {
+    public Order(Date date, User user, StatusOrder status, double price, List<Item> items) {
         this.date = date;
         this.user = user;
         this.status = status;
@@ -101,11 +100,11 @@ public class Order implements EntityId<Integer> {
         this.user = user;
     }
 
-    public String getStatus() {
+    public StatusOrder getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusOrder status) {
         this.status = status;
     }
 

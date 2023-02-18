@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import project.vapeshop.dto.common.OrderDTOForBasket;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
+import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
 import project.vapeshop.mapper.MapperJson;
@@ -25,10 +26,10 @@ public class ControllerOrder {
 
 
     public void execute() {
-//        insert();
+        insert();
 //        System.out.println(read());
 //        update();
-        delete();
+//        delete();
     }
 
     private boolean insert() {
@@ -36,8 +37,8 @@ public class ControllerOrder {
         itemList.add(new Item(1));
         itemList.add(new Item(2));
         List<OrderDTOFullInfo> orderDTOFullInfos=new ArrayList<>();
-        orderDTOFullInfos.add(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26),"отправлен",150.0,new User(1),itemList));
-        orderDTOFullInfos.add(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,25),"принят",150.0,new User(2),itemList));
+        orderDTOFullInfos.add(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26), StatusOrder.Sent,150.0,new User(1),itemList));
+        orderDTOFullInfos.add(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,25),StatusOrder.Sent,150.0,new User(2),itemList));
         return service.addObjects(orderDTOFullInfos);
     }
 

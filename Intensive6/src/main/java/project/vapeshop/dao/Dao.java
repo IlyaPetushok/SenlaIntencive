@@ -2,8 +2,7 @@ package project.vapeshop.dao;
 
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
-import java.sql.SQLException;
+
 import java.util.List;
 
 @Repository

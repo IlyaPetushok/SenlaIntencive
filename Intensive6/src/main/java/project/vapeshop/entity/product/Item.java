@@ -1,8 +1,5 @@
 package project.vapeshop.entity.product;
 
-//import org.hibernate.annotations.LazyToOne;
-//import org.hibernate.annotations.LazyToOneOption;
-//import org.springframework.stereotype.Component;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
@@ -16,7 +13,6 @@ import java.util.List;
                 name = "entity-item-graph-liquide",
                 attributeNodes = {
                         @NamedAttributeNode("liquide"),
-//                        @NamedAttributeNode("vape"),
                 }
         ),
         @NamedEntityGraph(
