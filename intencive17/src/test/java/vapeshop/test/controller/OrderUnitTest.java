@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
 import project.vapeshop.dto.product.CategoryDTO;
+import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
 import vapeshop.test.config.JpaConfig;
@@ -60,7 +61,7 @@ public class OrderUnitTest {
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item(1));
         char id=mockMvc.perform(post("/order/add")
-                        .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26),"отправлен",150.0,new User(1),itemList)))
+                        .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26), StatusOrder.Sent,150.0,new User(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
@@ -73,7 +74,7 @@ public class OrderUnitTest {
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item(1));
         mockMvc.perform(post("/order/update")
-                        .content(asJsonString(new OrderDTOFullInfo(1,new Date(2023, Calendar.FEBRUARY,26),"прибыл",150.0,new User(1),itemList)))
+                        .content(asJsonString(new OrderDTOFullInfo(1,new Date(2023, Calendar.FEBRUARY,26),StatusOrder.Accepted,150.0,new User(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
@@ -93,7 +94,7 @@ public class OrderUnitTest {
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item(1));
         mockMvc.perform(post("/order/add")
-                        .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26),"отправлен",150.0,new User(1),itemList)))
+                        .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26),StatusOrder.Arrived,150.0,new User(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();

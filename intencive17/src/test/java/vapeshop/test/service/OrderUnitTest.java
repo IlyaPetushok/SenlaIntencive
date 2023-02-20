@@ -39,7 +39,7 @@ public class OrderUnitTest {
 
     private static final List<Item> items=new ArrayList<>();
     private static final Order order=new Order(1,new Date(),new User(), StatusOrder.Sent,15.5,items);
-    private static final OrderDTOFullInfo orderDto=new OrderDTOFullInfo(2,new Date(),"send",15.5,new User(),items);
+    private static final OrderDTOFullInfo orderDto=new OrderDTOFullInfo(2,new Date(),StatusOrder.Sent,15.5,new User(),items);
 
 
     @Test
