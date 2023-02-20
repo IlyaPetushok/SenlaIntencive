@@ -1,7 +1,7 @@
 package project.vapeshop.entity.common;
 
 import java.util.Date;
-import javax.annotation.processing.Generated;
+import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -17,7 +17,7 @@ public abstract class Order_ {
 	public static volatile SingularAttribute<Order, Integer> id;
 	public static volatile SingularAttribute<Order, User> user;
 	public static volatile ListAttribute<Order, Item> items;
-	public static volatile SingularAttribute<Order, String> status;
+	public static volatile SingularAttribute<Order, StatusOrder> status;
 
 	public static final String DATE = "date";
 	public static final String PRICE = "price";

@@ -1,6 +1,6 @@
 package project.vapeshop.entity.product;
 
-import javax.annotation.processing.Generated;
+import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;

@@ -1,5 +1,9 @@
 package project.vapeshop.entity.user;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import project.vapeshop.entity.EntityId;
 
 import javax.persistence.*;
@@ -8,6 +12,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "role")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,29 +42,10 @@ public class Role implements EntityId<Integer> {
         this.name = name;
     }
 
-    public Role() {
-    }
 
     public Role(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

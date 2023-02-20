@@ -1,9 +1,12 @@
 package project.vapeshop.entity.product;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,7 +16,6 @@ import java.util.List;
                 name = "entity-item-graph-liquide",
                 attributeNodes = {
                         @NamedAttributeNode("liquide"),
-//                        @NamedAttributeNode("vape"),
                 }
         ),
         @NamedEntityGraph(
@@ -25,6 +27,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "item")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Item implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,9 +66,6 @@ public class Item implements EntityId<Integer> {
     private Vape vape;
 
 
-    public Item() {
-    }
-
     public Item(Integer id) {
         this.id = id;
     }
@@ -88,54 +91,6 @@ public class Item implements EntityId<Integer> {
         this.name = name;
         this.category = category;
         this.price = price;
-        this.quantity = quantity;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }

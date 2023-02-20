@@ -1,6 +1,6 @@
 package project.vapeshop.entity.common;
 
-import org.springframework.data.jpa.repository.EntityGraph;
+import lombok.*;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
@@ -23,97 +23,39 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Order implements EntityId<Integer> {
     @Id
     @Column(name = "id_order")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    //    change
+
     @Column(name = "data_order")
+    @NonNull
     private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id_user", referencedColumnName = "id_user")
+    @NonNull
     private User user;
-    //    Enum
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_order")
-    private String status;
+    @NonNull
+    private StatusOrder status;
 
     @Column(name = "total_price")
-    private double price;
+    @NonNull
+    private Double price;
 
+    @NonNull
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "order_item",
             joinColumns = @JoinColumn(name = "ot_id_order"),
             inverseJoinColumns = @JoinColumn(name = "ot_id_item"))
     private List<Item> items;
-
-    public Order() {
-    }
-
-    public Order(Integer id, Date date, User user, String status, double price, List<Item> items) {
-        this.id = id;
-        this.date = date;
-        this.user = user;
-        this.status = status;
-        this.price = price;
-        this.items = items;
-    }
-
-    public Order(Date date, User user, String status, double price, List<Item> items) {
-        this.date = date;
-        this.user = user;
-        this.status = status;
-        this.price = price;
-        this.items = items;
-    }
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
 }

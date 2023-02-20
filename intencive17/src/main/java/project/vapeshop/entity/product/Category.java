@@ -1,5 +1,9 @@
 package project.vapeshop.entity.product;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import project.vapeshop.entity.EntityId;
 
 import javax.persistence.*;
@@ -7,6 +11,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "category")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +25,6 @@ public class Category implements EntityId<Integer> {
     @OneToMany(mappedBy = "category",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Item> itemList;
 
-    public Category() {
-    }
-
     public Category(String name) {
         this.name = name;
     }
@@ -29,19 +34,4 @@ public class Category implements EntityId<Integer> {
         this.name = name;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

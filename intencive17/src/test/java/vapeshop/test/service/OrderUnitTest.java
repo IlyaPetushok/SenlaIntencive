@@ -12,6 +12,7 @@ import project.vapeshop.dao.Dao;
 import project.vapeshop.dto.common.OrderDTOForBasket;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
 import project.vapeshop.entity.common.Order;
+import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
 import project.vapeshop.service.common.OrderService;
@@ -37,7 +38,7 @@ public class OrderUnitTest {
     private ModelMapper modelMapper;
 
     private static final List<Item> items=new ArrayList<>();
-    private static final Order order=new Order(1,new Date(),new User(),"send",15.5,items);
+    private static final Order order=new Order(1,new Date(),new User(), StatusOrder.Sent,15.5,items);
     private static final OrderDTOFullInfo orderDto=new OrderDTOFullInfo(2,new Date(),"send",15.5,new User(),items);
 
 
@@ -51,9 +52,9 @@ public class OrderUnitTest {
     @Test
     public void testGetAllOrders(){
         List<Order> list=new ArrayList<>();
-        list.add(new Order(1,new Date(),new User(),"send",15.5,items));
-        list.add(new Order(2,new Date(),new User(),"send",15.5,items));
-        list.add(new Order(3,new Date(),new User(),"send",15.5,items));
+        list.add(new Order(1,new Date(),new User(),StatusOrder.Sent,15.5,items));
+        list.add(new Order(2,new Date(),new User(),StatusOrder.Sent,15.5,items));
+        list.add(new Order(3,new Date(),new User(),StatusOrder.Sent,15.5,items));
 
         when(orderDao.selectObjects()).thenReturn(list);
         List<OrderDTOForBasket> orders=orderService.showObjects();
