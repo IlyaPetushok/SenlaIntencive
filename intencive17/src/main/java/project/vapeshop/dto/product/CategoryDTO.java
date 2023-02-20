@@ -1,34 +1,14 @@
 package project.vapeshop.dto.product;
 
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class CategoryDTO {
     private Integer id;
+    @NonNull
     private String name;
-
-    public CategoryDTO() {
-    }
-
-    public CategoryDTO(String name) {
-        this.name = name;
-    }
-
-    public CategoryDTO(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

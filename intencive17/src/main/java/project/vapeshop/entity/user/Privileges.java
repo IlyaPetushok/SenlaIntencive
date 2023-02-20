@@ -19,10 +19,11 @@ public class Privileges implements EntityId<Integer> {
     @Column(name="id_privelege")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NonNull
     @Column(name="name_privelege")
     private String name;
 
-    @NonNull
     @ManyToMany(mappedBy = "privileges",fetch = FetchType.LAZY)
     private List<Role> roleList;
 
