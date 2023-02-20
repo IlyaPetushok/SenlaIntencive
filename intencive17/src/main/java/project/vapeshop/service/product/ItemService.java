@@ -41,8 +41,7 @@ public class ItemService {
 
     @Transactional
     public ItemDTOFullInfo addItem(ItemDTOFullInfo itemDTO) {
-        ItemDTOFullInfo itemDTOFullInfo=modelMapper.map(dao.insertObject(modelMapper.map(itemDTO, Item.class)), ItemDTOFullInfo.class);
-        return itemDTOFullInfo;
+        return modelMapper.map(dao.insertObject(modelMapper.map(itemDTO, Item.class)), ItemDTOFullInfo.class);
     }
 
     public List<ItemDTOFullInfo> addItems(List<ItemDTOFullInfo> itemDTO) {
@@ -59,7 +58,6 @@ public class ItemService {
     }
 
     public ItemDTOFullInfo updateItem(ItemDTOFullInfo itemDTOFullInfo) {
-        ItemDTOFullInfo itemDTO=modelMapper.map(dao.update(modelMapper.map(itemDTOFullInfo, Item.class)), ItemDTOFullInfo.class);
-        return itemDTO;
+        return modelMapper.map(dao.update(modelMapper.map(itemDTOFullInfo, Item.class)), ItemDTOFullInfo.class);
     }
 }

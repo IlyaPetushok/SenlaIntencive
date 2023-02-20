@@ -63,6 +63,5 @@ public class ControllerVaporizer {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-//        return  service.updateItem(new VaporizerDTO(2,1.8,"картридж",new Item(6)));
     }
 }

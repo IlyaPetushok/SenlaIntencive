@@ -24,20 +24,17 @@ public class VaporizerService {
 
 
     public VaporizerDTO showItem(int id) {
-        VaporizerDTO vaporizerDTO=modelMapper.map(dao.selectObject(id), VaporizerDTO.class);
-        return vaporizerDTO;
+        return modelMapper.map(dao.selectObject(id), VaporizerDTO.class);
     }
 
     public List<VaporizerDTO> showItems() {
-        List<VaporizerDTO> vaporizerDTOS=dao.selectObjects().stream()
+        return dao.selectObjects().stream()
                 .map(vaporizer -> modelMapper.map(vaporizer, VaporizerDTO.class))
                 .collect(Collectors.toList());
-        return vaporizerDTOS;
     }
 
     public VaporizerDTO addItem(VaporizerDTO vaporizerDTO) {
-        VaporizerDTO vaporizerDTO1=modelMapper.map(dao.insertObject(modelMapper.map(vaporizerDTO, Vaporizer.class)),VaporizerDTO.class);
-        return vaporizerDTO1;
+        return modelMapper.map(dao.insertObject(modelMapper.map(vaporizerDTO, Vaporizer.class)),VaporizerDTO.class);
     }
 
     public List<VaporizerDTO> addItems(List<VaporizerDTO> vaporizerDTO) {
@@ -55,7 +52,6 @@ public class VaporizerService {
     }
 
     public VaporizerDTO updateItem(VaporizerDTO vaporizerDTO) {
-        VaporizerDTO vaporizerDTO1=modelMapper.map(dao.update(modelMapper.map(vaporizerDTO,Vaporizer.class)),VaporizerDTO.class);
-        return vaporizerDTO1;
+        return modelMapper.map(dao.update(modelMapper.map(vaporizerDTO,Vaporizer.class)),VaporizerDTO.class);
     }
 }

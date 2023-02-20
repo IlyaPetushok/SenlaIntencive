@@ -22,7 +22,6 @@ public class ControllerOrder {
     @PostMapping("/add")
     private ResponseEntity<?> insert(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
         try {
-//            OrderDTOFullInfo orderDTOFullInfo1=service.addObject(orderDTOFullInfo);
             return new ResponseEntity<>(service.addObject(orderDTOFullInfo), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

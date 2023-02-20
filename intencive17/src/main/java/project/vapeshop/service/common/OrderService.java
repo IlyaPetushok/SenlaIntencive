@@ -35,7 +35,6 @@ public class OrderService {
     }
 
     public OrderDTOForBasket addObject(OrderDTOFullInfo orderDTOFullInfo) {
-//        OrderDTOFullInfo orderDTOFullInfo1=modelMapper.map(dao.insertObject(modelMapper.map(orderDTOFullInfo,Order.class)),OrderDTOFullInfo.class);
         return modelMapper.map(dao.insertObject(modelMapper.map(orderDTOFullInfo,Order.class)),OrderDTOForBasket.class);
     }
 

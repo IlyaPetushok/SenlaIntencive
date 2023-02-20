@@ -33,8 +33,7 @@ public class ControllerItem {
     @PostMapping("/add")
     private ResponseEntity<?> insert(@RequestBody ItemDTOFullInfo item) {
         try {
-            ItemDTOFullInfo itemDTOFullInfo=itemService.addItem(item);
-            return new ResponseEntity<>(itemDTOFullInfo, HttpStatus.CREATED);
+            return new ResponseEntity<>(itemService.addItem(item), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -71,6 +70,5 @@ public class ControllerItem {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-//        return itemService.updateItem(new ItemDTOFullInfo(19, "path/photo4", "Baby Plus", new Category(), new BigDecimal(Double.toString(15.0)), 10));
     }
 }

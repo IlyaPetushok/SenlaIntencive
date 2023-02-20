@@ -66,6 +66,5 @@ public class ControllerRating {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-//        return service.updateObject(new RatingDTOFullInfo(4, "good", 3, new Item(1), new User(2)));
     }
 }

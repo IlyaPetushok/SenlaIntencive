@@ -57,9 +57,6 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
             case VAPE:
                 itemRoot.join(Item_.vape,JoinType.INNER);
                 break;
-//            default:criteriaQuery.where(criteriaBuilder.equal(itemRoot.get(Item_.id),item.getId()));
-//                TypedQuery<Item> typedQuery=entityManager.createQuery(criteriaQuery);
-//                return typedQuery.getSingleResult();
         }
         criteriaQuery.where(criteriaBuilder.equal(itemRoot.get(Item_.id),item.getId()));
         TypedQuery<Item> typedQuery=entityManager.createQuery(criteriaQuery);
