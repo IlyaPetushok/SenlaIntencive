@@ -3,6 +3,7 @@ package vapeshop.test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.impl.AbstractDao;
 import project.vapeshop.dao.impl.ItemProduct;
 import project.vapeshop.dto.product.LiquideDTO;
 import project.vapeshop.dto.product.VapeDTO;
@@ -25,23 +26,23 @@ import java.util.List;
 public class ProductTest {
     @Autowired
     @Qualifier("itemProduct")
-    Dao<Item, Integer> dao;
+    AbstractDao<Item, Integer> dao;
 
     @Autowired
     @Qualifier("liquideDao")
-    Dao<Liquide, Integer> daoLiquide;
+    AbstractDao<Liquide, Integer> daoLiquide;
 
     @Autowired
     @Qualifier("vapeDao")
-    Dao<Vape, Integer> daoVape;
+    AbstractDao<Vape, Integer> daoVape;
 
     @Autowired
     @Qualifier("vaporizerDao")
-    Dao<Vaporizer, Integer> daoVaporizer;
+    AbstractDao<Vaporizer, Integer> daoVaporizer;
 
     @Autowired
     @Qualifier("categoryDao")
-    Dao<Category, Integer> categoryIntegerDao;
+    AbstractDao<Category, Integer> categoryIntegerDao;
 
     @Test
     public void productInsert() {

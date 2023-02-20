@@ -24,7 +24,7 @@ values ('Очень вкусная жижа',5,1,1);
 Insert Into rating(comment,quantity_stars,rating_id_item,rating_id_user) 
 values ('Неплохой подик очень удобный',4,3,1);
 
-Insert Into orders(data_order,order_id_user,status_order,total_price) values ('2023-11-01 18:20:59',1,'принят',168.99);
+Insert Into orders(data_order,order_id_user,status_order,total_price) values ('2023-11-01 18:20:59',1,'Sent',168.99);
 
 Insert Into order_item(ot_id_order,ot_id_item) values (1,2);
 Insert Into order_item(ot_id_order,ot_id_item) values (1,3);

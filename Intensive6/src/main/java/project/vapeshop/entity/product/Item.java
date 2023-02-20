@@ -1,5 +1,6 @@
 package project.vapeshop.entity.product;
 
+import org.hibernate.annotations.Cascade;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
@@ -36,24 +37,31 @@ public class Item implements EntityId<Integer> {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "id_category", referencedColumnName = "id_category")
     private Category category;
     @Column(name = "price")
     private BigDecimal price;
     @Column(name = "quantity")
     private int quantity;
+
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<Rating> ratings;
 
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToMany(mappedBy = "items", fetch = FetchType.LAZY)
     private List<Order> order;
 
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToOne(mappedBy = "itemForLiquide",fetch = FetchType.LAZY)
     private Liquide liquide;
 
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToOne(mappedBy = "itemForVaporizer", fetch = FetchType.LAZY)
     private Vaporizer vaporizer;
 
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToOne(mappedBy = "itemForVape", fetch = FetchType.LAZY)
     private Vape vape;
 

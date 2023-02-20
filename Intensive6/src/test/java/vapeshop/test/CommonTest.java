@@ -8,10 +8,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.impl.AbstractDao;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
 import project.vapeshop.dto.common.RatingDTOFullInfo;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
+import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.product.*;
 import project.vapeshop.entity.user.Role;
 import project.vapeshop.entity.user.User;
@@ -30,23 +32,23 @@ import java.util.List;
 public class CommonTest {
     @Autowired
     @Qualifier("orderDao")
-    Dao<Order,Integer> orderDao;
+    AbstractDao<Order,Integer> orderDao;
 
     @Autowired
     @Qualifier("ratingDao")
-    Dao<Rating,Integer> ratingDao;
+    AbstractDao<Rating,Integer> ratingDao;
 
     @Autowired
     @Qualifier("itemProduct")
-    Dao<Item, Integer> dao;
+    AbstractDao<Item, Integer> dao;
 
     @Autowired
     @Qualifier("categoryDao")
-    Dao<Category, Integer> categoryIntegerDao;
+    AbstractDao<Category, Integer> categoryIntegerDao;
 
     @Autowired
     @Qualifier("userDao")
-    Dao<User,Integer> daoUser;
+    AbstractDao<User,Integer> daoUser;
 
     @Test
     public void commonTest(){
@@ -68,10 +70,10 @@ public class CommonTest {
         itemList.add(new Item("photoest", "test product", category1, new BigDecimal(Double.toString(23.0)), 10));
         dao.insertObjects(itemList);
 
-        Order order=new Order(new Date(2023, Calendar.FEBRUARY,26),new User(1),"отправлен",150.0,itemList);
+        Order order=new Order(new Date(2023, Calendar.FEBRUARY,26),new User(1), StatusOrder.Accepted,150.0,itemList);
         orderDao.insertObject(order);
         Order order1=orderDao.selectObject(1);
-        assert order1.getStatus().equals("отправлен"):"order dont work insert";
+        assert order1.getStatus().equals(StatusOrder.Accepted):"order dont work insert";
 
 
         Rating rating= new Rating("good", 5, new Item(1), new User(1));

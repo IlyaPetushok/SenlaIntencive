@@ -21,9 +21,9 @@ public class ControllerUser {
 
     public void execute() {
 //        insert();
-//        System.out.println(read());
+        System.out.println(read());
         update();
-//        delete();
+        delete();
 //        System.out.println(read());
     }
 
@@ -43,11 +43,11 @@ public class ControllerUser {
     }
 
     public boolean delete() {
-        return service.deleteItem(1);
+        return service.deleteItem(6);
     }
 
     public UserDTOAfterAuthorization update() {
-        return service.updateItem(new UserDTOForRegistration(3,"Cluch","ghgjfdr","Pupkin","log","password","vasya@mail",new Role(2)));
+        return service.updateItem(new UserDTOForRegistration(7,"Cluch","ghgjfdr","Pupkin","log","password","vasya@mail",new Role(2)));
 
     }
 }

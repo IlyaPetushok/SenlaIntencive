@@ -5,18 +5,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.impl.AbstractDao;
 import project.vapeshop.dto.product.CategoryDTO;
 import project.vapeshop.entity.product.Category;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class CategoryService{
-    Dao<Category,Integer> dao;
+    AbstractDao<Category,Integer> dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public CategoryService(Dao<Category,Integer> dao, ModelMapper modelMapper) {
+    public CategoryService(AbstractDao<Category,Integer> dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }
@@ -30,10 +32,12 @@ public class CategoryService{
         return dao.selectObjects().stream().map(category -> modelMapper.map(category,CategoryDTO.class)).collect(Collectors.toList());
     }
 
+    @Transactional
     public boolean addObject(CategoryDTO categoryDTO) {
         return dao.insertObject(modelMapper.map(categoryDTO,Category.class));
     }
 
+    @Transactional
     public boolean addObjects(List<CategoryDTO> categoryDTO) {
         return dao.insertObjects(categoryDTO.stream().map(categoryDTO1 -> modelMapper.map(categoryDTO1,Category.class)).collect(Collectors.toList()));
     }

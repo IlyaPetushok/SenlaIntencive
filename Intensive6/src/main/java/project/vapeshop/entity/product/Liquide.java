@@ -28,7 +28,7 @@ public class Liquide implements EntityId<Integer> {
     private String flavour;
     @Column(name = "fortress")
     private int fortress;
-//    Enum mb
+
     @Column(name="type_nicotine")
     private String typeNicotine;
     @Column(name="volume")
@@ -103,11 +103,4 @@ public class Liquide implements EntityId<Integer> {
         this.itemForLiquide = itemForLiquide;
     }
 
-//    public Integer getItemForLiquide() {
-//        return itemForLiquide;
-//    }
-//
-//    public void setItemForLiquide(Integer itemForLiquide) {
-//        this.itemForLiquide = itemForLiquide;
-//    }
 }

@@ -8,6 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.impl.AbstractDao;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.entity.common.Rating;
 import project.vapeshop.entity.user.Privileges;
@@ -25,20 +26,20 @@ public class UserTest {
 
     @Autowired
     @Qualifier("userDao")
-    Dao<User,Integer> daoUser;
+    AbstractDao<User,Integer> daoUser;
 
 
     @Autowired
     @Qualifier("roleDao")
-    Dao<Role,Integer> daoRole;
+    AbstractDao<Role,Integer> daoRole;
 
     @Autowired
     @Qualifier("privilegesDao")
-    Dao<Privileges,Integer> daoPriveleges;
+    AbstractDao<Privileges,Integer> daoPriveleges;
 
     @Autowired
     @Qualifier("ratingDao")
-    Dao<Rating,Integer> daoRating;
+    AbstractDao<Rating,Integer> daoRating;
 
     @Test
     public void userTest(){

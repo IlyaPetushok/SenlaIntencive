@@ -15,7 +15,7 @@ public class Vaporizer implements EntityId<Integer> {
 
     @Column(name = "resistance")
     private double resistance;
-//    Enum mb
+
     @Column(name = "type_vaporizer")
     private String type;
 

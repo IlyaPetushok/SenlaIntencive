@@ -12,43 +12,36 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-public class AbstractDao<T extends EntityId,C> implements Dao<T,C> {
+public abstract class AbstractDao<T extends EntityId, C> implements Dao<T, C> {
+    private static final int BATCH_SIZE=10;
     @PersistenceContext
     EntityManager entityManager;
 
-    @Transactional
     @Override
     public boolean insertObject(T t) {
         entityManager.merge(t);
         return true;
     }
 
-    @Transactional
     @Override
     public boolean insertObjects(List<T> t) {
-        for (T t1 : t) {
-            insertObject(t1);
+        for (int i = 0; i < t.size(); i++) {
+            if ( i>0 && i % BATCH_SIZE == 0){
+                entityManager.flush();
+                entityManager.clear();
+            }
+            entityManager.persist(t.get(i));
         }
         return true;
     }
 
 
-    @Override
-    public List<T> selectObjects() {
-        return null;
-    }
+    public abstract List<T> selectObjects();
 
-    @Override
-    public T selectObject(C id) {
-        return null;
-    }
+    public abstract T selectObject(C id);
 
-    @Override
-    public T update(T t) {
-        return null;
-    }
+    public abstract T update(T t);
 
-    @Transactional
     @Override
     public boolean delete(C id) {
         entityManager.remove(selectObject(id));

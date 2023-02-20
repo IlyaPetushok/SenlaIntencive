@@ -17,7 +17,6 @@ import java.util.List;
 @Component
 public class ControllerItem {
     ItemService itemService;
-    CategoryService categoryService;
 
     @Autowired
     public ControllerItem(ItemService itemService) {

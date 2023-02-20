@@ -34,7 +34,6 @@ public class UserDao extends AbstractDao<User,Integer> {
         return (User) query.getSingleResult();
     }
 
-    @Transactional
     @Override
     public User update(User user) {
         User user1=entityManager.find(User.class,user.getId());

@@ -29,7 +29,6 @@ public class RoleDao extends AbstractDao<Role,Integer>{
         return (Role) query.getSingleResult();
     }
 
-    @Transactional
     @Override
     public Role update(Role role) {
         Role role1=entityManager.find(Role.class,role.getId());

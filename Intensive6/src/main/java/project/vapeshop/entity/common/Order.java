@@ -34,7 +34,8 @@ public class Order implements EntityId<Integer> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id_user", referencedColumnName = "id_user")
     private User user;
-    //    Enum
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_order")
     private StatusOrder status;
 

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.impl.AbstractDao;
 import project.vapeshop.dto.product.LiquideDTO;
 import project.vapeshop.entity.product.Liquide;
 
@@ -12,12 +13,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@Transactional(readOnly = true)
 public class LiquideService {
-    Dao<Liquide,Integer> dao;
+    AbstractDao<Liquide,Integer> dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public LiquideService(Dao<Liquide,Integer> dao, ModelMapper modelMapper) {
+    public LiquideService(AbstractDao<Liquide,Integer> dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }
@@ -32,6 +34,7 @@ public class LiquideService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public boolean addItem(LiquideDTO liquideDTO) {
         return dao.insertObject(modelMapper.map(liquideDTO,Liquide.class));
     }
@@ -43,10 +46,12 @@ public class LiquideService {
                 .collect(Collectors.toList()));
     }
 
+    @Transactional
     public boolean deleteItem(int id) {
         return dao.delete(id);
     }
 
+    @Transactional
     public LiquideDTO updateItem(LiquideDTO liquideDTO) {
         return modelMapper.map(dao.update(modelMapper.map(liquideDTO,Liquide.class)),LiquideDTO.class);
     }
