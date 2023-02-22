@@ -3,6 +3,7 @@ package project.vapeshop.service.user;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@Transactional(readOnly = true)
 public class UserService {
     Dao<User,Integer> dao;
     ModelMapper modelMapper;
@@ -35,10 +37,12 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public UserDTOForRegistration addItem(UserDTOForRegistration userDTOForRegistration) {
         return modelMapper.map(dao.insertObject(modelMapper.map(userDTOForRegistration,User.class)),UserDTOForRegistration.class);
     }
 
+    @Transactional
     public List<UserDTOForRegistration> addItems(List<UserDTOForRegistration> userDTOForRegistrations) {
         List<User> users=dao.insertObjects(userDTOForRegistrations.stream()
                 .map(userDTOForRegistration -> modelMapper.map(userDTOForRegistration,User.class))
@@ -48,10 +52,12 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public boolean deleteItem(int id) {
         return dao.delete(id);
     }
 
+    @Transactional
     public UserDTOAfterAuthorization updateItem(UserDTOForRegistration userDTOForRegistration) {
         return modelMapper.map(dao.update(modelMapper.map(userDTOForRegistration,User.class)),UserDTOAfterAuthorization.class);
     }

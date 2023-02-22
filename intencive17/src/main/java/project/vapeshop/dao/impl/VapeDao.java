@@ -49,7 +49,6 @@ public class VapeDao extends AbstractDao<Vape,Integer> {
         return query.getSingleResult();
     }
 
-    @Transactional
     @Override
     public Vape update(Vape vape) {
         Vape vape1=entityManager.find(Vape.class,vape.getId());

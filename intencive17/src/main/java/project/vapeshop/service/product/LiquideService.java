@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@Transactional(readOnly = true)
 public class LiquideService {
     Dao<Liquide,Integer> dao;
     ModelMapper modelMapper;
@@ -35,15 +36,18 @@ public class LiquideService {
         return liquideDTOList;
     }
 
+    @Transactional
     public LiquideDTO addItem(LiquideDTO liquideDTO) {
         return modelMapper.map(dao.insertObject(modelMapper.map(liquideDTO,Liquide.class)),LiquideDTO.class);
     }
 
 
+    @Transactional
     public boolean deleteItem(int id) {
         return dao.delete(id);
     }
 
+    @Transactional
     public LiquideDTO updateItem(LiquideDTO liquideDTO) {
         return modelMapper.map(dao.update(modelMapper.map(liquideDTO,Liquide.class)),LiquideDTO.class);
     }

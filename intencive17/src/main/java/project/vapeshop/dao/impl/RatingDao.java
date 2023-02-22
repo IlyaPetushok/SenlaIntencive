@@ -41,7 +41,6 @@ public class RatingDao extends AbstractDao<Rating, Integer> {
         return query.getResultList();
     }
 
-    @Transactional
     @Override
     public Rating selectObject(Integer id) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -53,7 +52,6 @@ public class RatingDao extends AbstractDao<Rating, Integer> {
         return query.getSingleResult();
     }
 
-    @Transactional
     @Override
     public Rating update(Rating rating) {
         Rating rating1 = entityManager.find(Rating.class, rating.getId());
@@ -64,7 +62,6 @@ public class RatingDao extends AbstractDao<Rating, Integer> {
         return rating1;
     }
 
-    @Transactional
     @Override
     public boolean delete(Integer id) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

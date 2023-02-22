@@ -3,6 +3,7 @@ package project.vapeshop.service.product;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.product.VaporizerDTO;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class VaporizerService {
     Dao<Vaporizer,Integer> dao;
     ModelMapper modelMapper;
@@ -33,10 +35,12 @@ public class VaporizerService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public VaporizerDTO addItem(VaporizerDTO vaporizerDTO) {
         return modelMapper.map(dao.insertObject(modelMapper.map(vaporizerDTO, Vaporizer.class)),VaporizerDTO.class);
     }
 
+    @Transactional
     public List<VaporizerDTO> addItems(List<VaporizerDTO> vaporizerDTO) {
         List<Vaporizer> vaporizers=dao.insertObjects(vaporizerDTO.stream()
                 .map(vaporizerDTO1 -> modelMapper.map(vaporizerDTO1, Vaporizer.class))
@@ -47,10 +51,12 @@ public class VaporizerService {
     }
 
 
+    @Transactional
     public boolean deleteItem(int id) {
         return dao.delete(id);
     }
 
+    @Transactional
     public VaporizerDTO updateItem(VaporizerDTO vaporizerDTO) {
         return modelMapper.map(dao.update(modelMapper.map(vaporizerDTO,Vaporizer.class)),VaporizerDTO.class);
     }

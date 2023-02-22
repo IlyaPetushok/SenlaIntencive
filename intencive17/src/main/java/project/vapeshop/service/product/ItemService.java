@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class ItemService {
     private Dao<Item, Integer> dao;
     private ModelMapper modelMapper;
@@ -44,6 +45,7 @@ public class ItemService {
         return modelMapper.map(dao.insertObject(modelMapper.map(itemDTO, Item.class)), ItemDTOFullInfo.class);
     }
 
+    @Transactional
     public List<ItemDTOFullInfo> addItems(List<ItemDTOFullInfo> itemDTO) {
         List<Item> items = dao.insertObjects((itemDTO.stream()
                 .map(itemDTOFullInfo -> modelMapper.map(itemDTOFullInfo, Item.class))
@@ -53,10 +55,12 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public boolean deleteItem(int id) {
         return dao.delete(id);
     }
 
+    @Transactional
     public ItemDTOFullInfo updateItem(ItemDTOFullInfo itemDTOFullInfo) {
         return modelMapper.map(dao.update(modelMapper.map(itemDTOFullInfo, Item.class)), ItemDTOFullInfo.class);
     }

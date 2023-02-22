@@ -25,7 +25,6 @@ public class PrivilegesDao extends AbstractDao<Privileges,Integer> {
         return (Privileges) query.getSingleResult();
     }
 
-    @Transactional
     @Override
     public Privileges update(Privileges privileges) {
         Privileges privileges1=entityManager.find(Privileges.class,privileges.getId());

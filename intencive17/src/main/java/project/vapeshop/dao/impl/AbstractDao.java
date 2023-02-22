@@ -17,13 +17,11 @@ public class AbstractDao<T extends EntityId,C> implements Dao<T,C> {
     @PersistenceContext
     EntityManager entityManager;
 
-    @Transactional
     @Override
     public T insertObject(T t) {
         return entityManager.merge(t);
     }
 
-    @Transactional
     @Override
     public List<T> insertObjects(List<T> t) {
         for (T t1 : t) {
@@ -48,7 +46,6 @@ public class AbstractDao<T extends EntityId,C> implements Dao<T,C> {
         return null;
     }
 
-    @Transactional
     @Override
     public boolean delete(C id) {
         T t=selectObject(id);

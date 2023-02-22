@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class CategoryService{
     Dao<Category,Integer> dao;
     ModelMapper modelMapper;
@@ -35,10 +36,12 @@ public class CategoryService{
         return dao.selectObjects().stream().map(category -> modelMapper.map(category,CategoryDTO.class)).collect(Collectors.toList());
     }
 
+    @Transactional
     public CategoryDTO addObject(CategoryDTO categoryDTO) {
         return modelMapper.map(dao.insertObject(modelMapper.map(categoryDTO,Category.class)),CategoryDTO.class);
     }
 
+    @Transactional
     public List<CategoryDTO> addObjects(List<CategoryDTO> categoryDTO) {
         List<Category> categories= dao.insertObjects(categoryDTO.stream()
                 .map(categoryDTO1 -> modelMapper.map(categoryDTO1,Category.class))

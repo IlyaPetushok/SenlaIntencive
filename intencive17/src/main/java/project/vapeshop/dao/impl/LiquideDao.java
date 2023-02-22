@@ -24,7 +24,6 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
         return super.insertObject(liquide);
     }
 
-    @Transactional
     @Override
     public List<Liquide> selectObjects() {
         EntityGraph<?> entityGraph= entityManager.getEntityGraph("liquide-with-item");
@@ -36,7 +35,6 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
         return query.getResultList();
     }
 
-    @Transactional
     public List<Item> selectObjectTypeNicotine(){
         CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> criteriaQuery= criteriaBuilder.createQuery();
@@ -48,7 +46,6 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
         return query.getResultList();
     }
 
-    @Transactional
     @Override
     public  Liquide selectObject(Integer id) {
         EntityGraph<?> entityGraph= entityManager.getEntityGraph("liquide-with-item");
@@ -62,7 +59,6 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
         return query.getSingleResult();
     }
 
-    @Transactional
     @Override
     public Liquide update(Liquide liquide) {
         CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
@@ -79,7 +75,6 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
     }
 
     @Override
-    @Transactional
     public boolean delete(Integer id) {
         CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
         CriteriaDelete<Liquide> criteriaDelete =criteriaBuilder.createCriteriaDelete(Liquide.class);

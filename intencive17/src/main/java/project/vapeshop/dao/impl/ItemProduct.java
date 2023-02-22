@@ -32,7 +32,6 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
         return super.insertObject(item);
     }
 
-    @Transactional
     @Override
     public List<Item> selectObjects() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -64,7 +63,6 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
         return typedQuery.getSingleResult();
     }
 
-    @Transactional
     @Override
     public Item selectObject(Integer id) {
         EntityGraph<?> entityGraph=entityManager.getEntityGraph("entity-item-graph-category");
@@ -77,7 +75,6 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
         return itemGetWithProductCategory(typedQuery.getSingleResult());
     }
 
-    @Transactional
     @Override
     public Item update(Item item) {
         CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
@@ -93,7 +90,6 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
         return selectObject(item.getId());
     }
 
-    @Transactional
     @Override
     public boolean delete(Integer id) {
         CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();

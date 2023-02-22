@@ -20,7 +20,6 @@ import java.util.Objects;
 @Repository
 public class OrderDao extends AbstractDao<Order, Integer> {
 
-    @Transactional
     @Override
     public Order insertObject(Order order) {
         User user = entityManager.find(User.class, order.getUser().getId());
@@ -44,7 +43,6 @@ public class OrderDao extends AbstractDao<Order, Integer> {
         return entityManager.find(Order.class,id);
     }
 
-    @Transactional
     @Override
     public Order update(Order order) {
         Order order1 = entityManager.find(Order.class, order.getId());
