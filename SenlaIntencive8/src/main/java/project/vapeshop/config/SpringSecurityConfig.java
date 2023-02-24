@@ -16,7 +16,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 import project.vapeshop.security.JwtFilter;
 
 @Configuration
-@ComponentScan("project.vapeshop")
+//@ComponentScan("project.vapeshop")
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends AbstractSecurityWebApplicationInitializer {

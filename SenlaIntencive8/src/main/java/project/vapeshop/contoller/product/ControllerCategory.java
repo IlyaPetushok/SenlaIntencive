@@ -19,11 +19,10 @@ public class ControllerCategory {
     }
 
 
-    @PreAuthorize("hasAuthority('CREATE')")
+    @PreAuthorize("hasAuthority('READ')")
     @PostMapping("/add")
     private ResponseEntity<?> insert(@RequestBody CategoryDTO categoryDTO) {
         try {
-            categoryDTO.setName("vape");
             return new ResponseEntity<>(service.addObject(categoryDTO), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -34,6 +33,7 @@ public class ControllerCategory {
     @GetMapping("/find/{id}")
     public ResponseEntity<?> readId(@PathVariable("id") Integer id){
         try {
+            System.out.println("start");
             return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
