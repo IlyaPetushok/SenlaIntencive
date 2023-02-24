@@ -11,8 +11,8 @@ import project.vapeshop.entity.product.Category;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 @Transactional(readOnly = true)
+@Service
 public class CategoryService{
     Dao<Category,Integer> dao;
     ModelMapper modelMapper;
@@ -36,6 +36,7 @@ public class CategoryService{
 
     @Transactional
     public CategoryDTO addObject(CategoryDTO categoryDTO) {
+        System.out.println("dtar");
         return modelMapper.map(dao.insertObject(modelMapper.map(categoryDTO,Category.class)),CategoryDTO.class);
     }
 

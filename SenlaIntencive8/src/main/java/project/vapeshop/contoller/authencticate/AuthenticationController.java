@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
+import project.vapeshop.dto.user.UserDTOForAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.entity.user.User;
 import project.vapeshop.security.JwtProvider;
@@ -26,11 +27,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authorization")
-    public ResponseEntity<?> authorization(@RequestBody UserDTOForRegistration userDTOForRegistration) {
-        UserDTOForRegistration user = userService.userInput(userDTOForRegistration);
-        String token = jwtProvider.generatedToken(modelMapper.map(user, User.class));
-        userService.deleteObject(3);
-        return new ResponseEntity<>(token, HttpStatus.OK);
+    public ResponseEntity<?> authorization(@RequestBody UserDTOForAuthorization userDTOForAuthorization) {
+        UserDTOAfterAuthorization user = userService.userFindByLoginWithPassword(userDTOForAuthorization);
+        return new ResponseEntity<>(jwtProvider.generatedToken(user), HttpStatus.OK);
     }
 
     @PostMapping("/registration")

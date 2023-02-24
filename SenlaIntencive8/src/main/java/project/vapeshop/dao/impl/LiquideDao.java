@@ -2,6 +2,7 @@ package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import project.vapeshop.dao.ILiquideDao;
 import project.vapeshop.entity.product.*;
 
 import javax.persistence.EntityGraph;
@@ -11,7 +12,7 @@ import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
-public class LiquideDao extends AbstractDao<Liquide,Integer> {
+public class LiquideDao extends AbstractDao<Liquide,Integer> implements ILiquideDao {
     @Override
     public Liquide insertObject(Liquide liquide) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -83,5 +84,15 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> {
         Query query=entityManager.createQuery(criteriaDelete);
         query.executeUpdate();
         return true;
+    }
+
+    @Override
+    public List<Liquide> findByTypeNicotine(String typeNicotineStr) {
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaQuery<Liquide> criteriaQuery = criteriaBuilder.createQuery(Liquide.class);
+        Root<Liquide> liquideRoot=criteriaQuery.from(Liquide.class);
+        criteriaQuery.where(criteriaBuilder.equal(liquideRoot.get(Liquide_.typeNicotine),typeNicotineStr));
+        TypedQuery<Liquide> liquideTypedQuery=entityManager.createQuery(criteriaQuery);
+        return liquideTypedQuery.getResultList();
     }
 }

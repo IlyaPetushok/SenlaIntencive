@@ -3,6 +3,7 @@ package project.vapeshop.contoller.common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
 import project.vapeshop.service.common.OrderService;
@@ -19,6 +20,7 @@ public class ControllerOrder {
     }
 
 
+    @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping("/add")
     private ResponseEntity<?> insert(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
         try {
@@ -28,6 +30,7 @@ public class ControllerOrder {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ')")
     @GetMapping("/getAll")
     public ResponseEntity<?> read() {
         try {
@@ -37,6 +40,7 @@ public class ControllerOrder {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ')")
     @GetMapping("/find/{id}")
     public ResponseEntity<?> read(@PathVariable("id") Integer id) {
         try {
@@ -46,12 +50,14 @@ public class ControllerOrder {
         }
     }
 
+    @PreAuthorize("hasAuthority('DELETE')")
     @PostMapping("/delete/{id}")
     public boolean delete(@PathVariable("id") int id) {
         return service.deleteObject(id);
     }
 
 
+    @PreAuthorize("hasAuthority('UPDATE')")
     @PostMapping("/update")
     private ResponseEntity<?> update(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
         try {

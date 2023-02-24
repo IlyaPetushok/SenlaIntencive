@@ -1,10 +1,10 @@
-package project.vapeshop.dao.impl;
+package project.vapeshop.dao;
 
 import project.vapeshop.dao.Dao;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.user.User;
 
-public interface UserInt extends Dao<User,Integer> {
+public interface IUserDao extends Dao<User,Integer> {
     User findByLoginAndPassword(User user);
-    User findByLogin(String  login);
+    User findByLogin(String login);
 }

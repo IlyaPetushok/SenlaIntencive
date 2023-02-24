@@ -20,7 +20,7 @@ import project.vapeshop.dto.common.OrderDTOFullInfo;
 import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
-import vapeshop.test.config.JpaConfig;
+import vapeshop.test.config.H2Config;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-        classes = {JpaConfig.class})
+        classes = {H2Config.class})
 @WebAppConfiguration
 public class OrderUnitTest {
     @Autowired

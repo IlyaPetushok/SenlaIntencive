@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.dto.product.*;
 import project.vapeshop.entity.product.Category;
-import vapeshop.test.config.JpaConfig;
+import vapeshop.test.config.H2Config;
 
 import java.math.BigDecimal;
 
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-        classes = {JpaConfig.class})
+        classes = {H2Config.class})
 @WebAppConfiguration
 public class LiquideUnitTest {
 

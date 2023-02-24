@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IVaporizerDao;
+import project.vapeshop.dto.product.VapeDTO;
 import project.vapeshop.dto.product.VaporizerDTO;
 import project.vapeshop.entity.product.Vaporizer;
 
@@ -14,11 +16,11 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class VaporizerService {
-    Dao<Vaporizer,Integer> dao;
+    IVaporizerDao dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public VaporizerService(Dao<Vaporizer,Integer> dao, ModelMapper modelMapper) {
+    public VaporizerService(IVaporizerDao dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }
@@ -58,5 +60,11 @@ public class VaporizerService {
     @Transactional
     public VaporizerDTO updateItem(VaporizerDTO vaporizerDTO) {
         return modelMapper.map(dao.update(modelMapper.map(vaporizerDTO,Vaporizer.class)),VaporizerDTO.class);
+    }
+
+    public List<VaporizerDTO> showVapeByType(String type){
+        return dao.findByTypeVaporizer(type).stream()
+                .map(vape -> modelMapper.map(vape,VaporizerDTO.class))
+                .collect(Collectors.toList());
     }
 }

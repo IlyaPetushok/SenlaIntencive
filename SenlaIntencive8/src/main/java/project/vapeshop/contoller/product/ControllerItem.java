@@ -3,6 +3,7 @@ package project.vapeshop.contoller.product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
@@ -23,6 +24,7 @@ public class ControllerItem {
     }
 
 
+    @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping("/add")
     private ResponseEntity<?> insert(@RequestBody ItemDTOFullInfo item) {
         try {
@@ -32,7 +34,7 @@ public class ControllerItem {
         }
     }
 
-
+    @PreAuthorize("hasAuthority('READ')")
     @GetMapping("/getAll")
     public ResponseEntity<List<ItemDTOInfoForCatalog>> read() {
         try {
@@ -42,6 +44,7 @@ public class ControllerItem {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ')")
     @GetMapping("/find/{id}")
     public ResponseEntity<?> readId(@PathVariable("id") Integer id) {
         try {
@@ -51,15 +54,27 @@ public class ControllerItem {
         }
     }
 
+    @PreAuthorize("hasAuthority('DELETE')")
     @GetMapping("/delete/{id}")
     public boolean delete(@PathVariable("id") Integer id) {
         return itemService.deleteItem(id);
     }
 
+    @PreAuthorize("hasAuthority('UPDATE')")
     @PostMapping("/update")
     public ResponseEntity<?> update(@RequestBody ItemDTOFullInfo itemDTOFullInfo) {
         try {
             return new ResponseEntity<>(itemService.updateItem(itemDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('READ')")
+    @GetMapping("/show/{category}")
+    public ResponseEntity<?> readItemByCategory(@PathVariable("category") String nameCategory){
+        try {
+            return new ResponseEntity<>(itemService.showItemByCategory(nameCategory), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class CategoryUnitTest {
+public class CategoryUnitServiceTest {
     @InjectMocks
     private CategoryService categoryService;
 

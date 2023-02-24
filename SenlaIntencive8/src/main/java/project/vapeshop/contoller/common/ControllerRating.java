@@ -3,6 +3,7 @@ package project.vapeshop.contoller.common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.common.RatingDTOFullInfo;
 import project.vapeshop.service.common.RatingService;
@@ -17,7 +18,7 @@ public class ControllerRating {
         this.service = service;
     }
 
-
+    @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping("/add")
     private ResponseEntity<?> insert(@RequestBody RatingDTOFullInfo ratingDTOFullInfo) {
         try {
@@ -27,6 +28,7 @@ public class ControllerRating {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ')")
     @GetMapping("/getAll")
     public ResponseEntity<?> read() {
         try {
@@ -45,11 +47,13 @@ public class ControllerRating {
         }
     }
 
+    @PreAuthorize("hasAuthority('DELETE')")
     @PostMapping("/delete/{id}")
     public boolean delete(@PathVariable("id") Integer id) {
         return service.deleteObject(id);
     }
 
+    @PreAuthorize("hasAuthority('UPDATE')")
     @PostMapping("/update")
     public ResponseEntity<?> update(@RequestBody RatingDTOFullInfo ratingDTOFullInfo) {
         try {

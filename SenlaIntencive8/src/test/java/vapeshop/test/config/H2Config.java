@@ -1,6 +1,7 @@
 package vapeshop.test.config;
 
 import liquibase.integration.spring.SpringLiquibase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -8,8 +9,18 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import project.vapeshop.security.JwtFilter;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -18,7 +29,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan("project.vapeshop")
 @PropertySource("classpath:test.properties")
-public class JpaConfig {
+public class H2Config  {
 
 
     @Bean
@@ -40,21 +51,8 @@ public class JpaConfig {
     private String dialect;
 
 
-    public JpaConfig() {
+    public H2Config() {
     }
-
-    @Bean
-    @Primary
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
-        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactory.setDataSource(getDataSource());
-        entityManagerFactory.setPackagesToScan("project.vapeshop");
-        entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactory.setJpaProperties(getProperties());
-        return entityManagerFactory;
-    }
-
-
 
     @Bean
     public DataSource getDataSource() {
@@ -80,15 +78,6 @@ public class JpaConfig {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", dialect);
         properties.put("hibernate.show_sql", true);
-//        properties.put("hibernate.hbm2ddl.auto","create");
         return properties;
-    }
-
-
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
-        return transactionManager;
     }
 }

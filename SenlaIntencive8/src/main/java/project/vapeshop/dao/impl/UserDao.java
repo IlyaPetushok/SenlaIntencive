@@ -1,6 +1,7 @@
 package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
+import project.vapeshop.dao.IUserDao;
 import project.vapeshop.entity.user.Role;
 import project.vapeshop.entity.user.User;
 import project.vapeshop.entity.user.User_;
@@ -11,7 +12,7 @@ import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
-public class UserDao extends AbstractDao<User, Integer> implements UserInt{
+public class UserDao extends AbstractDao<User, Integer> implements IUserDao {
     @Override
     public User insertObject(User user) {
         Role role=entityManager.find(Role.class,user.getRole().getId());
@@ -22,7 +23,22 @@ public class UserDao extends AbstractDao<User, Integer> implements UserInt{
 
     @Override
     public List<User> selectObjects() {
-        Query query= entityManager.createQuery("SELECT us from User as us");
+//        Query query= entityManager.createQuery("SELECT us from User as us");
+        EntityGraph<?> entityGraph= entityManager.getEntityGraph("entity-user-graph-role");
+        CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> criteriaQuery=criteriaBuilder.createQuery(User.class);
+        Root<User> userRoot=criteriaQuery.from(User.class);
+        criteriaQuery.select(userRoot);
+//        Predicate predicateLogin=criteriaBuilder.equal(userRoot.get(User_.login),user.getLogin());
+//        Predicate predicatePassword=criteriaBuilder.equal(userRoot.get(User_.password),user.getPassword());
+//        criteriaQuery.where(criteriaBuilder.and(predicateLogin,predicatePassword));
+        TypedQuery<User> query=entityManager.createQuery(criteriaQuery);
+        query.setHint("javax.persistence.loadgraph",entityGraph);
+        List<User> users=query.getResultList();
+        for (User user : users) {
+            user.getRole().setUsers(null);
+            user.getRole().setPrivileges(null);
+        }
         return query.getResultList();
     }
 
@@ -59,10 +75,7 @@ public class UserDao extends AbstractDao<User, Integer> implements UserInt{
         Root<User> userRoot=criteriaQuery.from(User.class);
         Predicate predicateLogin=criteriaBuilder.equal(userRoot.get(User_.login),user.getLogin());
         Predicate predicatePassword=criteriaBuilder.equal(userRoot.get(User_.password),user.getPassword());
-        Predicate finalPredicate=criteriaBuilder.and(predicateLogin,predicatePassword);
-//        criteriaQuery.where(criteriaBuilder.equal(userRoot.get(User_.login),user.getLogin()));
-//        criteriaQuery.where(criteriaBuilder.equal(userRoot.get(User_.password),user.getPassword()));
-        criteriaQuery.where(finalPredicate);
+        criteriaQuery.where(criteriaBuilder.and(predicateLogin,predicatePassword));
         TypedQuery<User> query=entityManager.createQuery(criteriaQuery);
         query.setHint("javax.persistence.loadgraph",entityGraph);
         return query.getSingleResult();

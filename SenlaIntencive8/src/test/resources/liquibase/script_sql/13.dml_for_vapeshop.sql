@@ -10,11 +10,18 @@ Insert Into vaporizer(vaporizer_id_item,resistance,type_vaporizer) values (2,0.6
 
 Insert Into vape(vape_id,power_vape,battery,type_vape) Values (3,225,20000,'Вейп');
 
-Insert Into role(name_role) values ('user');
+Insert Into role(name_role) values ('ROLE_USER');
 
-Insert Into privileges(name_privelege) values('Просмотр');
+Insert Into privileges(name_privelege) values('READ');
+Insert Into privileges(name_privelege) values('CREATE');
+Insert Into privileges(name_privelege) values('DELETE');
+Insert Into privileges(name_privelege) values('UPDATE');
+
 
 Insert Into role_privileges(rp_id_role,rp_id_privileges) values (1,1);
+Insert Into role_privileges(rp_id_role,rp_id_privileges) values (1,2);
+Insert Into role_privileges(rp_id_role,rp_id_privileges) values (1,3);
+Insert Into role_privileges(rp_id_role,rp_id_privileges) values (1,4);
 
 Insert Into users(surname,name,patronymic,login,password,mail,user_id_role) 
 values ('Петушок','Илья','Александрович','login','password','mail@mail.com',1);

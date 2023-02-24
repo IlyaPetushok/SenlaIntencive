@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import project.vapeshop.dto.user.UserDTOAfterAuthorization;
 import project.vapeshop.entity.user.User;
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -19,12 +20,11 @@ public class JwtProvider {
     private String secret;
 
 
-    public String generatedToken(User user) {
+    public String generatedToken(UserDTOAfterAuthorization user) {
         SecretKey secretKey= Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
-        Date date = DateUtils.addMinutes(new Date(), 2);
+        Date date = DateUtils.addMinutes(new Date(), 15);
         Claims claims = Jwts.claims().setSubject(user.getLogin());
         claims.put("role", user.getRole().getName());
-        claims.put("password", user.getPassword());
         claims.put("name", user.getName());
         return Jwts.builder()
                 .setClaims(claims)

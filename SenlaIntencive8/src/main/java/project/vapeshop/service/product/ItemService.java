@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IItemDao;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.entity.product.Item;
@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class ItemService {
-    private Dao<Item, Integer> dao;
+    private IItemDao dao;
     private ModelMapper modelMapper;
 
     public ItemService() {
     }
 
     @Autowired
-    public ItemService(Dao<Item, Integer> dao, ModelMapper modelMapper) {
+    public ItemService(IItemDao dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }
@@ -63,5 +63,12 @@ public class ItemService {
     @Transactional
     public ItemDTOFullInfo updateItem(ItemDTOFullInfo itemDTOFullInfo) {
         return modelMapper.map(dao.update(modelMapper.map(itemDTOFullInfo, Item.class)), ItemDTOFullInfo.class);
+    }
+
+    public List<ItemDTOInfoForCatalog> showItemByCategory(String nameCategory){
+        List<Item> items =dao.selectFindByCategory(nameCategory);
+        return items.stream()
+                .map(item -> modelMapper.map(item,ItemDTOInfoForCatalog.class))
+                .collect(Collectors.toList());
     }
 }

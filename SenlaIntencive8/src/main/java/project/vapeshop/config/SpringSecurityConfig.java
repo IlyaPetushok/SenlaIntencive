@@ -2,6 +2,7 @@ package project.vapeshop.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,9 +16,10 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 import project.vapeshop.security.JwtFilter;
 
 @Configuration
+@ComponentScan("project.vapeshop")
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends AbstractSecurityWebApplicationInitializer {
+public class SpringSecurityConfig extends AbstractSecurityWebApplicationInitializer {
     @Autowired
     private JwtFilter jwtFilter;
 
