@@ -21,7 +21,7 @@ public class ControllerPrivileges {
 
     @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody PrivilegesDTO privilegesDTO) {
+    public ResponseEntity<?> insert(@RequestBody PrivilegesDTO privilegesDTO) {
         try {
             return new ResponseEntity<>(service.addObject(privilegesDTO), HttpStatus.CREATED);
         } catch (Exception e) {

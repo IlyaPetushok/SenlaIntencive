@@ -19,6 +19,8 @@ import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.dto.common.RatingDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
+import project.vapeshop.dto.user.UserDTOForAuthorization;
+import project.vapeshop.security.JwtFilter;
 import vapeshop.test.config.H2Config;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,44 +34,54 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RatingUnitTest {
 
     @Autowired
+    JwtFilter jwtFilter;
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
-
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).dispatchOptions(true).build();
-    }
+    private String token;
 
 
     private MockMvc mockMvc;
 
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).addFilter(jwtFilter).dispatchOptions(true).build();
+        MvcResult mvcResult = mockMvc.perform(post("/authorization")
+                .content(asJsonString(new UserDTOForAuthorization("login", "password")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andReturn();
+        this.token = "Bearer " + mvcResult.getResponse().getContentAsString();
+//        .header("Authorization", token)
+    }
+
     @Test
     public void testGetByIdRating() throws Exception {
-        MvcResult mvcResult1=mockMvc.perform(get("/rating/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/rating/find/{id}", "1").header("Authorization", token)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddRating() throws Exception {
-        char id=mockMvc.perform(post("/rating/add")
+        char id=mockMvc.perform(post("/rating/add").header("Authorization", token)
                         .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1 = mockMvc.perform(get("/rating/find/{id}", id)).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/rating/find/{id}", id).header("Authorization", token)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":"+id+",\"comment\":\"good\",\"quantityStar\":3,\"idUser\":1}");
 
     }
 
     @Test
     public void testUpdateRating() throws Exception {
-        char id=mockMvc.perform(post("/rating/add")
+        char id=mockMvc.perform(post("/rating/add").header("Authorization", token)
                         .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult = mockMvc.perform(post("/rating/update")
+        MvcResult mvcResult = mockMvc.perform(post("/rating/update").header("Authorization", token)
                         .content(asJsonString(new RatingDTOFullInfo(Character.digit(id,10),"bad", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -80,18 +92,18 @@ public class RatingUnitTest {
 
     @Test()
     public void testGetAllRating() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/rating/getAll")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/rating/getAll").header("Authorization", token)).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
     public void testDeleteRating() throws Exception {
-        char id=mockMvc.perform(post("/rating/add")
+        char id=mockMvc.perform(post("/rating/add").header("Authorization", token)
                         .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult = mockMvc.perform(post("/rating/delete/{id}", id))
+        MvcResult mvcResult = mockMvc.perform(post("/rating/delete/{id}", id).header("Authorization", token))
                 .andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }

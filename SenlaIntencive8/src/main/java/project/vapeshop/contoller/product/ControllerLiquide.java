@@ -21,7 +21,7 @@ public class ControllerLiquide {
 
     @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody LiquideDTO liquideDTO) {
+    public ResponseEntity<?> insert(@RequestBody LiquideDTO liquideDTO) {
         try {
             return new ResponseEntity<>(service.addItem(liquideDTO), HttpStatus.CREATED);
         } catch (Exception e) {

@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.product.VapeDTO;
+import project.vapeshop.dto.user.UserDTOForAuthorization;
+import project.vapeshop.security.JwtFilter;
 import vapeshop.test.config.H2Config;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,28 +31,40 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class VapeUnitTest {
     @Autowired
+    JwtFilter jwtFilter;
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
-
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).dispatchOptions(true).build();
-    }
+    private String token;
 
 
     private MockMvc mockMvc;
 
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).addFilter(jwtFilter).dispatchOptions(true).build();
+        MvcResult mvcResult = mockMvc.perform(post("/authorization")
+                .content(asJsonString(new UserDTOForAuthorization("login", "password")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andReturn();
+        this.token = "Bearer " + mvcResult.getResponse().getContentAsString();
+//        .header("Authorization", token)
+    }
+
+
+
 
     @Test
     public void testGetByIdVape() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(get("/vape/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/vape/find/{id}", "1").header("Authorization", token)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddVape() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/vape/add")
+        MvcResult mvcResult = mockMvc.perform(post("/vape/add").header("Authorization", token)
                         .content(asJsonString(new VapeDTO(120, 22450, "Мод", new ItemDTOInfoForCatalog(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -62,7 +76,7 @@ public class VapeUnitTest {
 
     @Test
     public void testUpdateVape() throws Exception {
-        mockMvc.perform(post("/vape/update")
+        mockMvc.perform(post("/vape/update").header("Authorization", token)
                         .content(asJsonString(new VapeDTO(1,120, 22450, "Мод", new ItemDTOInfoForCatalog(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -74,13 +88,13 @@ public class VapeUnitTest {
 
     @Test()
     public void testGetAllVape() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/vape/getAll")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/vape/getAll").header("Authorization", token)).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
     public void testDeleteCategory() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(post("/vape/delete/{id}", "1")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(post("/vape/delete/{id}", "1").header("Authorization", token)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "true");
     }
 

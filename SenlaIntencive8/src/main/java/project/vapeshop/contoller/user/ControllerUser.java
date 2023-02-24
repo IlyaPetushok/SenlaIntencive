@@ -21,7 +21,7 @@ public class ControllerUser {
 
     @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody UserDTOForRegistration userDTOForRegistration) {
+    public ResponseEntity<?> insert(@RequestBody UserDTOForRegistration userDTOForRegistration) {
         try {
             return new ResponseEntity<>(service.addObject(userDTOForRegistration), HttpStatus.CREATED);
         } catch (Exception e) {

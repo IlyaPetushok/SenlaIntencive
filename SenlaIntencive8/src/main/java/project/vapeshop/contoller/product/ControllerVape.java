@@ -21,7 +21,7 @@ public class ControllerVape {
 
     @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody VapeDTO vapeDTO) {
+    public ResponseEntity<?> insert(@RequestBody VapeDTO vapeDTO) {
         try {
             return new ResponseEntity<>(service.addItem(vapeDTO), HttpStatus.CREATED);
         } catch (Exception e) {

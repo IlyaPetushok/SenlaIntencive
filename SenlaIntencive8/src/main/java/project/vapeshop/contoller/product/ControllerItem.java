@@ -26,7 +26,7 @@ public class ControllerItem {
 
     @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody ItemDTOFullInfo item) {
+    public ResponseEntity<?> insert(@RequestBody ItemDTOFullInfo item) {
         try {
             return new ResponseEntity<>(itemService.addItem(item), HttpStatus.CREATED);
         } catch (Exception e) {

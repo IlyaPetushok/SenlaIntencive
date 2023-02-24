@@ -82,6 +82,7 @@ public class CategoryUnitTest {
     @Test
     public void testUpdateCategory() throws Exception {
         mockMvc.perform(post("/category/update")
+                        .header("Authorization", token)
                         .content(asJsonString(new CategoryDTO(3, "Vaporizer")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -94,13 +95,15 @@ public class CategoryUnitTest {
 
     @Test()
     public void testGetAllCategory() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/category/getAll")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/category/getAll")
+                .header("Authorization", token)).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
     public void testDeleteCategory() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(post("/category/delete/{id}", "4")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(post("/category/delete/{id}", "4")
+                .header("Authorization", token)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "true");
     }
 

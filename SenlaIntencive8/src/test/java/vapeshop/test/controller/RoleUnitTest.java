@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.dto.user.RoleDTO;
+import project.vapeshop.dto.user.UserDTOForAuthorization;
+import project.vapeshop.security.JwtFilter;
 import vapeshop.test.config.H2Config;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,20 +31,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RoleUnitTest {
 
     @Autowired
+    JwtFilter jwtFilter;
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
+    private String token;
+
+
+    private MockMvc mockMvc;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).dispatchOptions(true).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).addFilter(jwtFilter).dispatchOptions(true).build();
+        MvcResult mvcResult = mockMvc.perform(post("/authorization")
+                .content(asJsonString(new UserDTOForAuthorization("login", "password")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andReturn();
+        this.token = "Bearer " + mvcResult.getResponse().getContentAsString();
+//        .header("Authorization", token)
     }
-
-    private MockMvc mockMvc;
 
     @Test
     public void testGetByIdRole() throws Exception {
-        MvcResult mvcResult1=mockMvc.perform(get("/role/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/role/find/{id}", "1").header("Authorization", token)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
@@ -54,7 +67,7 @@ public class RoleUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1=mockMvc.perform(get("/role/find/{id}", id)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/role/find/{id}", id).header("Authorization", token)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
 
     }
@@ -66,14 +79,14 @@ public class RoleUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1=mockMvc.perform(get("/role/find/{id}","1")).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/role/find/{id}","1").header("Authorization", token)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":1,\"name\":\"User\"}");
     }
 
 
     @Test()
     public void testGetAllRole() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(get("/role/getAll")).andReturn();
+        MvcResult mvcResult=mockMvc.perform(get("/role/getAll").header("Authorization", token)).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
@@ -85,7 +98,7 @@ public class RoleUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1=mockMvc.perform(post("/role/delete/{id}",id)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(post("/role/delete/{id}",id).header("Authorization", token)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"true");
     }
 

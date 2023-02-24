@@ -20,7 +20,7 @@ public class ControllerRole {
 
     @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody RoleDTO roleDTO) {
+    public ResponseEntity<?> insert(@RequestBody RoleDTO roleDTO) {
         try {
             return new ResponseEntity<>(service.addObject(roleDTO), HttpStatus.CREATED);
         } catch (Exception e) {

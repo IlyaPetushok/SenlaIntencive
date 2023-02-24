@@ -17,9 +17,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
+import project.vapeshop.dto.user.UserDTOForAuthorization;
 import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
+import project.vapeshop.security.JwtFilter;
 import vapeshop.test.config.H2Config;
 
 import java.util.ArrayList;
@@ -37,21 +39,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class OrderUnitTest {
     @Autowired
+    JwtFilter jwtFilter;
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
+    private String token;
+
+
+    private MockMvc mockMvc;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).dispatchOptions(true).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).addFilter(jwtFilter).dispatchOptions(true).build();
+        MvcResult mvcResult = mockMvc.perform(post("/authorization")
+                .content(asJsonString(new UserDTOForAuthorization("login", "password")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andReturn();
+        this.token = "Bearer " + mvcResult.getResponse().getContentAsString();
+//        .header("Authorization", token)
     }
-
-    private MockMvc mockMvc;
 
 
     @Test
     public void testGetByIdOrder() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", "1").header("Authorization", token)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
@@ -59,12 +72,12 @@ public class OrderUnitTest {
     public void testAddOrder() throws Exception {
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item(1));
-        char id=mockMvc.perform(post("/order/add")
+        char id=mockMvc.perform(post("/order/add").header("Authorization", token)
                         .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26), StatusOrder.Sent,150.0,new User(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", id)).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", id).header("Authorization", token)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
@@ -72,19 +85,19 @@ public class OrderUnitTest {
     public void testUpdateCategory() throws Exception {
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item(1));
-        mockMvc.perform(post("/order/update")
+        mockMvc.perform(post("/order/update").header("Authorization", token)
                         .content(asJsonString(new OrderDTOFullInfo(1,new Date(2023, Calendar.FEBRUARY,26),StatusOrder.Accepted,150.0,new User(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", "1").header("Authorization", token)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"date\":61635502800000,\"status\":\"прибыл\",\"price\":150.0}");
     }
 
 
     @Test()
     public void testGetAllOrder() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/order/getAll")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/order/getAll").header("Authorization", token)).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
@@ -92,12 +105,12 @@ public class OrderUnitTest {
     public void testDeleteOrder() throws Exception {
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item(1));
-        mockMvc.perform(post("/order/add")
+        mockMvc.perform(post("/order/add").header("Authorization", token)
                         .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26),StatusOrder.Arrived,150.0,new User(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
-        MvcResult mvcResult1 = mockMvc.perform(post("/order/delete/{id}", "2")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(post("/order/delete/{id}", "2").header("Authorization", token)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "true");
     }
 

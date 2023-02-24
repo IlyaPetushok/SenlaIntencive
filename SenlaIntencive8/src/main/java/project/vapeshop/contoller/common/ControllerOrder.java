@@ -22,7 +22,7 @@ public class ControllerOrder {
 
     @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
+    public ResponseEntity<?> insert(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
         try {
             return new ResponseEntity<>(service.addObject(orderDTOFullInfo), HttpStatus.CREATED);
         } catch (Exception e) {
