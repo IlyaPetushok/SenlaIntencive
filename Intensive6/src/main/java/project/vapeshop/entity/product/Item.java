@@ -1,5 +1,6 @@
 package project.vapeshop.entity.product;
 
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.common.Order;
@@ -25,6 +26,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "item")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Item implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,29 +51,31 @@ public class Item implements EntityId<Integer> {
     @Column(name = "quantity")
     private int quantity;
 
+    @ToString.Exclude
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<Rating> ratings;
 
+    @ToString.Exclude
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToMany(mappedBy = "items", fetch = FetchType.LAZY)
     private List<Order> order;
 
+    @ToString.Exclude
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToOne(mappedBy = "itemForLiquide",fetch = FetchType.LAZY)
     private Liquide liquide;
 
+    @ToString.Exclude
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToOne(mappedBy = "itemForVaporizer", fetch = FetchType.LAZY)
     private Vaporizer vaporizer;
 
+    @ToString.Exclude
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToOne(mappedBy = "itemForVape", fetch = FetchType.LAZY)
     private Vape vape;
 
-
-    public Item() {
-    }
 
     public Item(Integer id) {
         this.id = id;
@@ -90,51 +98,4 @@ public class Item implements EntityId<Integer> {
         this.quantity = quantity;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }

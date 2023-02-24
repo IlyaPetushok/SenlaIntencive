@@ -1,5 +1,6 @@
 package project.vapeshop.entity.user;
 
+import lombok.*;
 import project.vapeshop.entity.EntityId;
 
 import javax.persistence.*;
@@ -8,6 +9,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "role")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Role implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +23,11 @@ public class Role implements EntityId<Integer> {
     @Column(name = "name_role")
     private String name;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "role",fetch = FetchType.LAZY)
     private List<User> users;
 
+    @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "role_privileges",
             joinColumns = @JoinColumn(name = "rp_id_role"),
@@ -34,29 +42,8 @@ public class Role implements EntityId<Integer> {
         this.name = name;
     }
 
-    public Role() {
-    }
-
     public Role(Integer id, String name) {
         this.id = id;
-        this.name = name;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 }

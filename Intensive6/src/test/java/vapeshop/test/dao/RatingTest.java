@@ -19,6 +19,7 @@ import java.util.List;
         classes = {JpaConfig.class})
 @Transactional
 public class RatingTest {
+
     @Autowired
     private AbstractDao<Rating,Integer> dao;
 

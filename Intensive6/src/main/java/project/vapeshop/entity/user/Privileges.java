@@ -1,5 +1,6 @@
 package project.vapeshop.entity.user;
 
+import lombok.*;
 import project.vapeshop.entity.EntityId;
 
 import javax.persistence.*;
@@ -7,6 +8,11 @@ import java.util.List;
 
 @Entity
 @Table(name="privileges")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Privileges implements EntityId<Integer> {
     @Id
     @Column(name="id_privelege")
@@ -15,37 +21,16 @@ public class Privileges implements EntityId<Integer> {
     @Column(name="name_privelege")
     private String name;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "privileges",fetch = FetchType.LAZY)
     private List<Role> roleList;
-
 
     public Privileges(String name) {
         this.name = name;
     }
 
-    public Privileges() {
-    }
-
     public Privileges(Integer id, String name) {
         this.id = id;
-        this.name = name;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 }

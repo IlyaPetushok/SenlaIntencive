@@ -51,13 +51,13 @@ public class ItemTest {
     }
 
     @Test
-    public void updateUpdateTest(){
+    public void updateItemTest(){
         Item item=new Item("photo4", "HotSpot BubleGum", new Category("Вейпы и подики"), new BigDecimal(Double.toString(23.0)), 15);
         dao.insertObject(item);
         List<Item> itemList= dao.selectObjects();
         int id = itemList.get(itemList.size()-1).getId();
         daoVape.insertObject(new Vape(120,22450,"test",new Item(itemList.get(itemList.size()-1).getId())));
-        dao.update(new Item(id,"photo4", "HotSpot BubleGum Update", new Category("Вейпы и подики"), new BigDecimal(Double.toString(23.0)), 15));
-        assert dao.selectObject(id).getName().equals("HotSpot BubleGum Update") : "проблемы с item";
+        dao.update(new Item(id,"photo4", "HotSpot BubleGum", new Category("Вейпы и подики"), new BigDecimal(Double.toString(23.0)), 15));
+        assert dao.selectObject(id).getName().equals("HotSpot BubleGum") : "проблемы с item";
     }
 }

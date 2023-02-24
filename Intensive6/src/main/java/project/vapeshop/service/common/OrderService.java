@@ -48,10 +48,6 @@ public class OrderService {
         List<Order> order=orderDTOFullInfos.stream()
                 .map(orderDTOFullInfo -> modelMapper.map(orderDTOFullInfo,Order.class))
                 .collect(Collectors.toList());
-        for (int i = 0; i < order.size(); i++) {
-            order.get(i).setItems(orderDTOFullInfos.get(i).getItemList());
-            System.out.println(order.get(i).getStatus());
-        }
         return dao.insertObjects(order);
     }
 
@@ -63,7 +59,6 @@ public class OrderService {
     @Transactional
     public OrderDTOForBasket updateObject(OrderDTOFullInfo orderDTOFullInfo) {
         Order order=modelMapper.map(orderDTOFullInfo,Order.class);
-        order.setItems(orderDTOFullInfo.getItemList());
         return modelMapper.map(dao.update(order),OrderDTOForBasket.class);
     }
 }

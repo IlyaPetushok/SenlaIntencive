@@ -18,6 +18,7 @@ import java.util.List;
         classes = {JpaConfig.class})
 @Transactional
 public class LiquideTest {
+
     @Autowired
     private AbstractDao<Liquide,Integer> dao;
 

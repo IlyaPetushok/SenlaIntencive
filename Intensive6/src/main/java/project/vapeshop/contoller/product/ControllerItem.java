@@ -26,10 +26,10 @@ public class ControllerItem {
 
     public void execute() {
 //        insert();
-        System.out.println(readId());
-//        update();
+//        System.out.println(readId());
+        update();
 //        delete();
-        System.out.println(read());
+//        System.out.println(read());
     }
 
     private boolean insert() {
@@ -53,6 +53,6 @@ public class ControllerItem {
     }
 
     public ItemDTOInfoForCatalog update() {
-        return itemService.updateItem(new ItemDTOFullInfo(19, "path/photo4", "Baby Plus", new Category(), new BigDecimal(Double.toString(15.0)), 10));
+        return itemService.updateItem(new ItemDTOFullInfo(39, "path/photo4", "Baby Plus", new Category(), new BigDecimal(Double.toString(15.0)), 10));
     }
 }
