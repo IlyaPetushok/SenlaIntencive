@@ -38,6 +38,7 @@ public class ControllerRating {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ')")
     @GetMapping("/find/{id}")
     public ResponseEntity<?> readId(@PathVariable("id") Integer id) {
         try {

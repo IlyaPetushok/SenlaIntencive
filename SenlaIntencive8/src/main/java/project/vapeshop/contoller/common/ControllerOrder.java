@@ -56,10 +56,19 @@ public class ControllerOrder {
         return service.deleteObject(id);
     }
 
+    @PreAuthorize("hasAuthority('READ')")
+    @GetMapping("/find/status/{status}")
+    public ResponseEntity<?> readByStatus(@PathVariable("status") String status){
+        try {
+            return new ResponseEntity<>(service.showObjectsFindByStatus(status), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PreAuthorize("hasAuthority('UPDATE')")
     @PostMapping("/update")
-    private ResponseEntity<?> update(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
+    public ResponseEntity<?> update(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
         try {
             return new ResponseEntity<>(service.updateObject(orderDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
         } catch (Exception e) {

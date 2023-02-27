@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import project.vapeshop.dto.user.PrivilegesDTO;
 import project.vapeshop.dto.user.RoleDTO;
 import project.vapeshop.service.user.RoleService;
 
@@ -60,6 +61,15 @@ public class ControllerRole {
     public ResponseEntity<?> update(@RequestBody RoleDTO roleDTO) {
         try {
             return new ResponseEntity<>(service.updateObject(roleDTO), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/find/privilege")
+    public ResponseEntity<?> readByPrivilege(@RequestBody PrivilegesDTO privilegesDTO){
+        try {
+            return new ResponseEntity<>(service.showObjectFindPrivilege(privilegesDTO), HttpStatus.UPGRADE_REQUIRED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

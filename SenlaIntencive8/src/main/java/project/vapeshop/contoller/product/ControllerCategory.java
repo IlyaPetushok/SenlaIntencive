@@ -33,7 +33,6 @@ public class ControllerCategory {
     @GetMapping("/find/{id}")
     public ResponseEntity<?> readId(@PathVariable("id") Integer id){
         try {
-            System.out.println("start");
             return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
