@@ -58,7 +58,6 @@ public class OrderUnitTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andReturn();
         this.token = "Bearer " + mvcResult.getResponse().getContentAsString();
-//        .header("Authorization", token)
     }
 
 
@@ -91,7 +90,7 @@ public class OrderUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
         MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", "1").header("Authorization", token)).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"date\":61635502800000,\"status\":\"прибыл\",\"price\":150.0}");
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"date\":61635502800000,\"status\":\"Accepted\",\"price\":150.0}");
     }
 
 

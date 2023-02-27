@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IOrderDao;
 import project.vapeshop.dto.common.OrderDTOForBasket;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
 import project.vapeshop.entity.common.Order;
@@ -33,7 +34,7 @@ public class OrderUnitTest {
     @InjectMocks
     private OrderService orderService;
     @Mock
-    private Dao<Order,Integer> orderDao;
+    private IOrderDao orderDao;
     @Spy
     private ModelMapper modelMapper;
 

@@ -97,7 +97,7 @@ public class LiquideUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
         MvcResult mvcResult1 = mockMvc.perform(get("/liquide/find/{id}", id).header("Authorization", token)).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":2,\"flavour\":\"Клубника\",\"fortress\":45,\"typeNicotine\":\"солевой\",\"volume\":30,\"itemForLiquide\":{\"id\":4,\"photo\":\"photo4\",\"name\":\"HotSpot BubleGum\"}}");
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":2,\"item\":{\"id\":4,\"photo\":\"photo4\",\"name\":\"HotSpot BubleGum\"},\"flavour\":\"Клубника\",\"fortress\":45,\"typeNicotine\":\"солевой\",\"volume\":30}");
     }
 
 

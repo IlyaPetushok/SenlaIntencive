@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
+import project.vapeshop.dao.IRoleDao;
 import project.vapeshop.dao.impl.RoleDao;
 import project.vapeshop.dto.user.RoleDTO;
 import project.vapeshop.entity.user.Role;
@@ -30,7 +31,7 @@ public class RoleUnitTest {
     private RoleService roleService;
 
     @Mock
-    private RoleDao roleDao;
+    private IRoleDao roleDao;
 
     @Spy
     private ModelMapper modelMapper;

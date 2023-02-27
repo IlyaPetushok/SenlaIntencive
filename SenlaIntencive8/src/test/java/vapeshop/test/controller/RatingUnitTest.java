@@ -20,6 +20,7 @@ import project.vapeshop.dto.common.RatingDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
 import project.vapeshop.dto.user.UserDTOForAuthorization;
+import project.vapeshop.dto.user.UserDTOForRating;
 import project.vapeshop.security.JwtFilter;
 import vapeshop.test.config.H2Config;
 
@@ -53,7 +54,6 @@ public class RatingUnitTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andReturn();
         this.token = "Bearer " + mvcResult.getResponse().getContentAsString();
-//        .header("Authorization", token)
     }
 
     @Test
@@ -65,7 +65,7 @@ public class RatingUnitTest {
     @Test
     public void testAddRating() throws Exception {
         char id=mockMvc.perform(post("/rating/add").header("Authorization", token)
-                        .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
+                        .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOForRating(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
@@ -77,12 +77,12 @@ public class RatingUnitTest {
     @Test
     public void testUpdateRating() throws Exception {
         char id=mockMvc.perform(post("/rating/add").header("Authorization", token)
-                        .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
+                        .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOForRating(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
         MvcResult mvcResult = mockMvc.perform(post("/rating/update").header("Authorization", token)
-                        .content(asJsonString(new RatingDTOFullInfo(Character.digit(id,10),"bad", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
+                        .content(asJsonString(new RatingDTOFullInfo(Character.digit(id,10),"bad", 3, new ItemDTOInfoForCatalog(1), new UserDTOForRating(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired()).andReturn();
@@ -99,7 +99,7 @@ public class RatingUnitTest {
     @Test()
     public void testDeleteRating() throws Exception {
         char id=mockMvc.perform(post("/rating/add").header("Authorization", token)
-                        .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
+                        .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOForRating(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);

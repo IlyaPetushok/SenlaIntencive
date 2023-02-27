@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
 import project.vapeshop.dao.impl.UserDao;
+import project.vapeshop.dto.user.RoleDTO;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.entity.user.Role;
@@ -38,7 +39,7 @@ public class UserUnitTest {
     private ModelMapper modelMapper;
 
     private final User user=new User(1,"Cluch","Vasya","Pupkin","login2","pass2","vasya@mail",new Role(1));
-    private final UserDTOForRegistration userDto =new UserDTOForRegistration(2,"Cluch","Vasya","Pupkin","login2","pass2","vasya@mail",new Role(1));
+    private final UserDTOForRegistration userDto =new UserDTOForRegistration(2,"Cluch","Vasya","Pupkin","login2","pass2","vasya@mail",new RoleDTO(1));
 
     @Test
     public void testGetByIdCategory(){

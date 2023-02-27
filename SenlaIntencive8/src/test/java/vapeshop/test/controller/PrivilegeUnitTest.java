@@ -73,13 +73,19 @@ public class PrivilegeUnitTest {
 
     @Test
     public void testUpdateRole() throws Exception {
+        MvcResult mvcResult=mockMvc.perform(post("/privilege/add").header("Authorization", token)
+                        .content(asJsonString(new PrivilegesDTO("Add support")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()).andReturn();
+        char id=mvcResult.getResponse().getContentAsString().charAt(6);
         mockMvc.perform(post("/privilege/update").header("Authorization", token)
-                        .content(asJsonString(new PrivilegesDTO(1,"Delete user")))
+                        .content(asJsonString(new PrivilegesDTO(Character.digit(id,10),"Delete user")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1=mockMvc.perform(get("/privilege/find/{id}", "1").header("Authorization", token)).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":1,\"name\":\"Delete user\"}");
+        MvcResult mvcResult1=mockMvc.perform(get("/privilege/find/{id}", id).header("Authorization", token)).andReturn();
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":"+id+",\"name\":\"Delete user\"}");
     }
 
 

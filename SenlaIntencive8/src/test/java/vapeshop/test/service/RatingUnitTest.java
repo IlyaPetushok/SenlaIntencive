@@ -13,6 +13,7 @@ import project.vapeshop.dto.common.RatingDTOForProduct;
 import project.vapeshop.dto.common.RatingDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
+import project.vapeshop.dto.user.UserDTOForRating;
 import project.vapeshop.entity.common.Rating;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
@@ -40,7 +41,7 @@ public class RatingUnitTest {
     private ModelMapper modelMapper;
 
     private final Rating rating = new Rating(1,"good", 5, new Item(1), new User(1));
-    private final RatingDTOFullInfo ratingDTOFullInfo = new RatingDTOFullInfo(1,"good", 5, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1));
+    private final RatingDTOFullInfo ratingDTOFullInfo = new RatingDTOFullInfo(1,"good", 5, new ItemDTOInfoForCatalog(1), new UserDTOForRating(1));
 
     @Test
     public void testGetByIdRating() {

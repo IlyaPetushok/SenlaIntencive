@@ -50,7 +50,6 @@ public class RoleUnitTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andReturn();
         this.token = "Bearer " + mvcResult.getResponse().getContentAsString();
-//        .header("Authorization", token)
     }
 
     @Test

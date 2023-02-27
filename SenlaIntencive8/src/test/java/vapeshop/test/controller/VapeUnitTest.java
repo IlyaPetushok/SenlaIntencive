@@ -38,7 +38,6 @@ public class VapeUnitTest {
 
     private String token;
 
-
     private MockMvc mockMvc;
 
     @Before
