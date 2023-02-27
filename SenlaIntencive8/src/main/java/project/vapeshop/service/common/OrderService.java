@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IOrderDao;
 import project.vapeshop.dto.common.OrderDTOForBasket;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
 import project.vapeshop.entity.common.Order;
+import project.vapeshop.entity.common.StatusOrder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,11 +17,11 @@ import java.util.stream.Collectors;
 @Component
 @Transactional(readOnly = true)
 public class OrderService {
-    Dao<Order,Integer> dao;
+    IOrderDao dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public OrderService(Dao<Order,Integer> dao, ModelMapper modelMapper) {
+    public OrderService(IOrderDao dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }
@@ -44,9 +46,6 @@ public class OrderService {
         List<Order> order=orderDTOFullInfos.stream()
                 .map(orderDTOFullInfo -> modelMapper.map(orderDTOFullInfo,Order.class))
                 .collect(Collectors.toList());
-        for (int i = 0; i < order.size(); i++) {
-            order.get(i).setItems(orderDTOFullInfos.get(i).getItems());
-        }
         return dao.insertObjects(order).stream()
                 .map(order1 -> modelMapper.map(order1,OrderDTOFullInfo.class))
                 .collect(Collectors.toList());
@@ -62,5 +61,11 @@ public class OrderService {
         Order order=modelMapper.map(orderDTOFullInfo,Order.class);
         order.setItems(orderDTOFullInfo.getItems());
         return modelMapper.map(dao.update(order),OrderDTOForBasket.class);
+    }
+
+    public List<OrderDTOForBasket> showObjectsFindByStatus(String status) {
+        return dao.selectOrderFindByStatus(StatusOrder.valueOf(status)).stream()
+                .map(order -> modelMapper.map(order, OrderDTOForBasket.class))
+                .collect(Collectors.toList());
     }
 }

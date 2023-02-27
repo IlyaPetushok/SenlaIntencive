@@ -17,7 +17,7 @@ public class UserDTOAfterAuthorization {
     private String patronymic;
     private String mail;
     private String login;
-    private Role role;
+    private RoleDTO role;
 
 
     public UserDTOAfterAuthorization(int id) {
@@ -25,7 +25,7 @@ public class UserDTOAfterAuthorization {
     }
 
 
-    public UserDTOAfterAuthorization(String surname, String name, String patronymic, String mail, Role role) {
+    public UserDTOAfterAuthorization(String surname, String name, String patronymic, String mail, RoleDTO role) {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
@@ -33,7 +33,7 @@ public class UserDTOAfterAuthorization {
         this.role = role;
     }
 
-    public UserDTOAfterAuthorization(String surname, String name, String patronymic, String mail, Role role, String login) {
+    public UserDTOAfterAuthorization(String surname, String name, String patronymic, String mail, RoleDTO role, String login) {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;

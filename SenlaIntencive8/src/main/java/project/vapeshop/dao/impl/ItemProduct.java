@@ -58,7 +58,6 @@ public class ItemProduct extends AbstractDao<Item,Integer> implements IItemDao {
         }
         criteriaQuery.where(criteriaBuilder.equal(itemRoot.get(Item_.id),item.getId()));
         TypedQuery<Item> typedQuery=entityManager.createQuery(criteriaQuery);
-        Item item1=typedQuery.getSingleResult();
         return typedQuery.getSingleResult();
     }
 

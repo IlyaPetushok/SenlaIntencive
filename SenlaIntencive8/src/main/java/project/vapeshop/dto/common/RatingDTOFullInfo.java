@@ -3,6 +3,7 @@ package project.vapeshop.dto.common;
 import lombok.*;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
+import project.vapeshop.dto.user.UserDTOForRating;
 
 @Getter
 @Setter
@@ -18,6 +19,6 @@ public class RatingDTOFullInfo {
     @NonNull
     private ItemDTOInfoForCatalog item;
     @NonNull
-    private UserDTOAfterAuthorization user;
+    private UserDTOForRating user;
 
 }

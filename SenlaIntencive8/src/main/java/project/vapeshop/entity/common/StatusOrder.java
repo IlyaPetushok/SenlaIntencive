@@ -1,7 +1,7 @@
 package project.vapeshop.entity.common;
 
 public enum StatusOrder {
-    Accepted("привнят"),
+    Accepted("принят"),
     Sent("отправлен"),
     Arrived("прибыл");
 

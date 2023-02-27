@@ -30,20 +30,8 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> implements ILiquide
         EntityGraph<?> entityGraph= entityManager.getEntityGraph("liquide-with-item");
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Liquide> criteriaQuery=criteriaBuilder.createQuery(Liquide.class);
-        Root<Liquide> liquideRoot=criteriaQuery.from(Liquide.class);
         TypedQuery<Liquide> query= entityManager.createQuery(criteriaQuery);
         query.setHint("javax.persistence.loadgraph",entityGraph);
-        return query.getResultList();
-    }
-
-    public List<Item> selectObjectTypeNicotine(){
-        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
-        CriteriaQuery<Object> criteriaQuery= criteriaBuilder.createQuery();
-        Root<Liquide> liquideRoot= criteriaQuery.from(Liquide.class);
-        criteriaQuery.select(liquideRoot)
-                .where(liquideRoot.get(Liquide_.typeNicotine)
-                        .in("солевой","обычный"));
-        Query query= entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 

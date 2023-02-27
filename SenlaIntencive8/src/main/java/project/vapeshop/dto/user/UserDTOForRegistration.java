@@ -23,7 +23,7 @@ public class UserDTOForRegistration {
     @NonNull
     private String mail;
     @NonNull
-    private Role role;
+    private RoleDTO role;
 
     public UserDTOForRegistration(@NonNull String login, @NonNull String password) {
         this.login = login;

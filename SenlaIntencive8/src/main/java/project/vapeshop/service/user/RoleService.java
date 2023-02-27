@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IRoleDao;
+import project.vapeshop.dto.user.PrivilegesDTO;
 import project.vapeshop.dto.user.RoleDTO;
 import project.vapeshop.entity.user.Role;
 
@@ -14,11 +16,11 @@ import java.util.stream.Collectors;
 @Component
 @Transactional(readOnly = true)
 public class RoleService {
-    Dao<Role,Integer> dao;
+    IRoleDao dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public RoleService(Dao<Role,Integer> dao, ModelMapper modelMapper) {
+    public RoleService(IRoleDao dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }
@@ -56,5 +58,11 @@ public class RoleService {
     @Transactional
     public RoleDTO updateObject(RoleDTO roleDTO) {
         return modelMapper.map(dao.update(modelMapper.map(roleDTO,Role.class)),RoleDTO.class);
+    }
+
+    public List<RoleDTO> showObjectFindPrivilege(PrivilegesDTO privileges){
+        return dao.selectFindByPrivilege(privileges.getName()).stream()
+                .map(role -> modelMapper.map(role,RoleDTO.class))
+                .collect(Collectors.toList());
     }
 }

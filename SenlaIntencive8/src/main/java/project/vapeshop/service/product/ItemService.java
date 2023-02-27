@@ -29,12 +29,10 @@ public class ItemService {
 
 
     public ItemDTOFullInfo showItem(int id) {
-        Item item=dao.selectObject(id);
         return modelMapper.map(dao.selectObject(id), ItemDTOFullInfo.class);
     }
 
     public List<ItemDTOInfoForCatalog> showItems() {
-        List<Item> items=dao.selectObjects();
         return dao.selectObjects().stream()
                 .map(item -> modelMapper.map(item, ItemDTOInfoForCatalog.class))
                 .collect(Collectors.toList());

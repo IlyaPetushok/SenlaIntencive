@@ -35,18 +35,19 @@ public class UserDao extends AbstractDao<User, Integer> implements IUserDao {
         TypedQuery<User> query=entityManager.createQuery(criteriaQuery);
         query.setHint("javax.persistence.loadgraph",entityGraph);
         List<User> users=query.getResultList();
-        for (User user : users) {
-            user.getRole().setUsers(null);
-            user.getRole().setPrivileges(null);
-        }
         return query.getResultList();
     }
 
     @Override
     public User selectObject(Integer id) {
-        Query query= entityManager.createQuery("SELECT us from User as us where us.id=?1");
-        query.setParameter(1,id);
-        return (User) query.getSingleResult();
+        EntityGraph<?> entityGraph= entityManager.getEntityGraph("entity-user-graph-role");
+        CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> criteriaQuery= criteriaBuilder.createQuery(User.class);
+        Root<User> userRoot=criteriaQuery.from(User.class);
+        criteriaQuery.where(criteriaBuilder.equal(userRoot.get(User_.id),id));
+        TypedQuery<User> query=entityManager.createQuery(criteriaQuery);
+        query.setHint("javax.persistence.loadgraph",entityGraph);
+        return query.getSingleResult();
     }
 
     @Override
@@ -87,14 +88,9 @@ public class UserDao extends AbstractDao<User, Integer> implements IUserDao {
         CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery=criteriaBuilder.createQuery(User.class);
         Root<User> userRoot=criteriaQuery.from(User.class);
-//        Join<User,Role> roleUserJoin= userRoot.join(User_.role, JoinType.INNER);
-//        criteriaQuery.where(criteriaBuilder.equal(userRoot.get(User_.role),roleUserJoin));
         criteriaQuery.where(criteriaBuilder.equal(userRoot.get(User_.login),login));
         TypedQuery<User> query=entityManager.createQuery(criteriaQuery);
         query.setHint("javax.persistence.loadgraph",entityGraph);
-        User user=query.getSingleResult();
-        System.out.println(user.getRole().getPrivileges().size());
-        user.getRole().setPrivileges(user.getRole().getPrivileges());
         return query.getSingleResult();
     }
 }

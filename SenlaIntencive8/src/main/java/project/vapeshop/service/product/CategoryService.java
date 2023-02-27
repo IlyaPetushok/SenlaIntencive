@@ -36,7 +36,6 @@ public class CategoryService{
 
     @Transactional
     public CategoryDTO addObject(CategoryDTO categoryDTO) {
-        System.out.println("dtar");
         return modelMapper.map(dao.insertObject(modelMapper.map(categoryDTO,Category.class)),CategoryDTO.class);
     }
 
