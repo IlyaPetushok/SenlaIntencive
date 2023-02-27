@@ -1,7 +1,7 @@
 package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import project.vapeshop.dao.IVaporizerDao;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.product.Item_;
 import project.vapeshop.entity.product.Vaporizer;
@@ -16,7 +16,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-public class VaporizerDao extends AbstractDao<Vaporizer, Integer> {
+public class VaporizerDao extends AbstractDao<Vaporizer, Integer> implements IVaporizerDao {
 
 
     @Override
@@ -60,5 +60,15 @@ public class VaporizerDao extends AbstractDao<Vaporizer, Integer> {
         vaporizer1.setType(vaporizer.getType());
         vaporizer1.setItemForVaporizer(entityManager.find(Item.class,vaporizer.getItemForVaporizer().getId()));
         return vaporizer1;
+    }
+
+    @Override
+    public List<Vaporizer> findByTypeVaporizer(String typeVape) {
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaQuery<Vaporizer> criteriaQuery= criteriaBuilder.createQuery(Vaporizer.class);
+        Root<Vaporizer> vaporizerRoot= criteriaQuery.from(Vaporizer.class);
+        criteriaQuery.where(criteriaBuilder.equal(vaporizerRoot.get(Vaporizer_.type),typeVape));
+        TypedQuery<Vaporizer> typedQuery=entityManager.createQuery(criteriaQuery);
+        return typedQuery.getResultList();
     }
 }

@@ -2,6 +2,7 @@ package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import project.vapeshop.dao.IVapeDao;
 import project.vapeshop.entity.product.*;
 
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-public class VapeDao extends AbstractDao<Vape,Integer> {
+public class VapeDao extends AbstractDao<Vape,Integer> implements IVapeDao {
 
     public static final String SELECT_VAPE = "select vape from Vape as vape";
 
@@ -57,5 +58,15 @@ public class VapeDao extends AbstractDao<Vape,Integer> {
         vape1.setType(vape.getType());
         vape1.setPower(vape.getPower());
         return vape1;
+    }
+
+    @Override
+    public List<Vape> findByTypeVape(String typeVape) {
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaQuery<Vape> criteriaQuery= criteriaBuilder.createQuery(Vape.class);
+        Root<Vape> vapeRoot= criteriaQuery.from(Vape.class);
+        criteriaQuery.where(criteriaBuilder.equal(vapeRoot.get(Vape_.type),typeVape));
+        TypedQuery<Vape> query= entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
     }
 }

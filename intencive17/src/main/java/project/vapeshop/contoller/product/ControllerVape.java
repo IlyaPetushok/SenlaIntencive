@@ -19,7 +19,7 @@ public class ControllerVape {
 
 
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody VapeDTO vapeDTO) {
+    public ResponseEntity<?> insert(@RequestBody VapeDTO vapeDTO) {
         try {
             return new ResponseEntity<>(service.addItem(vapeDTO), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -56,6 +56,16 @@ public class ControllerVape {
             return new ResponseEntity<>(service.updateItem(vapeDTO), HttpStatus.UPGRADE_REQUIRED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/show/{typeVape}")
+    public ResponseEntity<?> showVapeTypeNicotine(@PathVariable("typeVape") String type) {
+        try {
+            return new ResponseEntity<>(service.showVapeByType(type), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         }
     }
 }

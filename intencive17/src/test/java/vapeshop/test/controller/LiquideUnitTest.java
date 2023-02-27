@@ -15,9 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import project.vapeshop.config.SpringApplicationConfig;
 import project.vapeshop.dto.product.*;
 import project.vapeshop.entity.product.Category;
-import vapeshop.test.config.JpaConfig;
+import vapeshop.test.config.H2Config;
 
 import java.math.BigDecimal;
 
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-        classes = {JpaConfig.class})
+        classes = {H2Config.class, SpringApplicationConfig.class})
 @WebAppConfiguration
 public class LiquideUnitTest {
 
@@ -85,7 +86,7 @@ public class LiquideUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
         MvcResult mvcResult1 = mockMvc.perform(get("/liquide/find/{id}", id)).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":2,\"flavour\":\"Клубника\",\"fortress\":45,\"typeNicotine\":\"солевой\",\"volume\":30,\"itemForLiquide\":{\"id\":4,\"photo\":\"photo4\",\"name\":\"HotSpot BubleGum\"}}");
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":2,\"item\":{\"id\":4,\"photo\":\"photo4\",\"name\":\"HotSpot BubleGum\"},\"flavour\":\"Клубника\",\"fortress\":45,\"typeNicotine\":\"солевой\",\"volume\":30}");
     }
 
 

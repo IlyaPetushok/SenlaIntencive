@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.vapeshop.dto.user.UserDTOForAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.service.user.UserService;
 
@@ -19,7 +20,7 @@ public class ControllerUser {
 
 
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody UserDTOForRegistration userDTOForRegistration) {
+    public ResponseEntity<?> insert(@RequestBody UserDTOForRegistration userDTOForRegistration) {
         try {
             return new ResponseEntity<>(service.addItem(userDTOForRegistration), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -54,6 +55,15 @@ public class ControllerUser {
     public ResponseEntity<?> update(@RequestBody UserDTOForRegistration userDTOForRegistration) {
         try {
             return new ResponseEntity<>(service.updateItem(userDTOForRegistration), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/authorization")
+    public ResponseEntity<?> authorization(@RequestBody UserDTOForAuthorization userDTOForAuthorization) {
+        try {
+            return new ResponseEntity<>(service.userFindByLoginWithPassword(userDTOForAuthorization), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

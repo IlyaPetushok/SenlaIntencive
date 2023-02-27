@@ -25,7 +25,7 @@ public class ControllerLiquide {
 
 
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody LiquideDTO liquideDTO) {
+    public ResponseEntity<?> insert(@RequestBody LiquideDTO liquideDTO) {
         try {
             return new ResponseEntity<>(service.addItem(liquideDTO), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -60,6 +60,16 @@ public class ControllerLiquide {
     public ResponseEntity<?> update(@RequestBody LiquideDTO liquideDTO) {
         try {
             return new ResponseEntity<>(service.updateItem(liquideDTO), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @GetMapping("/show/{typeNicotine}")
+    public ResponseEntity<?> showLiquideTypeNicotine(@PathVariable("typeNicotine") String typeNicotine){
+        try {
+            return new ResponseEntity<>(service.showLiquideByNicotine(typeNicotine), HttpStatus.UPGRADE_REQUIRED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

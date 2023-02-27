@@ -1,9 +1,6 @@
 package project.vapeshop.entity.product;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
@@ -31,6 +28,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Item implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,26 +40,36 @@ public class Item implements EntityId<Integer> {
     private String name;
 
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_category", referencedColumnName = "id_category")
     private Category category;
+
     @Column(name = "price")
     private BigDecimal price;
+
     @Column(name = "quantity")
     private int quantity;
+
+
+    @ToString.Exclude
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<Rating> ratings;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "items", fetch = FetchType.LAZY)
     private List<Order> order;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "itemForLiquide",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Liquide liquide;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "itemForVaporizer", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     private Vaporizer vaporizer;
 
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "itemForVape", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     private Vape vape;
 

@@ -4,8 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IUserDao;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
+import project.vapeshop.dto.user.UserDTOForAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.entity.user.User;
 
@@ -17,11 +18,11 @@ import java.util.stream.Collectors;
 @Component
 @Transactional(readOnly = true)
 public class UserService {
-    Dao<User,Integer> dao;
+    IUserDao dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public UserService(Dao<User,Integer> dao, ModelMapper modelMapper) {
+    public UserService(IUserDao dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }
@@ -60,5 +61,13 @@ public class UserService {
     @Transactional
     public UserDTOAfterAuthorization updateItem(UserDTOForRegistration userDTOForRegistration) {
         return modelMapper.map(dao.update(modelMapper.map(userDTOForRegistration,User.class)),UserDTOAfterAuthorization.class);
+    }
+
+    public UserDTOAfterAuthorization userFindByLoginWithPassword(UserDTOForAuthorization userDTOForAuthorization){
+        return modelMapper.map(dao.findByLoginAndPassword(modelMapper.map(userDTOForAuthorization,User.class)),UserDTOAfterAuthorization.class);
+    }
+
+    public User userFindByLogin(String login){
+        return dao.findByLogin(login);
     }
 }

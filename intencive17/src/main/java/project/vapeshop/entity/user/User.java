@@ -1,9 +1,6 @@
 package project.vapeshop.entity.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import project.vapeshop.entity.EntityId;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
@@ -12,12 +9,21 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Random;
 
+
+@NamedEntityGraph(
+        name = "entity-user-graph-role",
+        attributeNodes = {
+                @NamedAttributeNode("role"),
+        }
+)
+
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class User implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,15 +42,14 @@ public class User implements EntityId<Integer> {
     @Column(name="mail")
     private String mail;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Order> orders;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id_role",referencedColumnName = "id_role")
     private Role role;
-
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
-    private List<Rating> ratings;
 
 
     public User(Integer id) {

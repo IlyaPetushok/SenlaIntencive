@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IVapeDao;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.product.LiquideDTO;
 import project.vapeshop.dto.product.VapeDTO;
@@ -28,7 +29,7 @@ public class VapeUnitTest {
     private VapeService vapeService;
 
     @Mock
-    private Dao<Vape,Integer> vapeDao;
+    private IVapeDao vapeDao;
 
     @Spy
     private ModelMapper modelMapper;

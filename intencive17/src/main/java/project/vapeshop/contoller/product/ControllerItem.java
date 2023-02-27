@@ -31,7 +31,7 @@ public class ControllerItem {
 
 
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody ItemDTOFullInfo item) {
+    public ResponseEntity<?> insert(@RequestBody ItemDTOFullInfo item) {
         try {
             return new ResponseEntity<>(itemService.addItem(item), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -67,6 +67,15 @@ public class ControllerItem {
     public ResponseEntity<?> update(@RequestBody ItemDTOFullInfo itemDTOFullInfo) {
         try {
             return new ResponseEntity<>(itemService.updateItem(itemDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/show/{category}")
+    public ResponseEntity<?> readItemByCategory(@PathVariable("category") String nameCategory){
+        try {
+            return new ResponseEntity<>(itemService.showItemByCategory(nameCategory), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

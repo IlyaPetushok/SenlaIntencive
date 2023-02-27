@@ -28,7 +28,7 @@ public class ControllerRating {
 
 
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody RatingDTOFullInfo ratingDTOFullInfo) {
+    public ResponseEntity<?> insert(@RequestBody RatingDTOFullInfo ratingDTOFullInfo) {
         try {
             return new ResponseEntity<>(service.addObject(ratingDTOFullInfo), HttpStatus.CREATED);
         } catch (Exception e) {

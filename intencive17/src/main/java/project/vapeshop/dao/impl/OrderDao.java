@@ -1,24 +1,18 @@
 package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IOrderDao;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Order_;
-import project.vapeshop.entity.product.Item;
-import project.vapeshop.entity.product.Item_;
+import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.user.User;
-
 import javax.persistence.EntityGraph;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
-public class OrderDao extends AbstractDao<Order, Integer> {
+public class OrderDao extends AbstractDao<Order, Integer> implements IOrderDao {
 
     @Override
     public Order insertObject(Order order) {
@@ -52,5 +46,15 @@ public class OrderDao extends AbstractDao<Order, Integer> {
         order1.setUser(order.getUser());
         order1.setItems(order.getItems());
         return order1;
+    }
+
+    @Override
+    public List<Order> selectOrderFindByStatus(StatusOrder statusOrder) {
+        CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
+        CriteriaQuery<Order> criteriaQuery=criteriaBuilder.createQuery(Order.class);
+        Root<Order> orderRoot=criteriaQuery.from(Order.class);
+        criteriaQuery.where(criteriaBuilder.equal(orderRoot.get(Order_.status),statusOrder));
+        TypedQuery<Order> typedQuery=entityManager.createQuery(criteriaQuery);
+        return typedQuery.getResultList();
     }
 }

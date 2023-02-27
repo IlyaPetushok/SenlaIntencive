@@ -25,7 +25,7 @@ public class ControllerCategory {
 
 
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<?> insert(@RequestBody CategoryDTO categoryDTO) {
         try {
             return new ResponseEntity<>(service.addObject(categoryDTO), HttpStatus.CREATED);
         } catch (Exception e) {

@@ -3,15 +3,9 @@ package project.vapeshop.contoller.product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.product.VaporizerDTO;
-import project.vapeshop.entity.product.Item;
-import project.vapeshop.entity.product.Vaporizer;
-import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.product.VaporizerService;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/vaporizer")
@@ -25,7 +19,7 @@ public class ControllerVaporizer {
 
 
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody VaporizerDTO vaporizerDTO) {
+    public ResponseEntity<?> insert(@RequestBody VaporizerDTO vaporizerDTO) {
         try {
             return new ResponseEntity<>(service.addItem(vaporizerDTO), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -62,6 +56,16 @@ public class ControllerVaporizer {
             return new ResponseEntity<>(service.updateItem(vaporizerDTO), HttpStatus.UPGRADE_REQUIRED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/show/{typeVaporizer}")
+    public ResponseEntity<?> showVaporizerTypeNicotine(@PathVariable("typeVaporizer") String type) {
+        try {
+            return new ResponseEntity<>(service.showVaporizerByType(type), HttpStatus.UPGRADE_REQUIRED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         }
     }
 }

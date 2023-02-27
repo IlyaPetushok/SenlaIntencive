@@ -20,7 +20,8 @@ public class ControllerOrder {
 
 
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
+    public ResponseEntity<?> insert(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
+        System.out.println("start");
         try {
             return new ResponseEntity<>(service.addObject(orderDTOFullInfo), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -45,6 +46,15 @@ public class ControllerOrder {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/find/status/{status}")
+    public ResponseEntity<?> readByStatus(@PathVariable("status") String status){
+        try {
+            return new ResponseEntity<>(service.showObjectsFindByStatus(status), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
     @PostMapping("/delete/{id}")
     public boolean delete(@PathVariable("id") int id) {
@@ -53,7 +63,7 @@ public class ControllerOrder {
 
 
     @PostMapping("/update")
-    private ResponseEntity<?> update(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
+    public ResponseEntity<?> update(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
         try {
             return new ResponseEntity<>(service.updateObject(orderDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
         } catch (Exception e) {

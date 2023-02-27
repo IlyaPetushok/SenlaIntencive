@@ -3,6 +3,7 @@ package project.vapeshop.dao.impl;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import project.vapeshop.dao.IItemDao;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.entity.product.*;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 
 @Repository
-public class ItemProduct extends AbstractDao<Item,Integer>{
+public class ItemProduct extends AbstractDao<Item,Integer> implements IItemDao {
     private static final String LIQUIDE ="Жидкости";
     private static final String VAPORIZER ="Испарители,Картриджы,Койлы";
     private static final String VAPE ="Вейпы и подики";
@@ -100,5 +101,16 @@ public class ItemProduct extends AbstractDao<Item,Integer>{
         Item item= (Item) query.getSingleResult();
         entityManager.remove(item);
         return true;
+    }
+
+    @Override
+    public List<Item> selectFindByCategory(String nameCategory) {
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaQuery<Item> criteriaQuery= criteriaBuilder.createQuery(Item.class);
+        Root<Item> itemRoot=criteriaQuery.from(Item.class);
+        Join<Item,Category> categoryItemJoin=itemRoot.join(Item_.category);
+        criteriaQuery.where(criteriaBuilder.equal(categoryItemJoin.get(Category_.name),nameCategory));
+        TypedQuery<Item> query=entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
     }
 }

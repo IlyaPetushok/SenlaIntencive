@@ -38,6 +38,8 @@ public class RatingDao extends AbstractDao<Rating, Integer> {
     @Override
     public List<Rating> selectObjects() {
         Query query = entityManager.createQuery("select rat from Rating as rat");
+        List<Rating> ratings=query.getResultList();
+        System.out.println(ratings.get(0).getUser().getName());
         return query.getResultList();
     }
 

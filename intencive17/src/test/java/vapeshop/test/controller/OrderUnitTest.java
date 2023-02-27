@@ -16,12 +16,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import project.vapeshop.config.SpringApplicationConfig;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
-import project.vapeshop.dto.product.CategoryDTO;
 import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
-import vapeshop.test.config.JpaConfig;
+import vapeshop.test.config.H2Config;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,11 +30,12 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-        classes = {JpaConfig.class})
+        classes = {H2Config.class, SpringApplicationConfig.class})
 @WebAppConfiguration
 public class OrderUnitTest {
     @Autowired
@@ -79,7 +80,7 @@ public class OrderUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
         MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", "1")).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"date\":61635502800000,\"status\":\"прибыл\",\"price\":150.0}");
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"date\":61635502800000,\"status\":\"Accepted\",\"price\":150.0}");
     }
 
 
@@ -104,6 +105,7 @@ public class OrderUnitTest {
 
     public static String asJsonString(final Object obj) {
         try {
+            System.out.println(new ObjectMapper().writeValueAsString(obj));
             return new ObjectMapper().writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);

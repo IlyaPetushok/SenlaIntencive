@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.vapeshop.dto.user.PrivilegesDTO;
 import project.vapeshop.dto.user.RoleDTO;
 import project.vapeshop.service.user.RoleService;
 
@@ -18,7 +19,7 @@ public class ControllerRole {
 
 
     @PostMapping("/add")
-    private ResponseEntity<?> insert(@RequestBody RoleDTO roleDTO) {
+    public ResponseEntity<?> insert(@RequestBody RoleDTO roleDTO) {
         try {
             return new ResponseEntity<>(service.addObject(roleDTO), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -39,6 +40,15 @@ public class ControllerRole {
     public ResponseEntity<?> read(@PathVariable("id") Integer id) {
         try {
             return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/find/privilege")
+    public ResponseEntity<?> readByPrivilege(@RequestBody PrivilegesDTO privilegesDTO){
+        try {
+            return new ResponseEntity<>(service.showObjectFindPrivilege(privilegesDTO), HttpStatus.UPGRADE_REQUIRED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
