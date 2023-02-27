@@ -28,6 +28,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class Order implements EntityId<Integer> {
     @Id
     @Column(name = "id_order")
@@ -38,6 +39,7 @@ public class Order implements EntityId<Integer> {
     @NonNull
     private Date date;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id_user", referencedColumnName = "id_user")
     @NonNull
@@ -52,6 +54,7 @@ public class Order implements EntityId<Integer> {
     @NonNull
     private Double price;
 
+    @ToString.Exclude
     @NonNull
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "order_item",

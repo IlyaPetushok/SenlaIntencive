@@ -1,9 +1,6 @@
 package project.vapeshop.entity.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import project.vapeshop.entity.EntityId;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Role implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +22,8 @@ public class Role implements EntityId<Integer> {
     @Column(name = "name_role")
     private String name;
 
-    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY)
-    private List<User> users;
 
+    @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "role_privileges",
             joinColumns = @JoinColumn(name = "rp_id_role"),

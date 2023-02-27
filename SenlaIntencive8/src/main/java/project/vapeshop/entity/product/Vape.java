@@ -19,6 +19,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Vape implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +38,7 @@ public class Vape implements EntityId<Integer> {
     @Column(name = "type_vape")
     private String type;
 
+    @ToString.Exclude
     @NonNull
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vape_id", referencedColumnName = "id_item")

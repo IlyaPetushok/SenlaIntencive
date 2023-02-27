@@ -13,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class Privileges implements EntityId<Integer> {
     @Id
-    @NonNull
     @Column(name="id_privelege")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,13 +23,5 @@ public class Privileges implements EntityId<Integer> {
     @NonNull
     @Column(name="name_privelege")
     private String name;
-
-    @ManyToMany(mappedBy = "privileges",fetch = FetchType.LAZY)
-    private List<Role> roleList;
-
-
-    public Privileges(String name) {
-        this.name = name;
-    }
 
 }
