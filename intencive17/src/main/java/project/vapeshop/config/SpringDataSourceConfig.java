@@ -63,6 +63,7 @@ public class SpringDataSourceConfig {
         Properties properties = new Properties();
         properties.put("hibernate.dialect",dialect);
         properties.put("hibernate.show_sql", true);
+        properties.put("hibernate.jdbc.batch_size", "10");
         return properties;
     }
 

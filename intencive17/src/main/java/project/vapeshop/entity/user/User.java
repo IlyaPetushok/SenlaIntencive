@@ -24,6 +24,7 @@ import java.util.Random;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class User implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,10 +43,12 @@ public class User implements EntityId<Integer> {
     @Column(name="mail")
     private String mail;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Order> orders;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id_role",referencedColumnName = "id_role")

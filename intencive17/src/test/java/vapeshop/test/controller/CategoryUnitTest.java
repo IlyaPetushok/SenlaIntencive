@@ -18,8 +18,8 @@ import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.config.SpringApplicationConfig;
 import project.vapeshop.dto.product.CategoryDTO;
 import vapeshop.test.config.H2Config;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,42 +42,42 @@ public class CategoryUnitTest {
 
     @Test
     public void testGetByIdCategory() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(get("/category/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/categories/{category-id}", "1")).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddCategory() throws Exception {
-        mockMvc.perform(post("/category/add")
+        mockMvc.perform(post("/categories")
                         .content(asJsonString(new CategoryDTO("Vape")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
-        MvcResult mvcResult1 = mockMvc.perform(get("/category/find/{id}", "4")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/categories/{id}", "4")).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testUpdateCategory() throws Exception {
-        mockMvc.perform(post("/category/update")
+        mockMvc.perform(put("/categories")
                         .content(asJsonString(new CategoryDTO(3, "Vaporizer")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1 = mockMvc.perform(get("/category/find/{id}", "3")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/categories/{id}", "3")).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":3,\"name\":\"Vaporizer\"}");
     }
 
 
     @Test()
     public void testGetAllCategory() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/category/getAll")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/categories")).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
     public void testDeleteCategory() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(post("/category/delete/{id}", "4")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(delete("/categories/{id}", "4")).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "true");
     }
 

@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Privileges implements EntityId<Integer> {
     @Id
     @Column(name="id_privelege")

@@ -19,8 +19,7 @@ import project.vapeshop.config.SpringApplicationConfig;
 import project.vapeshop.dto.user.PrivilegesDTO;
 import vapeshop.test.config.H2Config;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,11 +35,6 @@ public class PrivilegeUnitTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).dispatchOptions(true).build();
-//        mockMvc.perform(post("/privilege/add")
-//                        .content(asJsonString(new PrivilegesDTO("Add support")))
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isCreated());
     }
 
 
@@ -51,50 +45,50 @@ public class PrivilegeUnitTest {
 
     @Test
     public void testGetByIdRole() throws Exception {
-        MvcResult mvcResult1=mockMvc.perform(get("/privilege/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/privileges/{id}", "1")).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddRole() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(post("/privilege/add")
+        MvcResult mvcResult=mockMvc.perform(post("/privileges")
                         .content(asJsonString(new PrivilegesDTO("Add support")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1=mockMvc.perform(get("/privilege/find/{id}", id)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/privileges/{id}", id)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
 
     }
 
     @Test
     public void testUpdateRole() throws Exception {
-        mockMvc.perform(post("/privilege/update")
+        mockMvc.perform(put("/privileges")
                         .content(asJsonString(new PrivilegesDTO(1,"Delete user")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1=mockMvc.perform(get("/privilege/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/privileges/{id}", "1")).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":1,\"name\":\"Delete user\"}");
     }
 
 
     @Test()
     public void testGetAllRole() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(get("/privilege/getAll")).andReturn();
+        MvcResult mvcResult=mockMvc.perform(get("/privileges")).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
     public void testDeleteRole() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(post("/privilege/add")
+        MvcResult mvcResult=mockMvc.perform(post("/privileges")
                         .content(asJsonString(new PrivilegesDTO("Add support")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1=mockMvc.perform(post("/privilege/delete/{id}",id)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(delete("/privileges/{id}",id)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"true");
     }
 

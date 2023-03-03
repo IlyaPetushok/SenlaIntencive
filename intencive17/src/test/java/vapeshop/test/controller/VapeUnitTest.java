@@ -19,8 +19,8 @@ import project.vapeshop.config.SpringApplicationConfig;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.product.VapeDTO;
 import vapeshop.test.config.H2Config;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,43 +44,43 @@ public class VapeUnitTest {
 
     @Test
     public void testGetByIdVape() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(get("/vape/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/vapes/{id}", "1")).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddVape() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/vape/add")
+        MvcResult mvcResult = mockMvc.perform(post("/vapes")
                         .content(asJsonString(new VapeDTO(120, 22450, "Мод", new ItemDTOInfoForCatalog(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char idVape = mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1 = mockMvc.perform(get("/vape/find/{id}", idVape)).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/vapes/{id}", idVape)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testUpdateVape() throws Exception {
-        mockMvc.perform(post("/vape/update")
+        mockMvc.perform(put("/vapes")
                         .content(asJsonString(new VapeDTO(1,120, 22450, "Мод", new ItemDTOInfoForCatalog(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1 = mockMvc.perform(get("/vape/find/{id}", "1")).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"power\":120,\"battery\":22450,\"type\":\"Мод\",\"itemForVape\":{\"id\":1,\"photo\":\"path\\\\photo1\",\"name\":\"Мишки 3в1\"}}");
+        MvcResult mvcResult1 = mockMvc.perform(get("/vapes/{id}", "1")).andReturn();
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"power\":120,\"battery\":22450,\"type\":\"Мод\",\"itemForVape\":{\"id\":1,\"photo\":\"photo4\",\"name\":\"HotSpot BubleGum Update\"}}");
     }
 
 
     @Test()
     public void testGetAllVape() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/vape/getAll")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/vapes")).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
     public void testDeleteCategory() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(post("/vape/delete/{id}", "1")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(delete("/vapes/{id}", "1")).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "true");
     }
 

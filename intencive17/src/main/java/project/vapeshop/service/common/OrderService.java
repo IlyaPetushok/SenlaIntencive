@@ -45,7 +45,7 @@ public class OrderService {
                 .map(orderDTOFullInfo -> modelMapper.map(orderDTOFullInfo, Order.class))
                 .collect(Collectors.toList());
         return dao.insertObjects(order).stream()
-                .map(order1 -> modelMapper.map(order1, OrderDTOFullInfo.class))
+                .map(o -> modelMapper.map(o, OrderDTOFullInfo.class))
                 .collect(Collectors.toList());
     }
 

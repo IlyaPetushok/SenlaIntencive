@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IRatingDao;
 import project.vapeshop.dto.common.RatingDTOForProduct;
 import project.vapeshop.dto.common.RatingDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
@@ -19,11 +20,11 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class RatingService {
-    Dao<Rating,Integer> dao;
+    IRatingDao dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public RatingService(Dao<Rating,Integer> dao, ModelMapper modelMapper) {
+    public RatingService(IRatingDao dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }
@@ -41,8 +42,7 @@ public class RatingService {
 
     @Transactional
     public RatingDTOFullInfo addObject(RatingDTOFullInfo ratingDTOFullInfo) {
-        ratingDTOFullInfo=modelMapper.map(dao.insertObject(modelMapper.map(ratingDTOFullInfo,Rating.class)),RatingDTOFullInfo.class);
-        return ratingDTOFullInfo;
+        return modelMapper.map(dao.insertObject(modelMapper.map(ratingDTOFullInfo,Rating.class)),RatingDTOFullInfo.class);
     }
 
     @Transactional

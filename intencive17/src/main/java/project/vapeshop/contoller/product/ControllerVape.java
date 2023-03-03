@@ -8,7 +8,7 @@ import project.vapeshop.dto.product.VapeDTO;
 import project.vapeshop.service.product.VapeService;
 
 @RestController
-@RequestMapping("/vape")
+@RequestMapping("/vapes")
 public class ControllerVape {
     VapeService service;
 
@@ -18,7 +18,7 @@ public class ControllerVape {
     }
 
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody VapeDTO vapeDTO) {
         try {
             return new ResponseEntity<>(service.addItem(vapeDTO), HttpStatus.CREATED);
@@ -27,8 +27,8 @@ public class ControllerVape {
         }
     }
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> readId(@PathVariable("id") Integer id){
+    @GetMapping("/{vape-id}")
+    public ResponseEntity<?> readId(@PathVariable("vape-id") Integer id){
         try {
             return new ResponseEntity<>(service.showItem(id), HttpStatus.OK);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class ControllerVape {
         }
     }
 
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<?> read() {
         try {
             return new ResponseEntity<>(service.showItems(), HttpStatus.OK);
@@ -45,12 +45,12 @@ public class ControllerVape {
         }
     }
 
-    @PostMapping("/delete/{id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    @DeleteMapping("/{vape-id}")
+    public boolean delete(@PathVariable("vape-id") Integer id) {
         return service.deleteItem(id);
     }
 
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> update(@RequestBody VapeDTO vapeDTO) {
         try {
             return new ResponseEntity<>(service.updateItem(vapeDTO), HttpStatus.UPGRADE_REQUIRED);
@@ -59,7 +59,7 @@ public class ControllerVape {
         }
     }
 
-    @GetMapping("/show/{typeVape}")
+    @GetMapping("/type/{typeVape}")
     public ResponseEntity<?> showVapeTypeNicotine(@PathVariable("typeVape") String type) {
         try {
             return new ResponseEntity<>(service.showVapeByType(type), HttpStatus.UPGRADE_REQUIRED);

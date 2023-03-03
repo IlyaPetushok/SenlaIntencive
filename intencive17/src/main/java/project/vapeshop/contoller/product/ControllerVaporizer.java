@@ -8,7 +8,7 @@ import project.vapeshop.dto.product.VaporizerDTO;
 import project.vapeshop.service.product.VaporizerService;
 
 @RestController
-@RequestMapping("/vaporizer")
+@RequestMapping("/vaporizers")
 public class ControllerVaporizer {
     VaporizerService service;
 
@@ -18,7 +18,7 @@ public class ControllerVaporizer {
     }
 
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody VaporizerDTO vaporizerDTO) {
         try {
             return new ResponseEntity<>(service.addItem(vaporizerDTO), HttpStatus.CREATED);
@@ -27,7 +27,7 @@ public class ControllerVaporizer {
         }
     }
 
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<?> read() {
         try {
             return new ResponseEntity<>(service.showItems(), HttpStatus.OK);
@@ -36,8 +36,8 @@ public class ControllerVaporizer {
         }
     }
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> read(@PathVariable("id") Integer id) {
+    @GetMapping("/{vape-id}")
+    public ResponseEntity<?> read(@PathVariable("vape-id") Integer id) {
         try {
             return new ResponseEntity<>(service.showItem(id), HttpStatus.OK);
         } catch (Exception e) {
@@ -45,12 +45,12 @@ public class ControllerVaporizer {
         }
     }
 
-    @PostMapping("/delete/{id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    @DeleteMapping("/{vape-id}")
+    public boolean delete(@PathVariable("vape-id") Integer id) {
        return service.deleteItem(id);
     }
 
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> update(@RequestBody VaporizerDTO vaporizerDTO) {
         try {
             return new ResponseEntity<>(service.updateItem(vaporizerDTO), HttpStatus.UPGRADE_REQUIRED);
@@ -59,7 +59,7 @@ public class ControllerVaporizer {
         }
     }
 
-    @GetMapping("/show/{typeVaporizer}")
+    @GetMapping("/type/{typeVaporizer}")
     public ResponseEntity<?> showVaporizerTypeNicotine(@PathVariable("typeVaporizer") String type) {
         try {
             return new ResponseEntity<>(service.showVaporizerByType(type), HttpStatus.UPGRADE_REQUIRED);

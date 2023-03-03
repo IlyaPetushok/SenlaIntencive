@@ -28,8 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,7 +52,7 @@ public class OrderUnitTest {
 
     @Test
     public void testGetByIdOrder() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/orders/{id}", "1")).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
@@ -61,12 +60,12 @@ public class OrderUnitTest {
     public void testAddOrder() throws Exception {
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item(1));
-        char id=mockMvc.perform(post("/order/add")
+        char id=mockMvc.perform(post("/orders")
                         .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26), StatusOrder.Sent,150.0,new User(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", id)).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/orders/{id}", id)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
@@ -74,19 +73,19 @@ public class OrderUnitTest {
     public void testUpdateCategory() throws Exception {
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item(1));
-        mockMvc.perform(post("/order/update")
+        mockMvc.perform(put("/orders")
                         .content(asJsonString(new OrderDTOFullInfo(1,new Date(2023, Calendar.FEBRUARY,26),StatusOrder.Accepted,150.0,new User(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1 = mockMvc.perform(get("/order/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/orders/{id}", "1")).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"date\":61635502800000,\"status\":\"Accepted\",\"price\":150.0}");
     }
 
 
     @Test()
     public void testGetAllOrder() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/order/getAll")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/orders")).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
@@ -94,12 +93,12 @@ public class OrderUnitTest {
     public void testDeleteOrder() throws Exception {
         List<Item> itemList = new ArrayList<>();
         itemList.add(new Item(1));
-        mockMvc.perform(post("/order/add")
+        mockMvc.perform(post("/orders")
                         .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26),StatusOrder.Arrived,150.0,new User(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
-        MvcResult mvcResult1 = mockMvc.perform(post("/order/delete/{id}", "2")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(delete("/orders/{id}", "2")).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "true");
     }
 

@@ -22,8 +22,7 @@ import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
 import vapeshop.test.config.H2Config;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -47,30 +46,30 @@ public class RatingUnitTest {
 
     @Test
     public void testGetByIdRating() throws Exception {
-        MvcResult mvcResult1=mockMvc.perform(get("/rating/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/ratings/{id}", "1")).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddRating() throws Exception {
-        char id=mockMvc.perform(post("/rating/add")
+        char id=mockMvc.perform(post("/ratings")
                         .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1 = mockMvc.perform(get("/rating/find/{id}", id)).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/ratings/{id}", id)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":"+id+",\"comment\":\"good\",\"quantityStar\":3,\"idUser\":1}");
 
     }
 
     @Test
     public void testUpdateRating() throws Exception {
-        char id=mockMvc.perform(post("/rating/add")
+        char id=mockMvc.perform(post("/ratings")
                         .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult = mockMvc.perform(post("/rating/update")
+        MvcResult mvcResult = mockMvc.perform(put("/ratings")
                         .content(asJsonString(new RatingDTOFullInfo(Character.digit(id,10),"bad", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -81,18 +80,18 @@ public class RatingUnitTest {
 
     @Test()
     public void testGetAllRating() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/rating/getAll")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/ratings")).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
     public void testDeleteRating() throws Exception {
-        char id=mockMvc.perform(post("/rating/add")
+        char id=mockMvc.perform(post("/ratings")
                         .content(asJsonString(new RatingDTOFullInfo("good", 3, new ItemDTOInfoForCatalog(1), new UserDTOAfterAuthorization(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult = mockMvc.perform(post("/rating/delete/{id}", id))
+        MvcResult mvcResult = mockMvc.perform(delete("/ratings/{id}", id))
                 .andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }

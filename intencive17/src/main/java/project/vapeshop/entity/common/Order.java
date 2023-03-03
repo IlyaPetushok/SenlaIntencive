@@ -29,6 +29,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Order implements EntityId<Integer> {
     @Id
     @Column(name = "id_order")
@@ -39,6 +40,7 @@ public class Order implements EntityId<Integer> {
     @NonNull
     private Date date;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id_user", referencedColumnName = "id_user")
@@ -54,6 +56,7 @@ public class Order implements EntityId<Integer> {
     @NonNull
     private Double price;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @NonNull
     @ManyToMany(fetch = FetchType.LAZY)

@@ -20,7 +20,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Vape implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +41,7 @@ public class Vape implements EntityId<Integer> {
     @Column(name = "type_vape")
     private String type;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @NonNull
     @OneToOne(fetch = FetchType.LAZY)

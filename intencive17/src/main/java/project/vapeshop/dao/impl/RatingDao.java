@@ -3,6 +3,7 @@ package project.vapeshop.dao.impl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IRatingDao;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Order_;
 import project.vapeshop.entity.common.Rating;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class RatingDao extends AbstractDao<Rating, Integer> {
+public class RatingDao extends AbstractDao<Rating, Integer> implements IRatingDao {
 
     @Override
     public Rating insertObject(Rating rating) {

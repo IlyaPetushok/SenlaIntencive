@@ -8,7 +8,7 @@ import project.vapeshop.dto.user.RoleDTO;
 import project.vapeshop.service.user.RoleService;
 
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/roles")
 public class ControllerRole {
     RoleService service;
 
@@ -18,7 +18,7 @@ public class ControllerRole {
     }
 
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody RoleDTO roleDTO) {
         try {
             return new ResponseEntity<>(service.addObject(roleDTO), HttpStatus.CREATED);
@@ -27,7 +27,7 @@ public class ControllerRole {
         }
     }
 
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<?> read() {
         try {
             return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
@@ -36,8 +36,8 @@ public class ControllerRole {
         }
     }
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> read(@PathVariable("id") Integer id) {
+    @GetMapping("/{role-id}")
+    public ResponseEntity<?> read(@PathVariable("role-id") Integer id) {
         try {
             return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class ControllerRole {
         }
     }
 
-    @GetMapping("/find/privilege")
+    @GetMapping("/privilege")
     public ResponseEntity<?> readByPrivilege(@RequestBody PrivilegesDTO privilegesDTO){
         try {
             return new ResponseEntity<>(service.showObjectFindPrivilege(privilegesDTO), HttpStatus.UPGRADE_REQUIRED);
@@ -55,12 +55,12 @@ public class ControllerRole {
     }
 
 
-    @PostMapping("/delete/{id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    @DeleteMapping("/{role-id}")
+    public boolean delete(@PathVariable("role-id") Integer id) {
         return service.deleteObject(id);
     }
 
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> update(@RequestBody RoleDTO roleDTO) {
         try {
             return new ResponseEntity<>(service.updateObject(roleDTO), HttpStatus.UPGRADE_REQUIRED);

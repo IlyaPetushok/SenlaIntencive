@@ -16,6 +16,7 @@ import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.product.Vape;
 import project.vapeshop.entity.user.Role;
 import project.vapeshop.entity.user.User;
+import project.vapeshop.exception.NotFoundException;
 import project.vapeshop.service.user.UserService;
 
 import java.util.ArrayList;
@@ -44,9 +45,8 @@ public class UserUnitTest {
     private final UserDTOForRegistration userDto =new UserDTOForRegistration(2,"Cluch","Vasya","Pupkin","login2","pass2","vasya@mail",new Role(1));
 
     @Test
-    public void testGetByIdCategory(){
+    public void testGetByIdCategory() throws NotFoundException {
         when(userDao.selectObject(1)).thenReturn(user);
-
         Assertions.assertEquals(userService.showItem(1).getId(), user.getId());
         verify(userDao,times(1)).selectObject(any());
     }

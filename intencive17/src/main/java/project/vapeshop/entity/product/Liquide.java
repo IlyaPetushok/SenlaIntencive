@@ -19,12 +19,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Liquide implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_liquide")
     private Integer id;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @NonNull
     @OneToOne(fetch = FetchType.LAZY)

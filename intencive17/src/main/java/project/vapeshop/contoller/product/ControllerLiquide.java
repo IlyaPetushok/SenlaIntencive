@@ -3,18 +3,12 @@ package project.vapeshop.contoller.product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.product.LiquideDTO;
-import project.vapeshop.entity.product.Item;
-import project.vapeshop.mapper.MapperJson;
 import project.vapeshop.service.product.LiquideService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
-@RequestMapping("/liquide")
+@RequestMapping("/liquides")
 public class ControllerLiquide {
     LiquideService service;
 
@@ -24,7 +18,7 @@ public class ControllerLiquide {
     }
 
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody LiquideDTO liquideDTO) {
         try {
             return new ResponseEntity<>(service.addItem(liquideDTO), HttpStatus.CREATED);
@@ -33,8 +27,8 @@ public class ControllerLiquide {
         }
     }
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> readId(@PathVariable("id") Integer id){
+    @GetMapping("/{liquide-id}")
+    public ResponseEntity<?> readId(@PathVariable("liquide-id") Integer id){
         try {
             return new ResponseEntity<>(service.showItem(id), HttpStatus.OK);
         } catch (Exception e) {
@@ -42,7 +36,7 @@ public class ControllerLiquide {
         }
     }
 
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<?> read() {
         try {
             return new ResponseEntity<>(service.showItems(), HttpStatus.OK);
@@ -51,12 +45,12 @@ public class ControllerLiquide {
         }
     }
 
-    @PostMapping("/delete/{id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    @DeleteMapping("/{liquide-id}")
+    public boolean delete(@PathVariable("liquide-id") Integer id) {
         return service.deleteItem(id);
     }
 
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> update(@RequestBody LiquideDTO liquideDTO) {
         try {
             return new ResponseEntity<>(service.updateItem(liquideDTO), HttpStatus.UPGRADE_REQUIRED);
@@ -66,7 +60,7 @@ public class ControllerLiquide {
     }
 
 
-    @GetMapping("/show/{typeNicotine}")
+    @GetMapping("/type/{typeNicotine}")
     public ResponseEntity<?> showLiquideTypeNicotine(@PathVariable("typeNicotine") String typeNicotine){
         try {
             return new ResponseEntity<>(service.showLiquideByNicotine(typeNicotine), HttpStatus.UPGRADE_REQUIRED);

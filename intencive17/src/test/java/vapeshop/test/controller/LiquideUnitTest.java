@@ -22,8 +22,7 @@ import vapeshop.test.config.H2Config;
 
 import java.math.BigDecimal;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -48,67 +47,67 @@ public class LiquideUnitTest {
 
     @Test
     public void testGetByIdLiquide() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(get("/liquide/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/liquides/{id}", "1")).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddLiquide() throws Exception {
-        char idItem=mockMvc.perform(post("/item/add")
+        char idItem=mockMvc.perform(post("/items")
                         .content(asJsonString(new ItemDTOFullInfo("photo4", "HotSpot BubleGum", new Category("Испарители,Картриджы,Койлы"), new BigDecimal(Double.toString(23.0)), 15)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        char id = mockMvc.perform(post("/liquide/add")
+        char id = mockMvc.perform(post("/liquides")
                         .content(asJsonString(new LiquideDTO(new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Ежевика", 45, "солевой", 30)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1 = mockMvc.perform(get("/liquide/find/{id}", id)).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/liquides/{id}", id)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
-    public void testUpdateCategory() throws Exception {
-        char idItem=mockMvc.perform(post("/item/add")
+    public void testUpdateLiquide() throws Exception {
+        char idItem=mockMvc.perform(post("/items")
                         .content(asJsonString(new ItemDTOFullInfo("photo4", "HotSpot BubleGum", new Category("Испарители,Картриджы,Койлы"), new BigDecimal(Double.toString(23.0)), 15)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        char id = mockMvc.perform(post("/liquide/add")
+        char id = mockMvc.perform(post("/liquides")
                         .content(asJsonString(new LiquideDTO(new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Ежевика", 45, "солевой", 30)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        mockMvc.perform(post("/liquide/update")
+        mockMvc.perform(put("/liquides")
                         .content(asJsonString(new LiquideDTO(Character.digit(id,10),new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Клубника", 45, "солевой", 30)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1 = mockMvc.perform(get("/liquide/find/{id}", id)).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":2,\"item\":{\"id\":4,\"photo\":\"photo4\",\"name\":\"HotSpot BubleGum\"},\"flavour\":\"Клубника\",\"fortress\":45,\"typeNicotine\":\"солевой\",\"volume\":30}");
+        MvcResult mvcResult1 = mockMvc.perform(get("/liquides/{id}", id)).andReturn();
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":"+id+",\"item\":{\"id\":"+idItem+",\"photo\":\"photo4\",\"name\":\"HotSpot BubleGum\"},\"flavour\":\"Клубника\",\"fortress\":45,\"typeNicotine\":\"солевой\",\"volume\":30}");
     }
 
 
     @Test()
     public void testGetAllCategory() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/liquide/getAll")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/liquides")).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
     public void testDeleteCategory() throws Exception {
-        char idItem=mockMvc.perform(post("/item/add")
+        char idItem=mockMvc.perform(post("/items")
                         .content(asJsonString(new ItemDTOFullInfo("photo4", "HotSpot BubleGum", new Category("Испарители,Картриджы,Койлы"), new BigDecimal(Double.toString(23.0)), 15)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        char id = mockMvc.perform(post("/liquide/add")
+        char id = mockMvc.perform(post("/liquides")
                         .content(asJsonString(new LiquideDTO(new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Ежевика", 45, "солевой", 30)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1 = mockMvc.perform(post("/liquide/delete/{id}", id)).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(delete("/liquides/{id}", id)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "true");
     }
 

@@ -29,6 +29,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Item implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,7 @@ public class Item implements EntityId<Integer> {
     private String name;
 
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_category", referencedColumnName = "id_category")
@@ -52,23 +54,23 @@ public class Item implements EntityId<Integer> {
     private int quantity;
 
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<Rating> ratings;
 
-    @ToString.Exclude
-    @ManyToMany(mappedBy = "items", fetch = FetchType.LAZY)
-    private List<Order> order;
-
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToOne(mappedBy = "itemForLiquide",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Liquide liquide;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToOne(mappedBy = "itemForVaporizer", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     private Vaporizer vaporizer;
 
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToOne(mappedBy = "itemForVape", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     private Vape vape;

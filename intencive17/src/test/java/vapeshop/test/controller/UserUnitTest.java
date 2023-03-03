@@ -20,8 +20,7 @@ import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.entity.user.Role;
 import vapeshop.test.config.H2Config;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,49 +45,49 @@ public class UserUnitTest {
 
     @Test
     public void testGetByIdUser() throws Exception {
-        MvcResult mvcResult1=mockMvc.perform(get("/user/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/users/{id}", "1")).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddUser() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(post("/user/add")
+        MvcResult mvcResult=mockMvc.perform(post("/users")
                         .content(asJsonString(new UserDTOForRegistration("Petushok","Ilya","Aleksandrovich","login22222","pass","a332222@mail",new Role(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1=mockMvc.perform(get("/user/find/{id}", id)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/users/{id}", id)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testUpdateUser() throws Exception {
-        mockMvc.perform(post("/user/update")
+        mockMvc.perform(put("/users")
                         .content(asJsonString(new UserDTOForRegistration(1,"Pet","Ilsya","Aleksa","log","pass","a2@mail",new Role(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1=mockMvc.perform(get("/user/find/{id}", "1")).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/users/{id}", "1")).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),asJsonString(new UserDTOForRegistration(1,"Pet","Ilsya","Aleksa","log","pass","a2@mail",new Role(1))));
     }
 
 
     @Test()
-    public void testGetAllCategory() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(get("/user/getAll")).andReturn();
+    public void testGetAlUser() throws Exception {
+        MvcResult mvcResult=mockMvc.perform(get("/users")).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
-    public void testDeleteCategory() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(post("/user/add")
+    public void testDeleteUser() throws Exception {
+        MvcResult mvcResult=mockMvc.perform(post("/users")
                         .content(asJsonString(new UserDTOForRegistration("Pet","Ilsya","Aleksa","log1111","pass","a11+2@mail",new Role(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1=mockMvc.perform(post("/user/delete/{id}",id)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(delete("/users/{id}",id)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"true");
     }
 

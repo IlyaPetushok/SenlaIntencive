@@ -36,17 +36,6 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> implements ILiquide
         return query.getResultList();
     }
 
-    public List<Item> selectObjectTypeNicotine(){
-        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
-        CriteriaQuery<Object> criteriaQuery= criteriaBuilder.createQuery();
-        Root<Liquide> liquideRoot= criteriaQuery.from(Liquide.class);
-        criteriaQuery.select(liquideRoot)
-                .where(liquideRoot.get(Liquide_.typeNicotine)
-                        .in("солевой","обычный"));
-        Query query= entityManager.createQuery(criteriaQuery);
-        return query.getResultList();
-    }
-
     @Override
     public  Liquide selectObject(Integer id) {
         EntityGraph<?> entityGraph= entityManager.getEntityGraph("liquide-with-item");

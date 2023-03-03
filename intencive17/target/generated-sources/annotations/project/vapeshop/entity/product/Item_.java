@@ -5,7 +5,6 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
@@ -21,7 +20,6 @@ public abstract class Item_ {
 	public static volatile SingularAttribute<Item, String> photo;
 	public static volatile SingularAttribute<Item, Integer> id;
 	public static volatile SingularAttribute<Item, Category> category;
-	public static volatile ListAttribute<Item, Order> order;
 	public static volatile SingularAttribute<Item, Vaporizer> vaporizer;
 
 	public static final String QUANTITY = "quantity";
@@ -33,7 +31,6 @@ public abstract class Item_ {
 	public static final String PHOTO = "photo";
 	public static final String ID = "id";
 	public static final String CATEGORY = "category";
-	public static final String ORDER = "order";
 	public static final String VAPORIZER = "vaporizer";
 
 }

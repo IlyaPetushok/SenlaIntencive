@@ -6,10 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.user.UserDTOForAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
+import project.vapeshop.exception.NotFoundException;
 import project.vapeshop.service.user.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class ControllerUser {
     UserService service;
 
@@ -19,53 +20,33 @@ public class ControllerUser {
     }
 
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody UserDTOForRegistration userDTOForRegistration) {
-        try {
             return new ResponseEntity<>(service.addItem(userDTOForRegistration), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<?> read() {
-        try {
             return new ResponseEntity<>(service.showItems(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
-    @PostMapping("/delete/{id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    @DeleteMapping("/{user-id}")
+    public boolean delete(@PathVariable("user-id") Integer id) {
         return service.deleteItem(id);
     }
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> read(@PathVariable("id") Integer id) {
-        try {
+    @GetMapping("/{user-id}")
+    public ResponseEntity<?> read(@PathVariable("user-id") Integer id)  {
             return new ResponseEntity<>(service.showItem(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> update(@RequestBody UserDTOForRegistration userDTOForRegistration) {
-        try {
             return new ResponseEntity<>(service.updateItem(userDTOForRegistration), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @PostMapping("/authorization")
     public ResponseEntity<?> authorization(@RequestBody UserDTOForAuthorization userDTOForAuthorization) {
-        try {
             return new ResponseEntity<>(service.userFindByLoginWithPassword(userDTOForAuthorization), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 }
