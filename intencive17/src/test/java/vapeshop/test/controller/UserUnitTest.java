@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.config.SpringApplicationConfig;
+import project.vapeshop.dto.user.RoleDTO;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.entity.user.Role;
 import vapeshop.test.config.H2Config;
@@ -52,7 +53,7 @@ public class UserUnitTest {
     @Test
     public void testAddUser() throws Exception {
         MvcResult mvcResult=mockMvc.perform(post("/users")
-                        .content(asJsonString(new UserDTOForRegistration("Petushok","Ilya","Aleksandrovich","login22222","pass","a332222@mail",new Role(1))))
+                        .content(asJsonString(new UserDTOForRegistration("Petushok","Ilya","Aleksandrovich","login22222","pass","a332222@mail",new RoleDTO(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
@@ -64,12 +65,12 @@ public class UserUnitTest {
     @Test
     public void testUpdateUser() throws Exception {
         mockMvc.perform(put("/users")
-                        .content(asJsonString(new UserDTOForRegistration(1,"Pet","Ilsya","Aleksa","log","pass","a2@mail",new Role(1))))
+                        .content(asJsonString(new UserDTOForRegistration(1,"Pet","Ilsya","Aleksa","login","password","a212313432532@mail",new RoleDTO(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
         MvcResult mvcResult1=mockMvc.perform(get("/users/{id}", "1")).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),asJsonString(new UserDTOForRegistration(1,"Pet","Ilsya","Aleksa","log","pass","a2@mail",new Role(1))));
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":1,\"surname\":\"Pet\",\"name\":\"Ilsya\",\"patronymic\":\"Aleksa\",\"login\":\"login\",\"password\":\"password\",\"mail\":\"a212313432532@mail\",\"role\":{\"id\":1,\"name\":\"user\"}}");
     }
 
 
@@ -82,7 +83,7 @@ public class UserUnitTest {
     @Test()
     public void testDeleteUser() throws Exception {
         MvcResult mvcResult=mockMvc.perform(post("/users")
-                        .content(asJsonString(new UserDTOForRegistration("Pet","Ilsya","Aleksa","log1111","pass","a11+2@mail",new Role(1))))
+                        .content(asJsonString(new UserDTOForRegistration("Pet","Ilsya","Aleksa","log1111","pass","a11+2@mail",new RoleDTO(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();

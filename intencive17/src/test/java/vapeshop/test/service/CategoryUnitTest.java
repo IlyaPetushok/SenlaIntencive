@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.mockito.*;
 import org.modelmapper.ModelMapper;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.ICategoryDao;
 import project.vapeshop.dto.product.CategoryDTO;
 import project.vapeshop.entity.product.Category;
 import project.vapeshop.service.product.CategoryService;
@@ -21,7 +22,7 @@ public class CategoryUnitTest {
     private CategoryService categoryService;
 
     @Mock
-    private Dao<Category,Integer> categoryDao;
+    private ICategoryDao categoryDao;
 
     @Spy
     private ModelMapper modelMapper;

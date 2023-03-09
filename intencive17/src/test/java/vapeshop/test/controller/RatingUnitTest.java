@@ -58,7 +58,7 @@ public class RatingUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
         MvcResult mvcResult1 = mockMvc.perform(get("/ratings/{id}", id)).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":"+id+",\"comment\":\"good\",\"quantityStar\":3,\"idUser\":1}");
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":"+id+",\"comment\":\"good\",\"quantityStar\":3,\"user\":{\"id\":1,\"surname\":\"Петушок\",\"name\":\"Илья\",\"patronymic\":\"Александрович\"}}");
 
     }
 
@@ -74,7 +74,7 @@ public class RatingUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired()).andReturn();
-        Assertions.assertEquals(mvcResult.getResponse().getContentAsString(), "{\"id\":"+id+",\"comment\":\"bad\",\"quantityStar\":3,\"idUser\":1}");
+        Assertions.assertEquals(mvcResult.getResponse().getContentAsString(), "{\"id\":3,\"comment\":\"bad\",\"quantityStar\":3,\"user\":{\"id\":1,\"surname\":\"Ð\u009FÐµÑ\u0082Ñ\u0083Ñ\u0088Ð¾Ðº\",\"name\":\"Ð\u0098Ð»Ñ\u008CÑ\u008F\",\"patronymic\":\"Ð\u0090Ð»ÐµÐºÑ\u0081Ð°Ð½Ð´Ñ\u0080Ð¾Ð²Ð¸Ñ\u0087\"}}");
     }
 
 

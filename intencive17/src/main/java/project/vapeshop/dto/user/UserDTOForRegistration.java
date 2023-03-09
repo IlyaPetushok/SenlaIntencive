@@ -23,6 +23,6 @@ public class UserDTOForRegistration {
     @NonNull
     private String mail;
     @NonNull
-    private Role idRole;
+    private RoleDTO role;
 
 }

@@ -4,10 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.vapeshop.dao.Dao;
 import project.vapeshop.dao.IItemDao;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
+import project.vapeshop.entity.type.CategoryType;
 import project.vapeshop.entity.product.Item;
 
 import java.util.List;
@@ -66,7 +66,7 @@ public class ItemService {
 
 
     public List<ItemDTOInfoForCatalog> showItemByCategory(String nameCategory){
-        List<Item> items =dao.selectFindByCategory(nameCategory);
+        List<Item> items =dao.selectFindByCategory(CategoryType.getTypeValue(nameCategory));
         return items.stream()
                 .map(item -> modelMapper.map(item,ItemDTOInfoForCatalog.class))
                 .collect(Collectors.toList());

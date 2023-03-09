@@ -1,6 +1,7 @@
 package project.vapeshop.dto.common;
 
 import lombok.*;
+import project.vapeshop.dto.user.UserDTOForCommon;
 
 @Getter
 @Setter
@@ -14,5 +15,5 @@ public class RatingDTOForProduct {
     @NonNull
     private Integer quantityStar;
     @NonNull
-    private Integer idUser;
+    private UserDTOForCommon user;
 }

@@ -46,10 +46,7 @@ public class UserTest {
 
     @Test
     public void updateUserTest(){
-        dao.insertObject(new User("Petushok","Ilya","Aleksandrovich","logi11n","pass","a1133@mail",new Role(1)));
-        List<User> userList= dao.selectObjects();
-        int id= dao.selectObjects().get(userList.size()-1).getId();
-        dao.update(new User(id,"Petushok","Ilya Update","Aleksandrovich","login12","pass","a1233@mail",new Role(1)));
-        assert dao.selectObject(id).getName().equals("Ilya Update") : "проблемы с user update";
+        User user=dao.update(new User(1,"Petushok","Ilya Update","Aleksandrovich","login12","pass","a1233@mail",new Role(1)));
+        assert dao.selectObject(user.getId()).getName().equals("Ilya Update") : "проблемы с user update";
     }
 }

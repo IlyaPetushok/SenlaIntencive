@@ -1,4 +1,5 @@
 package project.vapeshop.contoller.user;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,38 +21,22 @@ public class ControllerRole {
 
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody RoleDTO roleDTO) {
-        try {
-            return new ResponseEntity<>(service.addObject(roleDTO), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.addObject(roleDTO), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<?> read() {
-        try {
-            return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
     }
 
     @GetMapping("/{role-id}")
     public ResponseEntity<?> read(@PathVariable("role-id") Integer id) {
-        try {
-            return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
     }
 
     @GetMapping("/privilege")
-    public ResponseEntity<?> readByPrivilege(@RequestBody PrivilegesDTO privilegesDTO){
-        try {
-            return new ResponseEntity<>(service.showObjectFindPrivilege(privilegesDTO), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> readByPrivilege(@RequestBody PrivilegesDTO privilegesDTO) {
+        return new ResponseEntity<>(service.showObjectFindPrivilege(privilegesDTO), HttpStatus.UPGRADE_REQUIRED);
     }
 
 
@@ -62,10 +47,6 @@ public class ControllerRole {
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody RoleDTO roleDTO) {
-        try {
-            return new ResponseEntity<>(service.updateObject(roleDTO), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.updateObject(roleDTO), HttpStatus.UPGRADE_REQUIRED);
     }
 }

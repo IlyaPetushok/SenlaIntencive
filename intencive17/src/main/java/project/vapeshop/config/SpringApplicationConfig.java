@@ -33,6 +33,8 @@ public class SpringApplicationConfig implements WebMvcConfigurer {
         configurer.defaultContentType(MediaType.APPLICATION_JSON_UTF8);
     }
 
+
+
     @Bean
     public ModelMapper getMapper(){
         return new ModelMapper();

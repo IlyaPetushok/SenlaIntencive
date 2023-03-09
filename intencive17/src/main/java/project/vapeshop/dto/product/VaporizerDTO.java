@@ -13,6 +13,4 @@ public class VaporizerDTO {
     private Double resistance;
     @NonNull
     private String type;
-    @NonNull
-    private ItemDTOInfoForCatalog itemForVaporizer;
 }

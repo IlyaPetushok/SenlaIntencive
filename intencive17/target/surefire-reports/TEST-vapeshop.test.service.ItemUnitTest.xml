@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="4" failures="0" name="vapeshop.test.service.ItemUnitTest" time="0.018" errors="0" skipped="0">
+<testsuite tests="4" failures="0" name="vapeshop.test.service.ItemUnitTest" time="0.139" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2021.2.3"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
@@ -61,8 +61,8 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="vapeshop.test.service.ItemUnitTest" name="testGetByIdItem" time="0"/>
-  <testcase classname="vapeshop.test.service.ItemUnitTest" name="testAddItem" time="0"/>
-  <testcase classname="vapeshop.test.service.ItemUnitTest" name="testGetAllItems" time="0.004"/>
+  <testcase classname="vapeshop.test.service.ItemUnitTest" name="testGetByIdItem" time="0.103"/>
+  <testcase classname="vapeshop.test.service.ItemUnitTest" name="testAddItem" time="0.014"/>
+  <testcase classname="vapeshop.test.service.ItemUnitTest" name="testGetAllItems" time="0.008"/>
   <testcase classname="vapeshop.test.service.ItemUnitTest" name="testGetUpdateItem" time="0.014"/>
 </testsuite>

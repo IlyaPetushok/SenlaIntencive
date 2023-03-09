@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.vapeshop.dto.product.VapeDTO;
+import project.vapeshop.dto.product.VapeDTOFullInfo;
 import project.vapeshop.service.product.VapeService;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 @RestController
 @RequestMapping("/vapes")
@@ -19,30 +22,18 @@ public class ControllerVape {
 
 
     @PostMapping
-    public ResponseEntity<?> insert(@RequestBody VapeDTO vapeDTO) {
-        try {
-            return new ResponseEntity<>(service.addItem(vapeDTO), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> insert(@RequestBody VapeDTOFullInfo vapeDTOFullInfo) {
+            return new ResponseEntity<>(service.addItem(vapeDTOFullInfo), HttpStatus.CREATED);
     }
 
     @GetMapping("/{vape-id}")
     public ResponseEntity<?> readId(@PathVariable("vape-id") Integer id){
-        try {
             return new ResponseEntity<>(service.showItem(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @GetMapping
     public ResponseEntity<?> read() {
-        try {
             return new ResponseEntity<>(service.showItems(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @DeleteMapping("/{vape-id}")
@@ -51,21 +42,12 @@ public class ControllerVape {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody VapeDTO vapeDTO) {
-        try {
-            return new ResponseEntity<>(service.updateItem(vapeDTO), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> update(@RequestBody VapeDTOFullInfo vapeDTOFullInfo) {
+            return new ResponseEntity<>(service.updateItem(vapeDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
     }
 
     @GetMapping("/type/{typeVape}")
-    public ResponseEntity<?> showVapeTypeNicotine(@PathVariable("typeVape") String type) {
-        try {
-            return new ResponseEntity<>(service.showVapeByType(type), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        }
+    public ResponseEntity<?> showVapeTypeNicotine(@PathVariable("typeVape") String type){
+        return new ResponseEntity<>(service.showVapeByType(type), HttpStatus.UPGRADE_REQUIRED);
     }
 }

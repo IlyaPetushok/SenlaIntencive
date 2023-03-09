@@ -8,6 +8,7 @@ import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.service.product.CategoryService;
 import project.vapeshop.service.product.ItemService;
+
 import java.util.List;
 
 @RestController
@@ -24,30 +25,18 @@ public class ControllerItem {
 
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody ItemDTOFullInfo item) {
-        try {
-            return new ResponseEntity<>(itemService.addItem(item), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(itemService.addItem(item), HttpStatus.CREATED);
     }
 
 
     @GetMapping
     public ResponseEntity<List<ItemDTOInfoForCatalog>> read() {
-        try {
-            return new ResponseEntity<>(itemService.showItems(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(itemService.showItems(), HttpStatus.OK);
     }
 
     @GetMapping("/{item-id}")
     public ResponseEntity<?> readId(@PathVariable("item-id") Integer id) {
-        try {
-            return new ResponseEntity<>(itemService.showItem(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(itemService.showItem(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{item-id}")
@@ -57,19 +46,11 @@ public class ControllerItem {
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody ItemDTOFullInfo itemDTOFullInfo) {
-        try {
-            return new ResponseEntity<>(itemService.updateItem(itemDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(itemService.updateItem(itemDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<?> readItemByCategory(@PathVariable("category") String nameCategory){
-        try {
-            return new ResponseEntity<>(itemService.showItemByCategory(nameCategory), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> readItemByCategory(@PathVariable("category") String nameCategory) {
+        return new ResponseEntity<>(itemService.showItemByCategory(nameCategory), HttpStatus.OK);
     }
 }

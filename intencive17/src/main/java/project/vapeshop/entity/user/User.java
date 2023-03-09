@@ -43,10 +43,10 @@ public class User implements EntityId<Integer> {
     @Column(name="mail")
     private String mail;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
-    private List<Order> orders;
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+//    private List<Order> orders;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -60,17 +60,6 @@ public class User implements EntityId<Integer> {
     }
 
     public User(String surname, String name, String patronymic, String login, String password, String mail, Role role) {
-        this.surname = surname;
-        this.name = name;
-        this.patronymic = patronymic;
-        this.login = login;
-        this.password = password;
-        this.mail = mail;
-        this.role = role;
-    }
-
-    public User(Integer id, String surname, String name, String patronymic, String login, String password, String mail, Role role) {
-        this.id = id;
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;

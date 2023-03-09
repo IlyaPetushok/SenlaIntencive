@@ -23,4 +23,7 @@ public class ItemDTOFullInfo {
     @NonNull
     private Integer quantity;
 
+    public ItemDTOFullInfo(Integer id) {
+        this.id = id;
+    }
 }

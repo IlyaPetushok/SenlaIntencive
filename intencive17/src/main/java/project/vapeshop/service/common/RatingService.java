@@ -4,16 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.vapeshop.dao.Dao;
 import project.vapeshop.dao.IRatingDao;
 import project.vapeshop.dto.common.RatingDTOForProduct;
 import project.vapeshop.dto.common.RatingDTOFullInfo;
-import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
-import project.vapeshop.dto.user.UserDTOAfterAuthorization;
 import project.vapeshop.entity.common.Rating;
-import project.vapeshop.entity.product.Item;
-import project.vapeshop.entity.user.User;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

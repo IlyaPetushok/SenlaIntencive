@@ -20,42 +20,26 @@ public class ControllerRating {
 
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody RatingDTOFullInfo ratingDTOFullInfo) {
-        try {
-            return new ResponseEntity<>(service.addObject(ratingDTOFullInfo), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.addObject(ratingDTOFullInfo), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<?> read() {
-        try {
-            return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
     }
 
     @GetMapping("/{rating-id}")
     public ResponseEntity<?> readId(@PathVariable("rating-id") Integer id) {
-        try {
-            return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{rating-id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    public boolean delete(@PathVariable("rating-id") Integer id) {
         return service.deleteObject(id);
     }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody RatingDTOFullInfo ratingDTOFullInfo) {
-        try {
-            return new ResponseEntity<>(service.updateObject(ratingDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.updateObject(ratingDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
     }
 }

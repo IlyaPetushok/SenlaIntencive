@@ -28,12 +28,12 @@ public class RatingTest {
     public void createRatingTest(){
         dao.insertObject( new Rating("good", 5, new Item(1), new User(1)));
         int id=dao.selectObjects().get(dao.selectObjects().size()-1).getId();
-        assert dao.selectObject(id).getComment().equals("good") : "проблемы с category";
+        assert dao.selectObject(id).getComment().equals("good") : "проблемы с rating";
     }
 
     @Test
     public void selectRatingTest(){
-        assert dao.selectObject(1).getComment().equals("Очень вкусная жижа") : "проблемы с category";
+        assert dao.selectObject(1).getComment().equals("Очень вкусная жижа") : "проблемы с rating";
     }
 
     @Test
@@ -42,15 +42,12 @@ public class RatingTest {
         List<Rating> ratingList= dao.selectObjects();
         int id= dao.selectObjects().get(ratingList.size()-1).getId();
         dao.delete(id);
-        assert dao.selectObjects().size()!=ratingList.size():"проблемы с category";
+        assert dao.selectObjects().size()!=ratingList.size():"проблемы с rating";
     }
 
     @Test
     public void updateRatingTest(){
-        dao.insertObject( new Rating("good", 5, new Item(1), new User(1)));
-        List<Rating> ratingList= dao.selectObjects();
-        int id= dao.selectObjects().get(ratingList.size()-1).getId();
-        dao.update(new Rating(id,"goodUpdate", 5, new Item(1), new User(1)));
-        assert dao.selectObject(id).getComment().equals("goodUpdate") : "проблемы с category";
+        Rating rating=dao.update(new Rating(1,"goodUpdate", 3, new Item(1), new User(1)));
+        assert dao.selectObject(rating.getId()).getComment().equals("goodUpdate") : "проблемы с rating";
     }
 }

@@ -1,6 +1,5 @@
 package vapeshop.test.controller;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,18 +17,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.config.SpringApplicationConfig;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
+import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
+import project.vapeshop.dto.user.UserDTOForCommon;
 import project.vapeshop.entity.common.StatusOrder;
-import project.vapeshop.entity.product.Item;
-import project.vapeshop.entity.user.User;
 import vapeshop.test.config.H2Config;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -58,10 +55,10 @@ public class OrderUnitTest {
 
     @Test
     public void testAddOrder() throws Exception {
-        List<Item> itemList = new ArrayList<>();
-        itemList.add(new Item(1));
+        List<ItemDTOInfoForCatalog> itemList = new ArrayList<>();
+        itemList.add(new ItemDTOInfoForCatalog(1));
         char id=mockMvc.perform(post("/orders")
-                        .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26), StatusOrder.Sent,150.0,new User(1),itemList)))
+                        .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26), StatusOrder.Sent,150.0,new UserDTOForCommon(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
@@ -71,15 +68,15 @@ public class OrderUnitTest {
 
     @Test
     public void testUpdateCategory() throws Exception {
-        List<Item> itemList = new ArrayList<>();
-        itemList.add(new Item(1));
+        List<ItemDTOInfoForCatalog> itemList = new ArrayList<>();
+        itemList.add(new ItemDTOInfoForCatalog(1));
         mockMvc.perform(put("/orders")
-                        .content(asJsonString(new OrderDTOFullInfo(1,new Date(2023, Calendar.FEBRUARY,26),StatusOrder.Accepted,150.0,new User(1),itemList)))
+                        .content(asJsonString(new OrderDTOFullInfo(1,new Date(2023, Calendar.FEBRUARY,26),StatusOrder.Accepted,150.0,new UserDTOForCommon(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
         MvcResult mvcResult1 = mockMvc.perform(get("/orders/{id}", "1")).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"date\":61635502800000,\"status\":\"Accepted\",\"price\":150.0}");
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"date\":61635502800000,\"status\":\"Accepted\",\"price\":150.0,\"user\":{\"id\":1,\"surname\":\"Петушок\",\"name\":\"Илья\",\"patronymic\":\"Александрович\"},\"items\":[{\"id\":2,\"photo\":\"path\\\\photo2\",\"name\":\"Испаритель Charon\"},{\"id\":3,\"photo\":\"path\\\\photo3\",\"name\":\"IJoy Captain 226\"}]}");
     }
 
 
@@ -91,10 +88,10 @@ public class OrderUnitTest {
 
     @Test()
     public void testDeleteOrder() throws Exception {
-        List<Item> itemList = new ArrayList<>();
-        itemList.add(new Item(1));
+        List<ItemDTOInfoForCatalog> itemList = new ArrayList<>();
+        itemList.add(new ItemDTOInfoForCatalog(1));
         mockMvc.perform(post("/orders")
-                        .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26),StatusOrder.Arrived,150.0,new User(1),itemList)))
+                        .content(asJsonString(new OrderDTOFullInfo(new Date(2023, Calendar.FEBRUARY,26),StatusOrder.Arrived,150.0,new UserDTOForCommon(1),itemList)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();

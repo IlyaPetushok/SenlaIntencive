@@ -17,4 +17,5 @@ public class DispatcherServlet extends AbstractAnnotationConfigDispatcherServlet
     protected String[] getServletMappings() {
         return new String[]{"/vapeshop/v1/*"};
     }
+
 }

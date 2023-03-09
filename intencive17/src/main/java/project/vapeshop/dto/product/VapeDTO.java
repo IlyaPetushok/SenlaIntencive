@@ -2,6 +2,7 @@ package project.vapeshop.dto.product;
 
 import lombok.*;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,6 +16,4 @@ public class VapeDTO {
     private Integer battery;
     @NonNull
     private String type;
-    @NonNull
-    private ItemDTOInfoForCatalog itemForVape;
 }

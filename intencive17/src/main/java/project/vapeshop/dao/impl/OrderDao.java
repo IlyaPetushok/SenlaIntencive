@@ -6,7 +6,9 @@ import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Order_;
 import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.user.User;
-import javax.persistence.EntityGraph;
+import project.vapeshop.entity.user.User_;
+
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.List;
@@ -15,37 +17,39 @@ import java.util.List;
 public class OrderDao extends AbstractDao<Order, Integer> implements IOrderDao {
 
     @Override
-    public Order insertObject(Order order) {
-        User user = entityManager.find(User.class, order.getUser().getId());
-        order.setUser(user);
-        return entityManager.merge(order);
-    }
-
-    @Override
     public List<Order> selectObjects() {
-        EntityGraph<?> entityGraph = entityManager.getEntityGraph("order_items");
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
         Root<Order> orderRoot = criteriaQuery.from(Order.class);
-        TypedQuery<Order> query = entityManager.createQuery(criteriaQuery);
-        query.setHint("javax.persistence.loadgraph",entityGraph);
+        TypedQuery<Order> query = entityManager.createQuery(criteriaQuery.select(orderRoot));
         return query.getResultList();
     }
 
     @Override
     public Order selectObject(Integer id) {
-        return entityManager.find(Order.class,id);
+        CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
+        CriteriaQuery<Order> criteriaQuery= criteriaBuilder.createQuery(Order.class);
+        Root<Order> orderRoot=criteriaQuery.from(Order.class);
+        orderRoot.fetch(Order_.items,JoinType.LEFT);
+        orderRoot.fetch(Order_.user,JoinType.LEFT);
+        criteriaQuery.select(orderRoot).where(criteriaBuilder.equal(orderRoot.get(Order_.id),id)).distinct(true);
+        TypedQuery<Order> typedQuery=entityManager.createQuery(criteriaQuery);
+        return typedQuery.getSingleResult();
     }
 
     @Override
     public Order update(Order order) {
-        Order order1 = entityManager.find(Order.class, order.getId());
-        order1.setDate(order.getDate());
-        order1.setPrice(order.getPrice());
-        order1.setStatus(order.getStatus());
-        order1.setUser(order.getUser());
-        order1.setItems(order.getItems());
-        return order1;
+        CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
+        CriteriaUpdate<Order> criteriaUpdate=criteriaBuilder.createCriteriaUpdate(Order.class);
+        Root<Order> orderRoot=criteriaUpdate.from(Order.class);
+        criteriaUpdate.where(criteriaBuilder.equal(orderRoot.get(Order_.id),order.getId()));
+        criteriaUpdate.set(Order_.status,order.getStatus());
+        criteriaUpdate.set(Order_.date,order.getDate());
+        criteriaUpdate.set(Order_.user,order.getUser());
+        criteriaUpdate.set(Order_.price,order.getPrice());
+        Query query= entityManager.createQuery(criteriaUpdate);
+        query.executeUpdate();
+        return entityManager.find(Order.class,order.getId());
     }
 
     @Override
@@ -54,6 +58,17 @@ public class OrderDao extends AbstractDao<Order, Integer> implements IOrderDao {
         CriteriaQuery<Order> criteriaQuery=criteriaBuilder.createQuery(Order.class);
         Root<Order> orderRoot=criteriaQuery.from(Order.class);
         criteriaQuery.where(criteriaBuilder.equal(orderRoot.get(Order_.status),statusOrder));
+        TypedQuery<Order> typedQuery=entityManager.createQuery(criteriaQuery);
+        return typedQuery.getResultList();
+    }
+
+    @Override
+    public List<Order> selectOrderFindByUser(User user) {
+        CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
+        CriteriaQuery<Order> criteriaQuery=criteriaBuilder.createQuery(Order.class);
+        Root<Order> orderRoot=criteriaQuery.from(Order.class);
+        Join<Order,User> userJoin=orderRoot.join(Order_.user,JoinType.INNER);
+        criteriaQuery.select(orderRoot).where(criteriaBuilder.equal(userJoin.get(User_.id),user.getId()));
         TypedQuery<Order> typedQuery=entityManager.createQuery(criteriaQuery);
         return typedQuery.getResultList();
     }

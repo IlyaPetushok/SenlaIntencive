@@ -20,29 +20,17 @@ public class ControllerPrivileges {
 
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody PrivilegesDTO privilegesDTO) {
-        try {
-            return new ResponseEntity<>(service.addObject(privilegesDTO), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.addObject(privilegesDTO), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<?> read() {
-        try {
-            return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
     }
 
     @GetMapping("/{privilege-id}")
     public ResponseEntity<?> read(@PathVariable("privilege-id") Integer id) {
-        try {
-            return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{privilege-id}")
@@ -52,9 +40,6 @@ public class ControllerPrivileges {
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody PrivilegesDTO privilegesDTO) {
-        try {
-            return new ResponseEntity<>(service.updateObject(privilegesDTO), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }    }
+        return new ResponseEntity<>(service.updateObject(privilegesDTO), HttpStatus.UPGRADE_REQUIRED);
+    }
 }

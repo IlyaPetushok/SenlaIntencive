@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.config.SpringApplicationConfig;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
-import project.vapeshop.dto.product.VapeDTO;
+import project.vapeshop.dto.product.VapeDTOFullInfo;
 import vapeshop.test.config.H2Config;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -51,7 +51,7 @@ public class VapeUnitTest {
     @Test
     public void testAddVape() throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/vapes")
-                        .content(asJsonString(new VapeDTO(120, 22450, "Мод", new ItemDTOInfoForCatalog(1))))
+                        .content(asJsonString(new VapeDTOFullInfo(120, 22450, "Мод", new ItemDTOInfoForCatalog(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
@@ -63,12 +63,12 @@ public class VapeUnitTest {
     @Test
     public void testUpdateVape() throws Exception {
         mockMvc.perform(put("/vapes")
-                        .content(asJsonString(new VapeDTO(1,120, 22450, "Мод", new ItemDTOInfoForCatalog(1))))
+                        .content(asJsonString(new VapeDTOFullInfo(1,120, 22450, "Мод", new ItemDTOInfoForCatalog(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
         MvcResult mvcResult1 = mockMvc.perform(get("/vapes/{id}", "1")).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"power\":120,\"battery\":22450,\"type\":\"Мод\",\"itemForVape\":{\"id\":1,\"photo\":\"photo4\",\"name\":\"HotSpot BubleGum Update\"}}");
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"power\":120,\"battery\":22450,\"type\":\"Мод\",\"itemForVape\":{\"id\":1,\"photo\":\"path\\\\photo1\",\"name\":\"Мишки 3в1\"}}");
     }
 
 

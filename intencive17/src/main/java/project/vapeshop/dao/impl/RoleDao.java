@@ -23,7 +23,6 @@ import java.util.Objects;
 public class RoleDao extends AbstractDao<Role,Integer> implements IRoleDao {
 
     public static final String SELECT_ROLE = "SELECT role from Role as role";
-    public static final String SELECT_ROLE_ID_1 = "select role from Role as role where role.id=?1 ";
 
     @Override
     public List<Role> selectObjects() {
@@ -33,17 +32,9 @@ public class RoleDao extends AbstractDao<Role,Integer> implements IRoleDao {
 
     @Override
     public Role selectObject(Integer id) {
-        Query query= entityManager.createQuery(SELECT_ROLE_ID_1);
-        query.setParameter(1,id);
-        return (Role) query.getSingleResult();
+        return entityManager.find(Role.class,id);
     }
 
-    @Override
-    public Role update(Role role) {
-        Role role1=entityManager.find(Role.class,role.getId());
-        role1.setName(role.getName());
-        return role1;
-    }
 
     @Override
     public List<Role> selectFindByPrivilege(String namePrivilege) {
@@ -52,8 +43,7 @@ public class RoleDao extends AbstractDao<Role,Integer> implements IRoleDao {
         Root<Role> roleRoot=criteriaQuery.from(Role.class);
         Join<Role, Privileges> privilegesJoin=roleRoot.join(Role_.privileges);
         criteriaQuery.where(criteriaBuilder.equal(privilegesJoin.get(Privileges_.name),namePrivilege));
-        TypedQuery query= entityManager.createQuery(criteriaQuery);
-        List<Role> roles=query.getResultList();
-        return roles;
+        TypedQuery<Role> query= entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
     }
 }

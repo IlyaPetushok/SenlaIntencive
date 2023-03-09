@@ -2,19 +2,18 @@ package project.vapeshop.entity.product;
 
 import lombok.*;
 import project.vapeshop.entity.EntityId;
-import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.Rating;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
 @NamedEntityGraphs({
-        @NamedEntityGraph(
-                name = "entity-item-graph-liquide",
-                attributeNodes = {
-                        @NamedAttributeNode("liquide"),
-                }
-        ),
+//        @NamedEntityGraph(
+//                name = "entity-item-graph-liquide",
+//                attributeNodes = {
+//                        @NamedAttributeNode("liquide"),
+//                }
+//        ),
         @NamedEntityGraph(
                 name = "entity-item-graph-category",
                 attributeNodes = {
@@ -61,6 +60,7 @@ public class Item implements EntityId<Integer> {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+//    @LazyToOne(LazyToOneOption.NO_PROXY)
     @OneToOne(mappedBy = "itemForLiquide",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Liquide liquide;
 

@@ -59,7 +59,7 @@ public class LiquideUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
         char id = mockMvc.perform(post("/liquides")
-                        .content(asJsonString(new LiquideDTO(new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Ежевика", 45, "солевой", 30)))
+                        .content(asJsonString(new LiquideDTOFullInfo(new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Ежевика", 45, "солевой", 30)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
@@ -75,12 +75,12 @@ public class LiquideUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
         char id = mockMvc.perform(post("/liquides")
-                        .content(asJsonString(new LiquideDTO(new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Ежевика", 45, "солевой", 30)))
+                        .content(asJsonString(new LiquideDTOFullInfo(new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Ежевика", 45, "солевой", 30)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
         mockMvc.perform(put("/liquides")
-                        .content(asJsonString(new LiquideDTO(Character.digit(id,10),new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Клубника", 45, "солевой", 30)))
+                        .content(asJsonString(new LiquideDTOFullInfo(Character.digit(id,10),new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Клубника", 45, "солевой", 30)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
@@ -103,7 +103,7 @@ public class LiquideUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
         char id = mockMvc.perform(post("/liquides")
-                        .content(asJsonString(new LiquideDTO(new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Ежевика", 45, "солевой", 30)))
+                        .content(asJsonString(new LiquideDTOFullInfo(new ItemDTOInfoForCatalog(Character.digit(idItem,10)),"Ежевика", 45, "солевой", 30)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);

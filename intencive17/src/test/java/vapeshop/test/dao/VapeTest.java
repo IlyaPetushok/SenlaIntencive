@@ -32,7 +32,7 @@ public class VapeTest {
 
     @Test
     public void selectVapeTest(){
-        assert dao.selectObject(1).getType().equals("Вейп") : "проблемы с vape select";
+        assert dao.selectObject(1).getType().equals("вейп") : "проблемы с vape select";
     }
 
     @Test
@@ -46,10 +46,7 @@ public class VapeTest {
 
     @Test
     public void updateVapeTest(){
-        dao.insertObject(new Vape(120,22450,"test",new Item(2)));
-        List<Vape> vapeList= dao.selectObjects();
-        int id= dao.selectObjects().get(vapeList.size()-1).getId();
-        dao.update(new Vape(id,120,22450,"test update",new Item(2)));
-        assert dao.selectObject(id).getType().equals("test update") : "проблемы с vapeUpdate";
+        Vape vape=dao.update(new Vape(1,120,22450,"test update",new Item(2)));
+        assert dao.selectObject(vape.getId()).getType().equals("test update") : "проблемы с vapeUpdate";
     }
 }

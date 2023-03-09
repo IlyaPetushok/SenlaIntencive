@@ -18,7 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.config.SpringApplicationConfig;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
-import project.vapeshop.dto.product.VaporizerDTO;
+import project.vapeshop.dto.product.VaporizerDTOFullInfo;
 import project.vapeshop.entity.product.Category;
 import vapeshop.test.config.H2Config;
 
@@ -60,7 +60,7 @@ public class VaporizerUnitTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString().charAt(6);
         MvcResult mvcResult = mockMvc.perform(post("/vaporizers")
-                        .content(asJsonString(new VaporizerDTO(0.6,"испаритель",new ItemDTOInfoForCatalog(Character.digit(id,10)))))
+                        .content(asJsonString(new VaporizerDTOFullInfo(0.6,"испаритель",new ItemDTOInfoForCatalog(Character.digit(id,10)))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
@@ -72,12 +72,12 @@ public class VaporizerUnitTest {
     @Test
     public void testUpdateVape() throws Exception {
         mockMvc.perform(put("/vaporizers")
-                        .content(asJsonString(new VaporizerDTO(1,1.8,"испаритель",new ItemDTOInfoForCatalog(1))))
+                        .content(asJsonString(new VaporizerDTOFullInfo(1,1.8,"испаритель",new ItemDTOInfoForCatalog(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
         MvcResult mvcResult1 = mockMvc.perform(get("/vaporizers/{id}", "1")).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"resistance\":1.8,\"type\":\"испаритель\",\"itemForVaporizer\":{\"id\":1,\"photo\":\"photo4\",\"name\":\"HotSpot BubleGum Update\"}}");
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":1,\"resistance\":1.8,\"type\":\"испаритель\",\"itemForVaporizer\":{\"id\":1,\"photo\":\"path\\\\photo1\",\"name\":\"Мишки 3в1\"}}");
     }
 
 
@@ -90,7 +90,7 @@ public class VaporizerUnitTest {
     @Test()
     public void testDeleteVaporizer() throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/vaporizers")
-                        .content(asJsonString(new VaporizerDTO(0.6,"испаритель",new ItemDTOInfoForCatalog(1))))
+                        .content(asJsonString(new VaporizerDTOFullInfo(0.6,"испаритель",new ItemDTOInfoForCatalog(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();

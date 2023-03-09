@@ -8,7 +8,7 @@ Insert Into liquide(liquide_id_item,flavour,fortress,type_nicotine,volume) value
 
 Insert Into vaporizer(vaporizer_id_item,resistance,type_vaporizer) values (2,0.6,'испаритель');
 
-Insert Into vape(vape_id,power_vape,battery,type_vape) Values (3,225,20000,'Вейп');
+Insert Into vape(vape_id,power_vape,battery,type_vape) Values (3,225,20000,'вейп');
 
 Insert Into role(name_role) values ('user');
 
