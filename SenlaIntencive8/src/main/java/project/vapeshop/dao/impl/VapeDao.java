@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -51,12 +52,16 @@ public class VapeDao extends AbstractDao<Vape,Integer> implements IVapeDao {
 
     @Override
     public Vape update(Vape vape) {
-        Vape vape1=entityManager.find(Vape.class,vape.getId());
-        vape1.setItemForVape(vape.getItemForVape());
-        vape1.setBattery(vape.getBattery());
-        vape1.setType(vape.getType());
-        vape1.setPower(vape.getPower());
-        return vape1;
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaUpdate<Vape> criteriaUpdate= criteriaBuilder.createCriteriaUpdate(Vape.class);
+        Root<Vape> vapeRoot= criteriaUpdate.from(Vape.class);
+        criteriaUpdate.set(Vape_.type,vape.getType());
+        criteriaUpdate.set(Vape_.itemForVape,vape.getItemForVape());
+        criteriaUpdate.set(Vape_.battery,vape.getBattery());
+        criteriaUpdate.set(Vape_.power,vape.getPower());
+        Query query=entityManager.createQuery(criteriaUpdate);
+        query.executeUpdate();
+        return entityManager.find(Vape.class,vape.getId());
     }
 
     @Override

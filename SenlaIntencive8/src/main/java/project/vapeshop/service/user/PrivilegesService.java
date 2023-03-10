@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IPrivilegeDao;
 import project.vapeshop.dto.user.PrivilegesDTO;
 import project.vapeshop.entity.user.Privileges;
 
@@ -14,11 +15,11 @@ import java.util.stream.Collectors;
 @Component
 @Transactional(readOnly = true)
 public class PrivilegesService {
-    Dao<Privileges,Integer> dao;
+    IPrivilegeDao dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public PrivilegesService(Dao<Privileges,Integer> dao, ModelMapper modelMapper) {
+    public PrivilegesService(IPrivilegeDao dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }
@@ -44,7 +45,7 @@ public class PrivilegesService {
                 .map(privilegesDTO -> modelMapper.map(privilegesDTO,Privileges.class))
                 .collect(Collectors.toList()));
         return privileges.stream()
-                .map(privileges1 -> modelMapper.map(privileges1,PrivilegesDTO.class))
+                .map(priv -> modelMapper.map(priv,PrivilegesDTO.class))
                 .collect(Collectors.toList());
     }
 

@@ -15,21 +15,20 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import project.vapeshop.config.SpringApplicationConfig;
 import project.vapeshop.dto.user.RoleDTO;
 import project.vapeshop.dto.user.UserDTOForAuthorization;
 import project.vapeshop.security.JwtFilter;
 import vapeshop.test.config.H2Config;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-        classes = {H2Config.class})
+        classes = {H2Config.class, SpringApplicationConfig.class})
 @WebAppConfiguration
 public class RoleUnitTest {
-
     @Autowired
     JwtFilter jwtFilter;
 
@@ -54,50 +53,56 @@ public class RoleUnitTest {
 
     @Test
     public void testGetByIdRole() throws Exception {
-        MvcResult mvcResult1=mockMvc.perform(get("/role/find/{id}", "1").header("Authorization", token)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/roles/{id}", "1").header("Authorization", token)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddRole() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(post("/role/add")
+        MvcResult mvcResult=mockMvc.perform(post("/roles").header("Authorization", token)
                         .content(asJsonString(new RoleDTO("zamAdmin")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1=mockMvc.perform(get("/role/find/{id}", id).header("Authorization", token)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/roles/{id}", id)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
 
     }
 
     @Test
     public void testUpdateRole() throws Exception {
-        mockMvc.perform(post("/role/update")
-                        .content(asJsonString(new RoleDTO(1,"User")))
+        MvcResult mvcResult=mockMvc.perform(post("/roles").header("Authorization", token)
+                        .content(asJsonString(new RoleDTO("zamAdmin")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()).andReturn();
+        char id=mvcResult.getResponse().getContentAsString().charAt(6);
+        mockMvc.perform(put("/roles").header("Authorization", token)
+                        .content(asJsonString(new RoleDTO(Character.digit(id,10),"User")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1=mockMvc.perform(get("/role/find/{id}","1").header("Authorization", token)).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":1,\"name\":\"User\"}");
+        MvcResult mvcResult1=mockMvc.perform(get("/roles/{id}",id)).andReturn();
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":"+id+",\"name\":\"User\"}");
     }
 
 
     @Test()
     public void testGetAllRole() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(get("/role/getAll").header("Authorization", token)).andReturn();
+        MvcResult mvcResult=mockMvc.perform(get("/roles").header("Authorization", token)).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
     public void testDeleteRole() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(post("/role/add")
-                        .content(asJsonString(new RoleDTO("Admin")))
+        MvcResult mvcResult=mockMvc.perform(post("/roles").header("Authorization", token)
+                        .content(asJsonString(new RoleDTO("ROLE_ADMIN")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1=mockMvc.perform(post("/role/delete/{id}",id).header("Authorization", token)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(delete("/roles/{id}",id)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"true");
     }
 

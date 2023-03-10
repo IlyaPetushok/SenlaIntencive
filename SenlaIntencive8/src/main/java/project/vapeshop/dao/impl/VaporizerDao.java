@@ -1,15 +1,14 @@
 package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.IVaporizerDao;
 import project.vapeshop.entity.product.*;
-
 import javax.persistence.EntityGraph;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -31,11 +30,10 @@ public class VaporizerDao extends AbstractDao<Vaporizer, Integer> implements IVa
 
     @Override
     public List<Vaporizer> selectObjects() {
-        EntityGraph<?> entityGraph= entityManager.getEntityGraph("entity-graph-item-vaporizer");
         CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
         CriteriaQuery<Vaporizer> criteriaQuery= criteriaBuilder.createQuery(Vaporizer.class);
+        Root<Vaporizer> vaporizerRoot=criteriaQuery.from(Vaporizer.class);
         TypedQuery<Vaporizer> typedQuery=entityManager.createQuery(criteriaQuery);
-        typedQuery.setHint("javax.persistence.loadgraph",entityGraph);
         return typedQuery.getResultList();
     }
 
@@ -53,11 +51,15 @@ public class VaporizerDao extends AbstractDao<Vaporizer, Integer> implements IVa
 
     @Override
     public Vaporizer update(Vaporizer vaporizer) {
-        Vaporizer vaporizer1=entityManager.find(Vaporizer.class,vaporizer.getId());
-        vaporizer1.setResistance(vaporizer.getResistance());
-        vaporizer1.setType(vaporizer.getType());
-        vaporizer1.setItemForVaporizer(entityManager.find(Item.class,vaporizer.getItemForVaporizer().getId()));
-        return vaporizer1;
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaUpdate<Vaporizer> criteriaUpdate= criteriaBuilder.createCriteriaUpdate(Vaporizer.class);
+        Root<Vaporizer> vaporizerRoot=criteriaUpdate.from(Vaporizer.class);
+        criteriaUpdate.set(Vaporizer_.resistance,vaporizer.getResistance());
+        criteriaUpdate.set(Vaporizer_.type,vaporizer.getType());
+        criteriaUpdate.set(Vaporizer_.itemForVaporizer,vaporizer.getItemForVaporizer());
+        Query query= entityManager.createQuery(criteriaUpdate);
+        query.executeUpdate();
+        return entityManager.find(Vaporizer.class,vaporizer.getId());
     }
 
     @Override
@@ -69,6 +71,5 @@ public class VaporizerDao extends AbstractDao<Vaporizer, Integer> implements IVa
         TypedQuery<Vaporizer> typedQuery=entityManager.createQuery(criteriaQuery);
         return typedQuery.getResultList();
     }
-
 
 }

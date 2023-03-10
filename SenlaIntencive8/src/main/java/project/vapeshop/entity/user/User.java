@@ -22,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class User implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,10 +40,6 @@ public class User implements EntityId<Integer> {
     private String password;
     @Column(name="mail")
     private String mail;
-
-    @ToString.Exclude
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
-    private List<Order> orders;
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
@@ -64,14 +61,4 @@ public class User implements EntityId<Integer> {
         this.role = role;
     }
 
-    public User(Integer id, String surname, String name, String patronymic, String login, String password, String mail, Role role) {
-        this.id = id;
-        this.surname = surname;
-        this.name = name;
-        this.patronymic = patronymic;
-        this.login = login;
-        this.password = password;
-        this.mail = mail;
-        this.role = role;
-    }
 }

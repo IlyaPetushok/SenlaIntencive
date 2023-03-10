@@ -8,8 +8,10 @@ import project.vapeshop.dao.Dao;
 import project.vapeshop.dao.IOrderDao;
 import project.vapeshop.dto.common.OrderDTOForBasket;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
+import project.vapeshop.dto.user.UserDTOForCommon;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.StatusOrder;
+import project.vapeshop.entity.user.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,28 +28,29 @@ public class OrderService {
         this.modelMapper = modelMapper;
     }
 
-    public OrderDTOForBasket showObject(int id) {
-        return modelMapper.map(dao.selectObject(id),OrderDTOForBasket.class);
+    public OrderDTOFullInfo showObject(int id) {
+        Order order=dao.selectObject(id);
+        return modelMapper.map(order, OrderDTOFullInfo.class);
     }
 
     public List<OrderDTOForBasket> showObjects() {
         return dao.selectObjects().stream()
-                .map(order -> modelMapper.map(order,OrderDTOForBasket.class))
+                .map(order -> modelMapper.map(order, OrderDTOForBasket.class))
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public OrderDTOForBasket addObject(OrderDTOFullInfo orderDTOFullInfo) {
-        return modelMapper.map(dao.insertObject(modelMapper.map(orderDTOFullInfo,Order.class)),OrderDTOForBasket.class);
+        return modelMapper.map(dao.insertObject(modelMapper.map(orderDTOFullInfo, Order.class)), OrderDTOForBasket.class);
     }
 
     @Transactional
     public List<OrderDTOFullInfo> addObjects(List<OrderDTOFullInfo> orderDTOFullInfos) {
-        List<Order> order=orderDTOFullInfos.stream()
-                .map(orderDTOFullInfo -> modelMapper.map(orderDTOFullInfo,Order.class))
+        List<Order> order = orderDTOFullInfos.stream()
+                .map(orderDTOFullInfo -> modelMapper.map(orderDTOFullInfo, Order.class))
                 .collect(Collectors.toList());
         return dao.insertObjects(order).stream()
-                .map(order1 -> modelMapper.map(order1,OrderDTOFullInfo.class))
+                .map(o -> modelMapper.map(o, OrderDTOFullInfo.class))
                 .collect(Collectors.toList());
     }
 
@@ -58,14 +61,18 @@ public class OrderService {
 
     @Transactional
     public OrderDTOForBasket updateObject(OrderDTOFullInfo orderDTOFullInfo) {
-        Order order=modelMapper.map(orderDTOFullInfo,Order.class);
-        order.setItems(orderDTOFullInfo.getItems());
-        return modelMapper.map(dao.update(order),OrderDTOForBasket.class);
+        return modelMapper.map(dao.update(modelMapper.map(orderDTOFullInfo, Order.class)), OrderDTOForBasket.class);
     }
 
     public List<OrderDTOForBasket> showObjectsFindByStatus(String status) {
         return dao.selectOrderFindByStatus(StatusOrder.valueOf(status)).stream()
                 .map(order -> modelMapper.map(order, OrderDTOForBasket.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderDTOForBasket> showObjectsFindByUser(UserDTOForCommon userDTOForCommon){
+        return dao.selectOrderFindByUser(modelMapper.map(userDTOForCommon, User.class)).stream()
+                .map(order -> modelMapper.map(order,OrderDTOForBasket.class))
                 .collect(Collectors.toList());
     }
 }

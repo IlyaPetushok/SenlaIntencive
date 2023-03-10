@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
-import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.ICategoryDao;
 import project.vapeshop.dto.product.CategoryDTO;
 import project.vapeshop.entity.product.Category;
 import project.vapeshop.service.product.CategoryService;
@@ -18,12 +18,12 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class CategoryUnitServiceTest {
+public class CategoryUnitTest {
     @InjectMocks
     private CategoryService categoryService;
 
     @Mock
-    private Dao<Category,Integer> categoryDao;
+    private ICategoryDao categoryDao;
 
     @Spy
     private ModelMapper modelMapper;

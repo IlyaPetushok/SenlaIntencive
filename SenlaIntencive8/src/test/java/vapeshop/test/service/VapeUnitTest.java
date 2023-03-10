@@ -8,10 +8,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
-import project.vapeshop.dao.Dao;
 import project.vapeshop.dao.IVapeDao;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.product.VapeDTO;
+import project.vapeshop.dto.product.VapeDTOFullInfo;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.product.Vape;
 import project.vapeshop.service.product.VapeService;
@@ -38,7 +38,7 @@ public class VapeUnitTest {
     }
 
     private final Vape vape =new Vape(1,120,22450,"Мод",new Item(2));;
-    private final VapeDTO vapeDto =new VapeDTO(2,120,22450,"Мод", new ItemDTOInfoForCatalog(2));
+    private final VapeDTOFullInfo vapeDtoFullInfo =new VapeDTOFullInfo(2,120,22450,"Мод", new ItemDTOInfoForCatalog(2));
 
     @Test
     public void testGetByIdCategory(){
@@ -58,9 +58,9 @@ public class VapeUnitTest {
 
         when(vapeDao.selectObjects()).thenReturn(list);
 
-        List<VapeDTO> vapeDTOS= vapeService.showItems();
-        for (int i = 0; i < vapeDTOS.size(); i++) {
-            Assertions.assertEquals(vapeDTOS.get(i).getId(),list.get(i).getId());
+        List<VapeDTO> vapeDTOFullInfos = vapeService.showItems();
+        for (int i = 0; i < vapeDTOFullInfos.size(); i++) {
+            Assertions.assertEquals(vapeDTOFullInfos.get(i).getId(),list.get(i).getId());
         }
         verify(vapeDao,times(1)).selectObjects();
     }
@@ -70,7 +70,7 @@ public class VapeUnitTest {
     public void testAddCategory(){
         when(vapeDao.insertObject(any())).thenReturn(vape);
 
-        Assertions.assertEquals(vapeService.addItem(vapeDto).getId(), vape.getId());
+        Assertions.assertEquals(vapeService.addItem(vapeDtoFullInfo).getId(), vape.getId());
         verify(vapeDao,times(1)).insertObject(any());
     }
 
@@ -78,7 +78,7 @@ public class VapeUnitTest {
     public void testUpdateCategory(){
         when(vapeDao.update(any(Vape.class))).thenReturn(vape);
 
-        Assertions.assertEquals(vapeService.updateItem(vapeDto).getId(), vape.getId());
+        Assertions.assertEquals(vapeService.updateItem(vapeDtoFullInfo).getId(), vape.getId());
         verify(vapeDao,times(1)).update(any());
     }
 

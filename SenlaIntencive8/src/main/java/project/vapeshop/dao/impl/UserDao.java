@@ -20,21 +20,9 @@ public class UserDao extends AbstractDao<User, Integer> implements IUserDao {
         return super.insertObject(user);
     }
 
-
     @Override
     public List<User> selectObjects() {
-//        Query query= entityManager.createQuery("SELECT us from User as us");
-        EntityGraph<?> entityGraph= entityManager.getEntityGraph("entity-user-graph-role");
-        CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> criteriaQuery=criteriaBuilder.createQuery(User.class);
-        Root<User> userRoot=criteriaQuery.from(User.class);
-        criteriaQuery.select(userRoot);
-//        Predicate predicateLogin=criteriaBuilder.equal(userRoot.get(User_.login),user.getLogin());
-//        Predicate predicatePassword=criteriaBuilder.equal(userRoot.get(User_.password),user.getPassword());
-//        criteriaQuery.where(criteriaBuilder.and(predicateLogin,predicatePassword));
-        TypedQuery<User> query=entityManager.createQuery(criteriaQuery);
-        query.setHint("javax.persistence.loadgraph",entityGraph);
-        List<User> users=query.getResultList();
+        Query query= entityManager.createQuery("SELECT us from User as us");
         return query.getResultList();
     }
 
@@ -42,31 +30,27 @@ public class UserDao extends AbstractDao<User, Integer> implements IUserDao {
     public User selectObject(Integer id) {
         EntityGraph<?> entityGraph= entityManager.getEntityGraph("entity-user-graph-role");
         CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> criteriaQuery= criteriaBuilder.createQuery(User.class);
+        CriteriaQuery<User> criteriaQuery=criteriaBuilder.createQuery(User.class);
         Root<User> userRoot=criteriaQuery.from(User.class);
         criteriaQuery.where(criteriaBuilder.equal(userRoot.get(User_.id),id));
         TypedQuery<User> query=entityManager.createQuery(criteriaQuery);
-        query.setHint("javax.persistence.loadgraph",entityGraph);
-        return query.getSingleResult();
+        query.setHint("javax.persistence.fetchgraph",entityGraph);
+        return  query.getSingleResult();
     }
 
     @Override
     public User update(User user) {
-        User user1=entityManager.find(User.class,user.getId());
-        user1.setId(user.getId());
-        user1.setLogin(user.getLogin());
-        user1.setName(user.getName());
-        user1.setMail(user.getMail());
-        user1.setPassword(user.getPassword());
-        user1.setSurname(user.getSurname());
-        user1.setPatronymic(user.getPatronymic());
-        Role role=entityManager.find(Role.class,user.getRole().getId());
-        user1.setRole(role);
-        return user1;
+        CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
+        CriteriaUpdate<User> criteriaQuery= criteriaBuilder.createCriteriaUpdate(User.class);
+        Root<User> userRoot=criteriaQuery.from(User.class);
+        criteriaQuery.set(User_.name,user.getName());
+        criteriaQuery.set(User_.surname,user.getSurname());
+        criteriaQuery.set(User_.patronymic,user.getPatronymic());
+        criteriaQuery.set(User_.mail,user.getMail());
+        Query query=entityManager.createQuery(criteriaQuery);
+        query.executeUpdate();
+        return entityManager.find(User.class,user.getId());
     }
-
-
-
 
     @Override
     public User findByLoginAndPassword(User user) {
@@ -91,6 +75,9 @@ public class UserDao extends AbstractDao<User, Integer> implements IUserDao {
         criteriaQuery.where(criteriaBuilder.equal(userRoot.get(User_.login),login));
         TypedQuery<User> query=entityManager.createQuery(criteriaQuery);
         query.setHint("javax.persistence.loadgraph",entityGraph);
+        User user=query.getSingleResult();
+        System.out.println(user.getRole().getPrivileges().size());
+        user.getRole().setPrivileges(user.getRole().getPrivileges());
         return query.getSingleResult();
     }
 }

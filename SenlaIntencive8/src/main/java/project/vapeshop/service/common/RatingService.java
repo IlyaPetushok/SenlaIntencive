@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
+import project.vapeshop.dao.IRatingDao;
 import project.vapeshop.dto.common.RatingDTOForProduct;
 import project.vapeshop.dto.common.RatingDTOFullInfo;
 import project.vapeshop.entity.common.Rating;
@@ -15,11 +16,11 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class RatingService {
-    Dao<Rating,Integer> dao;
+    IRatingDao dao;
     ModelMapper modelMapper;
 
     @Autowired
-    public RatingService(Dao<Rating,Integer> dao, ModelMapper modelMapper) {
+    public RatingService(IRatingDao dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }

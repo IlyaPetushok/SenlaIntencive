@@ -1,10 +1,8 @@
 package project.vapeshop.dao.impl;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.ILiquideDao;
 import project.vapeshop.entity.product.*;
-
 import javax.persistence.EntityGraph;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -27,11 +25,10 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> implements ILiquide
 
     @Override
     public List<Liquide> selectObjects() {
-        EntityGraph<?> entityGraph= entityManager.getEntityGraph("liquide-with-item");
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Liquide> criteriaQuery=criteriaBuilder.createQuery(Liquide.class);
+        Root<Liquide> liquideRoot=criteriaQuery.from(Liquide.class);
         TypedQuery<Liquide> query= entityManager.createQuery(criteriaQuery);
-        query.setHint("javax.persistence.loadgraph",entityGraph);
         return query.getResultList();
     }
 
@@ -45,6 +42,7 @@ public class LiquideDao extends AbstractDao<Liquide,Integer> implements ILiquide
                 .where(criteriaBuilder.equal(liquideRoot.get(Liquide_.id),id));
         TypedQuery<Liquide> query= entityManager.createQuery(criteriaQuery);
         query.setHint("javax.persistence.loadgraph",entityGraph);
+        Liquide liquide=query.getSingleResult();
         return query.getSingleResult();
     }
 

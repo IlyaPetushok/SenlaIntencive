@@ -8,10 +8,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
-import project.vapeshop.dao.Dao;
 import project.vapeshop.dao.ILiquideDao;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.product.LiquideDTO;
+import project.vapeshop.dto.product.LiquideDTOFullInfo;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.product.Liquide;
 import project.vapeshop.service.product.LiquideService;
@@ -38,7 +38,7 @@ public class LiquideUnitTest {
     }
 
     private final Liquide liquide =new Liquide(new Item(1),"testLiquide", 45, "солевой", 30);;
-    private final LiquideDTO liquideDTO =new LiquideDTO(new ItemDTOInfoForCatalog(1),"testLiquideDto", 45, "солевой", 30);
+    private final LiquideDTOFullInfo liquideDTOFullInfo =new LiquideDTOFullInfo(new ItemDTOInfoForCatalog(1),"testLiquideDto", 45, "солевой", 30);
 
     @Test
     public void testGetByIdCategory(){
@@ -58,9 +58,9 @@ public class LiquideUnitTest {
 
         when(liquideDao.selectObjects()).thenReturn(list);
 
-        List<LiquideDTO> liquideDTOS= liquideService.showItems();
-        for (int i = 0; i < liquideDTOS.size(); i++) {
-            Assertions.assertEquals(liquideDTOS.get(i).getFlavour(),list.get(i).getFlavour());
+        List<LiquideDTO> liquideDTOFullInfos = liquideService.showItems();
+        for (int i = 0; i < liquideDTOFullInfos.size(); i++) {
+            Assertions.assertEquals(liquideDTOFullInfos.get(i).getFlavour(),list.get(i).getFlavour());
         }
         verify(liquideDao,times(1)).selectObjects();
     }
@@ -70,7 +70,7 @@ public class LiquideUnitTest {
     public void testAddCategory(){
         when(liquideDao.insertObject(any())).thenReturn(liquide);
 
-        Assertions.assertEquals(liquideService.addItem(liquideDTO).getFlavour(), liquide.getFlavour());
+        Assertions.assertEquals(liquideService.addItem(liquideDTOFullInfo).getFlavour(), liquide.getFlavour());
         verify(liquideDao,times(1)).insertObject(any());
     }
 
@@ -78,7 +78,7 @@ public class LiquideUnitTest {
     public void testUpdateCategory(){
         when(liquideDao.update(any(Liquide.class))).thenReturn(liquide);
 
-        Assertions.assertEquals(liquideService.updateItem(liquideDTO).getFlavour(), liquide.getFlavour());
+        Assertions.assertEquals(liquideService.updateItem(liquideDTOFullInfo).getFlavour(), liquide.getFlavour());
         verify(liquideDao,times(1)).update(any());
     }
 

@@ -18,16 +18,14 @@ public class ItemProduct extends AbstractDao<Item,Integer> implements IItemDao {
     private static final String VAPORIZER ="Испарители,Картриджы,Койлы";
     private static final String VAPE ="Вейпы и подики";
 
-
     @Override
     public Item insertObject(Item item) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Category> criteriaQuery=criteriaBuilder.createQuery(Category.class);
         Root<Category> categoryRoot= criteriaQuery.from(Category.class);
         criteriaQuery.where(criteriaBuilder.equal(categoryRoot.get(Category_.name),item.getCategory().getName()));
-        Query query=entityManager.createQuery(criteriaQuery);
-        Category category=(Category) query.getSingleResult();
-        item.setCategory(category);
+        TypedQuery<Category> query=entityManager.createQuery(criteriaQuery);
+        item.setCategory(query.getSingleResult());
         return super.insertObject(item);
     }
 
@@ -35,8 +33,7 @@ public class ItemProduct extends AbstractDao<Item,Integer> implements IItemDao {
     public List<Item> selectObjects() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Item> criteriaQuery=criteriaBuilder.createQuery(Item.class);
-        Root<Item> itemRoot= criteriaQuery.from(Item.class);
-        criteriaQuery.select(itemRoot).orderBy(criteriaBuilder.asc(itemRoot.get(Item_.id)));
+        Root<Item> itemRoot=criteriaQuery.from(Item.class);
         TypedQuery<Item> typedQuery= entityManager.createQuery(criteriaQuery);
         return typedQuery.getResultList();
     }
@@ -95,8 +92,7 @@ public class ItemProduct extends AbstractDao<Item,Integer> implements IItemDao {
         Root<Item> itemRoot= itemCriteriaDelete.from(Item.class);
         itemCriteriaDelete.where(criteriaBuilder.equal(itemRoot.get(Item_.id),id));
         Query query=entityManager.createQuery(itemCriteriaDelete);
-        Item item= (Item) query.getSingleResult();
-        entityManager.remove(item);
+        entityManager.remove(query.getSingleResult());
         return true;
     }
 
@@ -105,9 +101,10 @@ public class ItemProduct extends AbstractDao<Item,Integer> implements IItemDao {
         CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
         CriteriaQuery<Item> criteriaQuery= criteriaBuilder.createQuery(Item.class);
         Root<Item> itemRoot=criteriaQuery.from(Item.class);
-        Join<Item,Category> categoryItemJoin=itemRoot.join(Item_.category,JoinType.INNER);
-        criteriaQuery.select(itemRoot).where(criteriaBuilder.equal(categoryItemJoin.get(Category_.name),nameCategory));
+        Join<Item,Category> categoryItemJoin=itemRoot.join(Item_.category);
+        criteriaQuery.where(criteriaBuilder.equal(categoryItemJoin.get(Category_.name),VAPORIZER));
         TypedQuery<Item> query=entityManager.createQuery(criteriaQuery);
+        List<Item> items=query.getResultList();
         return query.getResultList();
     }
 }

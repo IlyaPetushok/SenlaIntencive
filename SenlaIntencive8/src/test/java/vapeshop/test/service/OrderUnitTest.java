@@ -8,10 +8,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
-import project.vapeshop.dao.Dao;
 import project.vapeshop.dao.IOrderDao;
 import project.vapeshop.dto.common.OrderDTOForBasket;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
+import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
+import project.vapeshop.dto.user.UserDTOForCommon;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.product.Item;
@@ -39,8 +40,9 @@ public class OrderUnitTest {
     private ModelMapper modelMapper;
 
     private static final List<Item> items=new ArrayList<>();
+    private static final List<ItemDTOInfoForCatalog> itemsDto=new ArrayList<>();
     private static final Order order=new Order(1,new Date(),new User(), StatusOrder.Sent,15.5,items);
-    private static final OrderDTOFullInfo orderDto=new OrderDTOFullInfo(2,new Date(),StatusOrder.Sent,15.5,new User(),items);
+    private static final OrderDTOFullInfo orderDto=new OrderDTOFullInfo(2,new Date(),StatusOrder.Sent,15.5,new UserDTOForCommon(1),itemsDto);
 
 
     @Test

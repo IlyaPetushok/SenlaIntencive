@@ -15,19 +15,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import project.vapeshop.config.SpringApplicationConfig;
 import project.vapeshop.dto.user.RoleDTO;
 import project.vapeshop.dto.user.UserDTOForAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.security.JwtFilter;
 import vapeshop.test.config.H2Config;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-        classes = {H2Config.class})
+        classes = {H2Config.class, SpringApplicationConfig.class})
 @WebAppConfiguration
 public class UserUnitTest {
 
@@ -56,59 +56,49 @@ public class UserUnitTest {
 
     @Test
     public void testGetByIdUser() throws Exception {
-        MvcResult mvcResult1=mockMvc.perform(get("/user/find/{id}", "1").header("Authorization", token)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/users/{id}", "1").header("Authorization", token)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddUser() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(post("/user/add").header("Authorization", token)
+        MvcResult mvcResult=mockMvc.perform(post("/users").header("Authorization", token)
                         .content(asJsonString(new UserDTOForRegistration("Petushok","Ilya","Aleksandrovich","login22222","pass","a332222@mail",new RoleDTO(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult1=mockMvc.perform(get("/user/find/{id}", id).header("Authorization", token)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(get("/users/{id}", id)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testUpdateUser() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(post("/user/add").header("Authorization", token)
-                        .content(asJsonString(new UserDTOForRegistration("Pet","Ilsya","Aleksa","lo123g1111","pass","a11+1322@mail",new RoleDTO(1))))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated()).andReturn();
-        char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        mockMvc.perform(post("/user/update").header("Authorization", token)
-                        .content(asJsonString(new UserDTOForRegistration(Character.digit(id,10),"Pet","Ilsya","Aleksa","log11122233","pass","a111332@mail",new RoleDTO(1))))
+        mockMvc.perform(put("/users").header("Authorization", token)
+                        .content(asJsonString(new UserDTOForRegistration(1,"Pet","Ilsya","Aleksa","login","password","a212313432532@mail",new RoleDTO(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult2=mockMvc.perform(get("/user/getAll").header("Authorization", token)).andReturn();
-        System.out.println(mvcResult2.getResponse().getContentAsString());
-        MvcResult mvcResult1=mockMvc.perform(get("/user/find/{id}", id).header("Authorization", token)).andReturn();
-        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":3,\"surname\":\"Pet\",\"name\":\"Ilsya\",\"patronymic\":\"Aleksa\",\"login\":\"log11122233\",\"password\":\"pass\",\"mail\":\"a111332@mail\",\"role\":{\"id\":1,\"name\":\"ROLE_USER\"}}");
+        MvcResult mvcResult1=mockMvc.perform(get("/users/{id}",1).header("Authorization", token)).andReturn();
+        Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"{\"id\":1,\"surname\":\"Pet\",\"name\":\"Ilsya\",\"patronymic\":\"Aleksa\",\"login\":\"login\",\"password\":\"password\",\"mail\":\"a212313432532@mail\",\"role\":{\"id\":1,\"name\":\"ROLE_USER\"}}");
     }
 
 
     @Test()
-    public void testGetAllCategory() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(get("/user/getAll").header("Authorization", token)).andReturn();
+    public void testGetAlUser() throws Exception {
+        MvcResult mvcResult=mockMvc.perform(get("/users").header("Authorization", token)).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
-    public void testDeleteCategory() throws Exception {
-        MvcResult mvcResult=mockMvc.perform(post("/user/add").header("Authorization", token)
+    public void testDeleteUser() throws Exception {
+        MvcResult mvcResult=mockMvc.perform(post("/users").header("Authorization", token)
                         .content(asJsonString(new UserDTOForRegistration("Pet","Ilsya","Aleksa","log1111","pass","a11+2@mail",new RoleDTO(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         char id=mvcResult.getResponse().getContentAsString().charAt(6);
-        MvcResult mvcResult2=mockMvc.perform(get("/user/getAll").header("Authorization", token)).andReturn();
-        System.out.println(mvcResult2.getResponse().getContentAsString());
-        MvcResult mvcResult1=mockMvc.perform(post("/user/delete/{id}",id).header("Authorization", token)).andReturn();
+        MvcResult mvcResult1=mockMvc.perform(delete("/users/{id}",id).header("Authorization", token)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(),"true");
     }
 

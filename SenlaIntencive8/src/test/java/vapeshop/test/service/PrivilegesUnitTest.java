@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
+import project.vapeshop.dao.IPrivilegeDao;
 import project.vapeshop.dao.impl.PrivilegesDao;
 import project.vapeshop.dto.user.PrivilegesDTO;
 import project.vapeshop.entity.user.Privileges;
@@ -31,7 +32,7 @@ public class PrivilegesUnitTest {
     private PrivilegesService privilegesService;
 
     @Mock
-    private PrivilegesDao privilegesDao;
+    private IPrivilegeDao privilegesDao;
 
     @Spy
     private ModelMapper modelMapper;

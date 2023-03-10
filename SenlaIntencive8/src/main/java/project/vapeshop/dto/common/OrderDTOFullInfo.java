@@ -1,6 +1,8 @@
 package project.vapeshop.dto.common;
 
 import lombok.*;
+import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
+import project.vapeshop.dto.user.UserDTOForCommon;
 import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.user.User;
@@ -26,8 +28,8 @@ public class OrderDTOFullInfo {
     private Double price;
 
     @NonNull
-    private User user;
+    private UserDTOForCommon user;
 
     @NonNull
-    private List<Item> items;
+    private List<ItemDTOInfoForCatalog> items;
 }

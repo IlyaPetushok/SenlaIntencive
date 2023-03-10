@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
-import project.vapeshop.dao.Dao;
 import project.vapeshop.dao.IItemDao;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;

@@ -29,10 +29,6 @@ public class AuthenticationController {
 
     @PostMapping("/registration")
     public ResponseEntity<?> registration(@RequestBody UserDTOForRegistration userDTOForRegistration){
-        try {
             return new ResponseEntity<>(userService.addObject(userDTOForRegistration), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 }

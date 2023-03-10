@@ -8,21 +8,19 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @ToString
-public class UserDTOForRating {
+public class UserDTOForCommon {
     private Integer id;
     private String surname;
     private String name;
     private String patronymic;
-    private String mail;
 
-    public UserDTOForRating(Integer id) {
+    public UserDTOForCommon(Integer id) {
         this.id = id;
     }
 
-    public UserDTOForRating(String surname, String name, String patronymic, String mail) {
+    public UserDTOForCommon(String surname, String name, String patronymic) {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
-        this.mail = mail;
     }
 }

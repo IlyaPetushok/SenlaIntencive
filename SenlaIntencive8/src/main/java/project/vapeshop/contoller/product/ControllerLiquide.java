@@ -5,11 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import project.vapeshop.dto.product.LiquideDTO;
+import project.vapeshop.dto.product.LiquideDTOFullInfo;
 import project.vapeshop.service.product.LiquideService;
 
 @RestController
-@RequestMapping("/liquide")
+@RequestMapping("/liquides")
 public class ControllerLiquide {
     LiquideService service;
 
@@ -20,58 +20,39 @@ public class ControllerLiquide {
 
 
     @PreAuthorize("hasAuthority('CREATE')")
-    @PostMapping("/add")
-    public ResponseEntity<?> insert(@RequestBody LiquideDTO liquideDTO) {
-        try {
-            return new ResponseEntity<>(service.addItem(liquideDTO), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PostMapping
+    public ResponseEntity<?> insert(@RequestBody LiquideDTOFullInfo liquideDTOFullInfo) {
+        return new ResponseEntity<>(service.addItem(liquideDTOFullInfo), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> readId(@PathVariable("id") Integer id){
-        try {
-            return new ResponseEntity<>(service.showItem(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/{liquide-id}")
+    public ResponseEntity<?> readId(@PathVariable("liquide-id") Integer id){
+        return new ResponseEntity<>(service.showItem(id), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<?> read() {
-        try {
-            return new ResponseEntity<>(service.showItems(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.showItems(), HttpStatus.OK);
     }
+
 
     @PreAuthorize("hasAuthority('DELETE')")
-    @PostMapping("/delete/{id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    @DeleteMapping("/{liquide-id}")
+    public boolean delete(@PathVariable("liquide-id") Integer id) {
         return service.deleteItem(id);
     }
 
     @PreAuthorize("hasAuthority('UPDATE')")
-    @PostMapping("/update")
-    public ResponseEntity<?> update(@RequestBody LiquideDTO liquideDTO) {
-        try {
-            return new ResponseEntity<>(service.updateItem(liquideDTO), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody LiquideDTOFullInfo liquideDTOFullInfo) {
+        return new ResponseEntity<>(service.updateItem(liquideDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/show/{typeNicotine}")
+    @GetMapping("/type/{typeNicotine}")
     public ResponseEntity<?> showLiquideTypeNicotine(@PathVariable("typeNicotine") String typeNicotine){
-        try {
-            return new ResponseEntity<>(service.showLiquideByNicotine(typeNicotine), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.showLiquideByNicotine(typeNicotine), HttpStatus.UPGRADE_REQUIRED);
     }
 }

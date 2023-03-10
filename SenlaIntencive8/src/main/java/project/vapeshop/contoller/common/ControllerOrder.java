@@ -6,10 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
+import project.vapeshop.dto.user.UserDTOForCommon;
 import project.vapeshop.service.common.OrderService;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class ControllerOrder {
     OrderService service;
 
@@ -21,58 +22,44 @@ public class ControllerOrder {
 
 
     @PreAuthorize("hasAuthority('CREATE')")
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
-        try {
             return new ResponseEntity<>(service.addObject(orderDTOFullInfo), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<?> read() {
-        try {
             return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> read(@PathVariable("id") Integer id) {
-        try {
+    @GetMapping("/{order-id}")
+    public ResponseEntity<?> read(@PathVariable("order-id") Integer id) {
             return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @PreAuthorize("hasAuthority('DELETE')")
-    @PostMapping("/delete/{id}")
-    public boolean delete(@PathVariable("id") int id) {
+    @DeleteMapping("/{order-id}")
+    public boolean delete(@PathVariable("order-id") int id) {
         return service.deleteObject(id);
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/find/status/{status}")
+    @GetMapping("/status/{status}")
     public ResponseEntity<?> readByStatus(@PathVariable("status") String status){
-        try {
             return new ResponseEntity<>(service.showObjectsFindByStatus(status), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @PreAuthorize("hasAuthority('UPDATE')")
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> update(@RequestBody OrderDTOFullInfo orderDTOFullInfo) {
-        try {
             return new ResponseEntity<>(service.updateObject(orderDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    }
+
+    @PreAuthorize("hasAuthority('READ')")
+    @PostMapping("/users")
+    public ResponseEntity<?> readByUser(@RequestBody UserDTOForCommon userDTOForCommon) {
+        return new ResponseEntity<>(service.showObjectsFindByUser(userDTOForCommon), HttpStatus.OK);
     }
 }

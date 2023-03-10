@@ -9,7 +9,7 @@ import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.service.user.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class ControllerUser {
     UserService service;
 
@@ -20,48 +20,33 @@ public class ControllerUser {
 
 
     @PreAuthorize("hasAuthority('CREATE')")
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody UserDTOForRegistration userDTOForRegistration) {
-        try {
-            return new ResponseEntity<>(service.addObject(userDTOForRegistration), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.addObject(userDTOForRegistration), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<?> read() {
-        try {
-            return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
     }
 
+
     @PreAuthorize("hasAuthority('DELETE')")
-    @PostMapping("/delete/{id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    @DeleteMapping("/{user-id}")
+    public boolean delete(@PathVariable("user-id") Integer id) {
         return service.deleteObject(id);
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> read(@PathVariable("id") Integer id) {
-        try {
-            return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/{user-id}")
+    public ResponseEntity<?> read(@PathVariable("user-id") Integer id)  {
+        return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('UPDATE')")
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> update(@RequestBody UserDTOForRegistration userDTOForRegistration) {
-        try {
-            return new ResponseEntity<>(service.updateObject(userDTOForRegistration), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.updateObject(userDTOForRegistration), HttpStatus.UPGRADE_REQUIRED);
     }
 }

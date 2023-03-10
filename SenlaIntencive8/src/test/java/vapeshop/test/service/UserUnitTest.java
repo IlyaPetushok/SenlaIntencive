@@ -8,12 +8,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
+import project.vapeshop.dao.IUserDao;
 import project.vapeshop.dao.impl.UserDao;
 import project.vapeshop.dto.user.RoleDTO;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.entity.user.Role;
 import project.vapeshop.entity.user.User;
+import project.vapeshop.exception.NotFoundException;
 import project.vapeshop.service.user.UserService;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class UserUnitTest {
     private UserService userService;
 
     @Mock
-    private UserDao userDao;
+    private IUserDao userDao;
 
     @Spy
     private ModelMapper modelMapper;
@@ -42,9 +44,8 @@ public class UserUnitTest {
     private final UserDTOForRegistration userDto =new UserDTOForRegistration(2,"Cluch","Vasya","Pupkin","login2","pass2","vasya@mail",new RoleDTO(1));
 
     @Test
-    public void testGetByIdCategory(){
+    public void testGetByIdCategory() throws NotFoundException {
         when(userDao.selectObject(1)).thenReturn(user);
-
         Assertions.assertEquals(userService.showObject(1).getId(), user.getId());
         verify(userDao,times(1)).selectObject(any());
     }

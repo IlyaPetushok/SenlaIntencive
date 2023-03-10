@@ -13,10 +13,9 @@ import project.vapeshop.service.product.ItemService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/item")
+@RequestMapping("/items")
 public class ControllerItem {
     ItemService itemService;
-    CategoryService categoryService;
 
     @Autowired
     public ControllerItem(ItemService itemService) {
@@ -25,58 +24,38 @@ public class ControllerItem {
 
 
     @PreAuthorize("hasAuthority('CREATE')")
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody ItemDTOFullInfo item) {
-        try {
-            return new ResponseEntity<>(itemService.addItem(item), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(itemService.addItem(item), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<List<ItemDTOInfoForCatalog>> read() {
-        try {
-            return new ResponseEntity<>(itemService.showItems(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(itemService.showItems(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> readId(@PathVariable("id") Integer id) {
-        try {
-            return new ResponseEntity<>(itemService.showItem(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/{item-id}")
+    public ResponseEntity<?> readId(@PathVariable("item-id") Integer id) {
+        return new ResponseEntity<>(itemService.showItem(id), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('DELETE')")
-    @GetMapping("/delete/{id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    @DeleteMapping("/{item-id}")
+    public boolean delete(@PathVariable("item-id") Integer id) {
         return itemService.deleteItem(id);
     }
 
     @PreAuthorize("hasAuthority('UPDATE')")
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> update(@RequestBody ItemDTOFullInfo itemDTOFullInfo) {
-        try {
-            return new ResponseEntity<>(itemService.updateItem(itemDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(itemService.updateItem(itemDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/show/{category}")
-    public ResponseEntity<?> readItemByCategory(@PathVariable("category") String nameCategory){
-        try {
-            return new ResponseEntity<>(itemService.showItemByCategory(nameCategory), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/category/{category}")
+    public ResponseEntity<?> readItemByCategory(@PathVariable("category") String nameCategory) {
+        return new ResponseEntity<>(itemService.showItemByCategory(nameCategory), HttpStatus.OK);
     }
 }

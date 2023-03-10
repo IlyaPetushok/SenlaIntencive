@@ -2,6 +2,7 @@ package project.vapeshop.service.user;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.IUserDao;
@@ -9,7 +10,9 @@ import project.vapeshop.dto.user.UserDTOAfterAuthorization;
 import project.vapeshop.dto.user.UserDTOForAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.entity.user.User;
+import project.vapeshop.exception.NotFoundException;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +23,7 @@ public class UserService {
     ModelMapper modelMapper;
 
     @Autowired
-    public UserService(project.vapeshop.dao.impl.UserDao dao, ModelMapper modelMapper) {
+    public UserService(IUserDao dao, ModelMapper modelMapper) {
         this.dao = dao;
         this.modelMapper = modelMapper;
     }
@@ -54,7 +57,11 @@ public class UserService {
 
     @Transactional
     public boolean deleteObject(int id) {
-        return dao.delete(id);
+        try {
+            return dao.delete(id);
+        } catch (NoResultException exception) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND,"user не был найден");
+        }
     }
 
     @Transactional
@@ -64,8 +71,11 @@ public class UserService {
 
 
     public UserDTOAfterAuthorization userFindByLoginWithPassword(UserDTOForAuthorization userDTOForAuthorization){
-        return modelMapper.map(dao.findByLoginAndPassword(modelMapper.map(userDTOForAuthorization,User.class)),UserDTOAfterAuthorization.class);
-    }
+        try {
+            return modelMapper.map(dao.findByLoginAndPassword(modelMapper.map(userDTOForAuthorization, User.class)), UserDTOAfterAuthorization.class);
+        } catch (NoResultException exception) {
+            throw new NotFoundException(HttpStatus.FORBIDDEN,"Неверный login или password");
+        }    }
 
     public User userFindByLogin(String login){
         return dao.findByLogin(login);

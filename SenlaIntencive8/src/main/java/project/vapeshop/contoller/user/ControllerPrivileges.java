@@ -9,7 +9,7 @@ import project.vapeshop.dto.user.PrivilegesDTO;
 import project.vapeshop.service.user.PrivilegesService;
 
 @RestController
-@RequestMapping("/privilege")
+@RequestMapping("/privileges")
 public class ControllerPrivileges {
     PrivilegesService service;
 
@@ -20,47 +20,33 @@ public class ControllerPrivileges {
 
 
     @PreAuthorize("hasAuthority('CREATE')")
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody PrivilegesDTO privilegesDTO) {
-        try {
-            return new ResponseEntity<>(service.addObject(privilegesDTO), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.addObject(privilegesDTO), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<?> read() {
-        try {
-            return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(service.showObjects(), HttpStatus.OK);
     }
 
+
     @PreAuthorize("hasAuthority('READ')")
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> read(@PathVariable("id") Integer id) {
-        try {
-            return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/{privilege-id}")
+    public ResponseEntity<?> read(@PathVariable("privilege-id") Integer id) {
+        return new ResponseEntity<>(service.showObject(id), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('DELETE')")
-    @PostMapping("/delete/{id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    @DeleteMapping("/{privilege-id}")
+    public boolean delete(@PathVariable("privilege-id") Integer id) {
         return service.deleteObject(id);
     }
 
     @PreAuthorize("hasAuthority('UPDATE')")
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> update(@RequestBody PrivilegesDTO privilegesDTO) {
-        try {
-            return new ResponseEntity<>(service.updateObject(privilegesDTO), HttpStatus.UPGRADE_REQUIRED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }    }
+        return new ResponseEntity<>(service.updateObject(privilegesDTO), HttpStatus.UPGRADE_REQUIRED);
+    }
 }

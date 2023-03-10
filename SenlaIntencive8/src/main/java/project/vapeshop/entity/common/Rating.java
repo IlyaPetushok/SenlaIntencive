@@ -15,6 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Rating implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +30,14 @@ public class Rating implements EntityId<Integer> {
     @NonNull
     private Integer quantityStar;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rating_id_item",referencedColumnName = "id_item")
     @NonNull
     private Item item;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @NonNull

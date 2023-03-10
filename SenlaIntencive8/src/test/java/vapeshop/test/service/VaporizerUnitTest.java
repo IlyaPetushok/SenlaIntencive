@@ -8,10 +8,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
-import project.vapeshop.dao.Dao;
 import project.vapeshop.dao.IVaporizerDao;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.dto.product.VaporizerDTO;
+import project.vapeshop.dto.product.VaporizerDTOFullInfo;
 import project.vapeshop.entity.product.Item;
 import project.vapeshop.entity.product.Vaporizer;
 import project.vapeshop.service.product.VaporizerService;
@@ -38,7 +38,7 @@ public class VaporizerUnitTest {
     }
 
     private final Vaporizer vaporizer =new Vaporizer(1,1.8,"картридж",new Item(6));;
-    private final VaporizerDTO vaporizerDto =new VaporizerDTO(2,1.8,"картридж",new ItemDTOInfoForCatalog(6));
+    private final VaporizerDTOFullInfo vaporizerDtoFullInfo =new VaporizerDTOFullInfo(2,1.8,"картридж",new ItemDTOInfoForCatalog(6));
 
     @Test
     public void testGetByIdCategory(){
@@ -58,9 +58,9 @@ public class VaporizerUnitTest {
 
         when(vaporizerDao.selectObjects()).thenReturn(list);
 
-        List<VaporizerDTO> vaporizerDTOS= vaporizerService.showItems();
-        for (int i = 0; i < vaporizerDTOS.size(); i++) {
-            Assertions.assertEquals(vaporizerDTOS.get(i).getId(),list.get(i).getId());
+        List<VaporizerDTO> vaporizerDTOFullInfos = vaporizerService.showItems();
+        for (int i = 0; i < vaporizerDTOFullInfos.size(); i++) {
+            Assertions.assertEquals(vaporizerDTOFullInfos.get(i).getId(),list.get(i).getId());
         }
         verify(vaporizerDao,times(1)).selectObjects();
     }
@@ -70,7 +70,7 @@ public class VaporizerUnitTest {
     public void testAddCategory(){
         when(vaporizerDao.insertObject(any())).thenReturn(vaporizer);
 
-        Assertions.assertEquals(vaporizerService.addItem(vaporizerDto).getId(), vaporizer.getId());
+        Assertions.assertEquals(vaporizerService.addItem(vaporizerDtoFullInfo).getId(), vaporizer.getId());
         verify(vaporizerDao,times(1)).insertObject(any());
     }
 
@@ -78,7 +78,7 @@ public class VaporizerUnitTest {
     public void testUpdateCategory(){
         when(vaporizerDao.update(any(Vaporizer.class))).thenReturn(vaporizer);
 
-        Assertions.assertEquals(vaporizerService.updateItem(vaporizerDto).getId(), vaporizer.getId());
+        Assertions.assertEquals(vaporizerService.updateItem(vaporizerDtoFullInfo).getId(), vaporizer.getId());
         verify(vaporizerDao,times(1)).update(any());
     }
 

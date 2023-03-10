@@ -20,6 +20,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
+@RequiredArgsConstructor
 public class Vape implements EntityId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +40,7 @@ public class Vape implements EntityId<Integer> {
     @Column(name = "type_vape")
     private String type;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @NonNull
     @OneToOne(fetch = FetchType.LAZY)

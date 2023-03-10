@@ -16,18 +16,17 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import project.vapeshop.config.SpringApplicationConfig;
-import project.vapeshop.config.SpringSecurityConfig;
 import project.vapeshop.dto.product.CategoryDTO;
 import project.vapeshop.dto.user.UserDTOForAuthorization;
 import project.vapeshop.security.JwtFilter;
 import vapeshop.test.config.H2Config;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-        classes = {H2Config.class, SpringSecurityConfig.class, SpringApplicationConfig.class})
+        classes = {H2Config.class, SpringApplicationConfig.class})
 @WebAppConfiguration
 public class CategoryUnitTest {
     @Autowired
@@ -54,50 +53,43 @@ public class CategoryUnitTest {
 
     @Test
     public void testGetByIdCategory() throws Exception {
-        MvcResult mvcResult1 = mockMvc
-                .perform(get("/category/find/{id}", "1")
-                        .header("Authorization", token)).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/categories/{category-id}", "1")
+                .header("Authorization", token)).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testAddCategory() throws Exception {
-        mockMvc.perform(post("/category/add")
-                        .header("Authorization", token)
+        mockMvc.perform(post("/categories").header("Authorization", token)
                         .content(asJsonString(new CategoryDTO("Vape")))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                )
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
-        MvcResult mvcResult1 = mockMvc.perform(get("/category/find/{id}", "4")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/categories/{id}", "4")).andReturn();
         Assertions.assertFalse(mvcResult1.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void testUpdateCategory() throws Exception {
-        mockMvc.perform(post("/category/update")
-                        .header("Authorization", token)
+        mockMvc.perform(put("/categories").header("Authorization", token)
                         .content(asJsonString(new CategoryDTO(3, "Vaporizer")))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("Authorization", token))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUpgradeRequired());
-        MvcResult mvcResult1 = mockMvc.perform(get("/category/find/{id}", "3")).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(get("/categories/{id}", "3")).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "{\"id\":3,\"name\":\"Vaporizer\"}");
     }
 
 
     @Test()
     public void testGetAllCategory() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/category/getAll")
-                .header("Authorization", token)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/categories").header("Authorization", token)).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test()
     public void testDeleteCategory() throws Exception {
-        MvcResult mvcResult1 = mockMvc.perform(post("/category/delete/{id}", "4")
-                .header("Authorization", token)).andReturn();
+        MvcResult mvcResult1 = mockMvc.perform(delete("/categories/{id}", "4").header("Authorization", token)).andReturn();
         Assertions.assertEquals(mvcResult1.getResponse().getContentAsString(), "true");
     }
 
