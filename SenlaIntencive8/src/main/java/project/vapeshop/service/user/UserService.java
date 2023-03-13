@@ -21,7 +21,7 @@ import project.vapeshop.entity.user.User_;
 import project.vapeshop.exception.NotFoundException;
 import project.vapeshop.exception.UnAuthorizationException;
 import project.vapeshop.predicate.CustomPredicate;
-import project.vapeshop.predicate.TypeFunctionForSql;
+import project.vapeshop.predicate.ComparisonType;
 
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
@@ -118,22 +118,22 @@ public class UserService {
     public List<UserDTOAfterAuthorization> userFindByFilter(UserDTOFilter userDTOFilter) {
         List<CustomPredicate> predicates = new ArrayList<>();
         if (userDTOFilter.getName() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getName(), User_.NAME, TypeFunctionForSql.EQUAL));
+            predicates.add(new CustomPredicate(userDTOFilter.getName(), User_.NAME, ComparisonType.EQUAL));
         }
         if (userDTOFilter.getPatronymic() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getPatronymic(), User_.PATRONYMIC, TypeFunctionForSql.EQUAL));
+            predicates.add(new CustomPredicate(userDTOFilter.getPatronymic(), User_.PATRONYMIC, ComparisonType.EQUAL));
         }
         if (userDTOFilter.getSurname() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getSurname(), User_.SURNAME, TypeFunctionForSql.EQUAL));
+            predicates.add(new CustomPredicate(userDTOFilter.getSurname(), User_.SURNAME, ComparisonType.EQUAL));
         }
         if (userDTOFilter.getLogin() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getLogin(), User_.LOGIN, TypeFunctionForSql.EQUAL));
+            predicates.add(new CustomPredicate(userDTOFilter.getLogin(), User_.LOGIN, ComparisonType.EQUAL));
         }
         if (userDTOFilter.getPassword() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getPassword(), User_.PASSWORD, TypeFunctionForSql.EQUAL));
+            predicates.add(new CustomPredicate(userDTOFilter.getPassword(), User_.PASSWORD, ComparisonType.EQUAL));
         }
         if (userDTOFilter.getMail() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getMail(), User_.MAIL, TypeFunctionForSql.EQUAL));
+            predicates.add(new CustomPredicate(userDTOFilter.getMail(), User_.MAIL, ComparisonType.EQUAL));
         }
         Pageable pageable = PageRequest.of(userDTOFilter.getPage(), userDTOFilter.getSize(), Sort.by(Sort.Direction.ASC,userDTOFilter.getSort()));
         Page<User> users = dao.selectObjectsByFilter(predicates,pageable);

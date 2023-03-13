@@ -14,5 +14,5 @@ public class CustomPredicate {
 
     private String nameField;
 
-    private TypeFunctionForSql functionForSql;
+    private ComparisonType functionForSql;
 }
