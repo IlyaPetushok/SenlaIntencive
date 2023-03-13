@@ -48,6 +48,7 @@ E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\entity\common\
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\entity\product\Liquide.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\security\CustomUserDetails.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\entity\user\Role.java
+E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\exception\UnAuthorizationException.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\contoller\product\ControllerItem.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dto\user\RoleDTO.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dto\user\UserDTOForRegistration.java
@@ -60,12 +61,14 @@ E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dao\impl\Ratin
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dao\ILiquideDao.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\contoller\common\ControllerOrder.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\config\DispatcherServlet.java
+E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\predicate\CustomPredicate.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\service\product\VaporizerService.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dto\user\UserDTOForCommon.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dto\product\VapeDTOFullInfo.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dao\impl\OrderDao.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\entity\common\Rating.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dao\IRoleDao.java
+E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dto\user\UserDTOFilter.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dao\impl\UserDao.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\entity\product\Category.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dto\common\OrderDTOFullInfo.java
@@ -75,6 +78,7 @@ E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\entity\type\Li
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dao\IPrivilegeDao.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dao\IUserDao.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\dao\IItemDao.java
+E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\predicate\TypeFunctionForSql.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\service\common\OrderService.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\entity\type\VaporizerType.java
 E:\SenlaIntencive1\SenlaIntencive8\src\main\java\project\vapeshop\contoller\product\ControllerVape.java

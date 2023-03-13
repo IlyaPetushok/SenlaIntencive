@@ -1,10 +1,14 @@
 package project.vapeshop.contoller.user;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import project.vapeshop.contoller.authencticate.AuthenticationController;
+import project.vapeshop.dto.user.UserDTOFilter;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.service.user.UserService;
 
@@ -12,6 +16,8 @@ import project.vapeshop.service.user.UserService;
 @RequestMapping("/users")
 public class ControllerUser {
     UserService service;
+    private final static Logger logg= LogManager.getLogger(AuthenticationController.class);
+
 
     @Autowired
     public ControllerUser(UserService service) {
@@ -22,6 +28,11 @@ public class ControllerUser {
     @PreAuthorize("hasAuthority('CREATE')")
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody UserDTOForRegistration userDTOForRegistration) {
+        logg.info("start");
+        logg.debug("This is a debug message");
+        logg.info("This is an info message");
+        logg.warn("This is a warn message");
+        logg.error("This is an error message");
         return new ResponseEntity<>(service.addObject(userDTOForRegistration), HttpStatus.CREATED);
     }
 
@@ -48,5 +59,11 @@ public class ControllerUser {
     @PutMapping
     public ResponseEntity<?> update(@RequestBody UserDTOForRegistration userDTOForRegistration) {
         return new ResponseEntity<>(service.updateObject(userDTOForRegistration), HttpStatus.UPGRADE_REQUIRED);
+    }
+
+    @PreAuthorize("hasAuthority('READ')")
+    @GetMapping("/filter")
+    public ResponseEntity<?> readByFilter(@RequestBody UserDTOFilter userDTOFilter){
+        return new ResponseEntity<>(service.userFindByFilter(userDTOFilter),HttpStatus.OK);
     }
 }

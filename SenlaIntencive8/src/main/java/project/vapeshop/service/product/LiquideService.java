@@ -2,13 +2,17 @@ package project.vapeshop.service.product;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.ILiquideDao;
 import project.vapeshop.dto.product.LiquideDTO;
 import project.vapeshop.dto.product.LiquideDTOFullInfo;
 import project.vapeshop.entity.product.Liquide;
+import project.vapeshop.entity.type.LiquideTypeNicotine;
+import project.vapeshop.exception.NotFoundException;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,34 +29,49 @@ public class LiquideService {
     }
 
     public LiquideDTOFullInfo showItem(int id) {
-        return modelMapper.map(dao.selectObject(id), LiquideDTOFullInfo.class);
+        try {
+            return modelMapper.map(dao.selectObject(id), LiquideDTOFullInfo.class);
+        } catch (NoResultException e) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "liquide dont found");
+        }
     }
 
     public List<LiquideDTO> showItems() {
-        List<LiquideDTO> liquideDTOFullInfoList =dao.selectObjects().stream()
+        List<Liquide> liquideList = dao.selectObjects();
+        if (liquideList.isEmpty()) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "liquide list is empty");
+        }
+        return liquideList.stream()
                 .map(liquide -> modelMapper.map(liquide, LiquideDTO.class))
                 .collect(Collectors.toList());
-        return liquideDTOFullInfoList;
     }
 
     @Transactional
     public LiquideDTOFullInfo addItem(LiquideDTOFullInfo liquideDTOFullInfo) {
-        return modelMapper.map(dao.insertObject(modelMapper.map(liquideDTOFullInfo,Liquide.class)), LiquideDTOFullInfo.class);
+        return modelMapper.map(dao.insertObject(modelMapper.map(liquideDTOFullInfo, Liquide.class)), LiquideDTOFullInfo.class);
     }
 
 
     @Transactional
     public boolean deleteItem(int id) {
-        return dao.delete(id);
+        try {
+            return dao.delete(id);
+        } catch (NoResultException e) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "liquide dont found");
+        }
     }
 
     @Transactional
     public LiquideDTOFullInfo updateItem(LiquideDTOFullInfo liquideDTOFullInfo) {
-        return modelMapper.map(dao.update(modelMapper.map(liquideDTOFullInfo,Liquide.class)), LiquideDTOFullInfo.class);
+        return modelMapper.map(dao.update(modelMapper.map(liquideDTOFullInfo, Liquide.class)), LiquideDTOFullInfo.class);
     }
 
-    public List<LiquideDTO> showLiquideByNicotine(String typeNicotine){
-        return dao.findByTypeNicotine(typeNicotine).stream()
+    public List<LiquideDTO> showLiquideByNicotine(String typeNicotine) {
+        List<Liquide> liquideList=dao.findByTypeNicotine(LiquideTypeNicotine.getTypeValue(typeNicotine));
+        if(liquideList.isEmpty()){
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "liquide dont found");
+        }
+        return liquideList.stream()
                 .map(liquide -> modelMapper.map(liquide, LiquideDTO.class))
                 .collect(Collectors.toList());
     }

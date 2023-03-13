@@ -5,6 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -29,19 +30,19 @@ public class JwtFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String token=getTokenRequest((HttpServletRequest) servletRequest);
-        if(token!=null && jwtProvider.validateToken(token)){
+        String token = getTokenRequest((HttpServletRequest) servletRequest);
+        if (token != null && jwtProvider.validateToken(token)) {
             String login = jwtProvider.getLogin(token);
-            CustomUserDetails customUserDetails= customUserDetailService.loadUserByUsername(login);
-            UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(customUserDetails,null,customUserDetails.getAuthorities());
+            CustomUserDetails customUserDetails = customUserDetailService.loadUserByUsername(login);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
-        filterChain.doFilter(servletRequest,servletResponse);
+            filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private String getTokenRequest(HttpServletRequest httpServletRequest){
-        String bearer=httpServletRequest.getHeader(AUTHORIZATION);
-        if(hasText(bearer) && bearer.startsWith(BEARER_)){
+    private String getTokenRequest(HttpServletRequest httpServletRequest) {
+        String bearer = httpServletRequest.getHeader(AUTHORIZATION);
+        if (hasText(bearer) && bearer.startsWith(BEARER_)) {
             return bearer.substring(7);
         }
         return null;

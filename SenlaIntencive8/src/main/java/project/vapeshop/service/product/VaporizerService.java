@@ -2,13 +2,17 @@ package project.vapeshop.service.product;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.IVaporizerDao;
 import project.vapeshop.dto.product.VaporizerDTO;
 import project.vapeshop.dto.product.VaporizerDTOFullInfo;
 import project.vapeshop.entity.product.Vaporizer;
+import project.vapeshop.entity.type.VaporizerType;
+import project.vapeshop.exception.NotFoundException;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,11 +30,19 @@ public class VaporizerService {
 
 
     public VaporizerDTOFullInfo showItem(int id) {
-        return modelMapper.map(dao.selectObject(id), VaporizerDTOFullInfo.class);
+        try {
+            return modelMapper.map(dao.selectObject(id), VaporizerDTOFullInfo.class);
+        } catch (NoResultException e) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "vaporizer dont found");
+        }
     }
 
     public List<VaporizerDTO> showItems() {
-        return dao.selectObjects().stream()
+        List<Vaporizer> vaporizers = dao.selectObjects();
+        if (vaporizers.isEmpty()) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "vaporizer list is empty");
+        }
+        return vaporizers.stream()
                 .map(vaporizer -> modelMapper.map(vaporizer, VaporizerDTO.class))
                 .collect(Collectors.toList());
     }
@@ -42,7 +54,7 @@ public class VaporizerService {
 
     @Transactional
     public List<VaporizerDTOFullInfo> addItems(List<VaporizerDTOFullInfo> vaporizerDTOFullInfo) {
-        List<Vaporizer> vaporizers=dao.insertObjects(vaporizerDTOFullInfo.stream()
+        List<Vaporizer> vaporizers = dao.insertObjects(vaporizerDTOFullInfo.stream()
                 .map(vaporizerDTOFullInfo1 -> modelMapper.map(vaporizerDTOFullInfo1, Vaporizer.class))
                 .collect(Collectors.toList()));
         return vaporizers.stream()
@@ -53,16 +65,24 @@ public class VaporizerService {
 
     @Transactional
     public boolean deleteItem(int id) {
-        return dao.delete(id);
+        try {
+            return dao.delete(id);
+        } catch (NoResultException e) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "vaporizer dont found");
+        }
     }
 
     @Transactional
     public VaporizerDTOFullInfo updateItem(VaporizerDTOFullInfo vaporizerDTOFullInfo) {
-        return modelMapper.map(dao.update(modelMapper.map(vaporizerDTOFullInfo,Vaporizer.class)), VaporizerDTOFullInfo.class);
+        return modelMapper.map(dao.update(modelMapper.map(vaporizerDTOFullInfo, Vaporizer.class)), VaporizerDTOFullInfo.class);
     }
 
-    public List<VaporizerDTO> showVaporizerByType(String type){
-        return dao.findByTypeVaporizer(type).stream()
+    public List<VaporizerDTO> showVaporizerByType(String type) {
+        List<Vaporizer> vaporizersList=dao.findByTypeVaporizer(VaporizerType.getTypeVaporizer(type));
+        if(vaporizersList.isEmpty()){
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "vaporizer list is empty");
+        }
+        return vaporizersList.stream()
                 .map(vape -> modelMapper.map(vape, VaporizerDTO.class))
                 .collect(Collectors.toList());
     }

@@ -23,7 +23,7 @@ Insert Into role_privileges(rp_id_role,rp_id_privileges) values (1,2);
 Insert Into role_privileges(rp_id_role,rp_id_privileges) values (1,3);
 Insert Into role_privileges(rp_id_role,rp_id_privileges) values (1,4);
 
-Insert Into users(surname,name,patronymic,login,password,mail,user_id_role) 
+Insert Into users(surname,name,patronymic,login,password,mail,user_id_role)
 values ('Петушок','Илья','Александрович','login','password','mail@mail.com',1);
 
 Insert Into rating(comment,quantity_stars,rating_id_item,rating_id_user) 

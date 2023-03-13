@@ -2,6 +2,7 @@ package project.vapeshop.service.common;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.Dao;
@@ -12,7 +13,9 @@ import project.vapeshop.dto.user.UserDTOForCommon;
 import project.vapeshop.entity.common.Order;
 import project.vapeshop.entity.common.StatusOrder;
 import project.vapeshop.entity.user.User;
+import project.vapeshop.exception.NotFoundException;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,12 +32,21 @@ public class OrderService {
     }
 
     public OrderDTOFullInfo showObject(int id) {
-        Order order=dao.selectObject(id);
+        Order order;
+        try {
+            order = dao.selectObject(id);
+        } catch (NoResultException e) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "operation is fail because order dont found");
+        }
         return modelMapper.map(order, OrderDTOFullInfo.class);
     }
 
     public List<OrderDTOForBasket> showObjects() {
-        return dao.selectObjects().stream()
+        List<Order> orders = dao.selectObjects();
+        if (orders.isEmpty()) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "order list is empty");
+        }
+        return orders.stream()
                 .map(order -> modelMapper.map(order, OrderDTOForBasket.class))
                 .collect(Collectors.toList());
     }
@@ -56,7 +68,11 @@ public class OrderService {
 
     @Transactional
     public boolean deleteObject(int id) {
-        return dao.delete(id);
+        try {
+            return dao.delete(id);
+        } catch (NoResultException e) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "operation is fail because order dont found");
+        }
     }
 
     @Transactional
@@ -65,14 +81,22 @@ public class OrderService {
     }
 
     public List<OrderDTOForBasket> showObjectsFindByStatus(String status) {
-        return dao.selectOrderFindByStatus(StatusOrder.valueOf(status)).stream()
-                .map(order -> modelMapper.map(order, OrderDTOForBasket.class))
-                .collect(Collectors.toList());
+        try {
+            return dao.selectOrderFindByStatus(StatusOrder.valueOf(status)).stream()
+                    .map(order -> modelMapper.map(order, OrderDTOForBasket.class))
+                    .collect(Collectors.toList());
+        } catch (NoResultException e) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "order dont found");
+        }
     }
 
-    public List<OrderDTOForBasket> showObjectsFindByUser(UserDTOForCommon userDTOForCommon){
-        return dao.selectOrderFindByUser(modelMapper.map(userDTOForCommon, User.class)).stream()
-                .map(order -> modelMapper.map(order,OrderDTOForBasket.class))
-                .collect(Collectors.toList());
+    public List<OrderDTOForBasket> showObjectsFindByUser(UserDTOForCommon userDTOForCommon) {
+        try {
+            return dao.selectOrderFindByUser(modelMapper.map(userDTOForCommon, User.class)).stream()
+                    .map(order -> modelMapper.map(order, OrderDTOForBasket.class))
+                    .collect(Collectors.toList());
+        } catch (NoResultException e) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "order dont found");
+        }
     }
 }

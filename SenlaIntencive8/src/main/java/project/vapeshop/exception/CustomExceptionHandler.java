@@ -17,4 +17,12 @@ public class CustomExceptionHandler {
         ResponseError error=new ResponseError(notFoundException.getStatus(),notFoundException.getMessage());
         return new ResponseEntity<>(error.toString(),httpHeaders,HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handle(UnAuthorizationException unAuthorizationException){
+        HttpHeaders httpHeaders=new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ResponseError error=new ResponseError(unAuthorizationException.getStatus(),unAuthorizationException.getMessage());
+        return new ResponseEntity<>(error.toString(),httpHeaders,HttpStatus.NOT_FOUND);
+    }
 }

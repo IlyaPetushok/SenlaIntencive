@@ -19,10 +19,12 @@ public class JwtProvider {
     @Value("${jwt.secret}")
     private String secret;
 
+    @Value("${jwt.time}")
+    private String time;
 
     public String generatedToken(UserDTOAfterAuthorization user) {
         SecretKey secretKey= Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
-        Date date = DateUtils.addMinutes(new Date(), 15);
+        Date date = DateUtils.addMinutes(new Date(), Integer.parseInt(time));
         Claims claims = Jwts.claims().setSubject(user.getLogin());
         claims.put("role", user.getRole().getName());
         claims.put("name", user.getName());

@@ -1,14 +1,20 @@
 package project.vapeshop.dao.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Repository;
 import project.vapeshop.dao.IUserDao;
 import project.vapeshop.entity.user.Role;
 import project.vapeshop.entity.user.User;
 import project.vapeshop.entity.user.User_;
+import project.vapeshop.predicate.CustomPredicate;
+import project.vapeshop.predicate.TypeFunctionForSql;
+
 import javax.persistence.EntityGraph;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -80,4 +86,5 @@ public class UserDao extends AbstractDao<User, Integer> implements IUserDao {
         user.getRole().setPrivileges(user.getRole().getPrivileges());
         return query.getSingleResult();
     }
+
 }
