@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.common.RatingDTOFullInfo;
+import project.vapeshop.dto.filter.RatingDTOFilter;
 import project.vapeshop.service.common.RatingService;
 
 @RestController
@@ -38,7 +39,7 @@ public class ControllerRating {
 
     @PreAuthorize("hasAuthority('DELETE')")
     @DeleteMapping("/{rating-id}")
-    public boolean delete(@PathVariable("id") Integer id) {
+    public boolean delete(@PathVariable("rating-id") Integer id) {
         return service.deleteObject(id);
     }
 
@@ -47,4 +48,11 @@ public class ControllerRating {
     public ResponseEntity<?> update(@RequestBody RatingDTOFullInfo ratingDTOFullInfo) {
         return new ResponseEntity<>(service.updateObject(ratingDTOFullInfo), HttpStatus.UPGRADE_REQUIRED);
     }
+
+    @PreAuthorize("hasAuthority('READ')")
+    @GetMapping("/filter")
+    public ResponseEntity<?> readByFilter(@RequestBody RatingDTOFilter ratingDTOFilter){
+        return new ResponseEntity<>(service.ratingByFilter(ratingDTOFilter),HttpStatus.OK);
+    }
 }
+

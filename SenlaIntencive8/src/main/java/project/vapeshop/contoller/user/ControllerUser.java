@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.contoller.authencticate.AuthenticationController;
-import project.vapeshop.dto.user.UserDTOFilter;
+import project.vapeshop.dto.filter.UserDTOFilter;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.service.user.UserService;
 

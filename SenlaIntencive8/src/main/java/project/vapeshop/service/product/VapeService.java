@@ -2,17 +2,26 @@ package project.vapeshop.service.product;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.IVapeDao;
+import project.vapeshop.dto.filter.CustomSortDirection;
+import project.vapeshop.dto.filter.VapeDTOFilter;
 import project.vapeshop.dto.product.VapeDTO;
 import project.vapeshop.dto.product.VapeDTOFullInfo;
 import project.vapeshop.entity.product.Vape;
+import project.vapeshop.entity.product.Vape_;
 import project.vapeshop.entity.type.VapeType;
 import project.vapeshop.exception.NotFoundException;
+import project.vapeshop.predicate.ComparisonType;
+import project.vapeshop.predicate.CustomPredicate;
 
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,8 +58,7 @@ public class VapeService {
 
     @Transactional
     public VapeDTOFullInfo addItem(VapeDTOFullInfo vapeDTOFullInfo) {
-        VapeDTOFullInfo vapeDTOFullInfo1 = modelMapper.map(dao.insertObject(modelMapper.map(vapeDTOFullInfo, Vape.class)), VapeDTOFullInfo.class);
-        return vapeDTOFullInfo1;
+        return modelMapper.map(dao.insertObject(modelMapper.map(vapeDTOFullInfo, Vape.class)), VapeDTOFullInfo.class);
     }
 
     @Transactional
@@ -85,5 +93,41 @@ public class VapeService {
         return vapes.stream()
                 .map(vape -> modelMapper.map(vape, VapeDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public List<VapeDTO> vapeByFilter(VapeDTOFilter vapeDTOFilter){
+        Sort sort=Sort.by(CustomSortDirection.getSortDirection(vapeDTOFilter.getSortDirection()), vapeDTOFilter.getSortByName());
+        Pageable pageable= PageRequest.of(vapeDTOFilter.getPage(), vapeDTOFilter.getSize(),sort);
+        return dao.selectObjectsByFilter(generateCustomPredicate(vapeDTOFilter),pageable).stream()
+                .map(vape -> modelMapper.map(vape,VapeDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    private List<CustomPredicate<?>> generateCustomPredicate(VapeDTOFilter vapeDTOFilter){
+        List<CustomPredicate<?>> predicates=new ArrayList<>();
+        if(vapeDTOFilter.getBattery()!=null && vapeDTOFilter.getBatteryMax()!=null){
+            predicates.add(new CustomPredicate<>(vapeDTOFilter.getBattery(), vapeDTOFilter.getBatteryMax(), Vape_.battery, ComparisonType.BETWEEN,Integer.class));
+        }else {
+            if(vapeDTOFilter.getBatteryMax()!=null){
+                predicates.add(new CustomPredicate<>(vapeDTOFilter.getBatteryMax(), Vape_.battery, ComparisonType.LESS));
+            }
+            if(vapeDTOFilter.getBattery()!=null){
+                predicates.add(new CustomPredicate<>(vapeDTOFilter.getBattery(), Vape_.battery, ComparisonType.MORE));
+            }
+        }
+        if(vapeDTOFilter.getType()!=null){
+            predicates.add(new CustomPredicate<>(vapeDTOFilter.getType(),Vape_.type,ComparisonType.IN,String.class));
+        }
+        if(vapeDTOFilter.getPower()!=null && vapeDTOFilter.getPowerMax()!=null){
+            predicates.add(new CustomPredicate<>(vapeDTOFilter.getPower(), vapeDTOFilter.getPowerMax(),Vape_.power,ComparisonType.BETWEEN,Integer.class));
+        }else {
+            if(vapeDTOFilter.getPowerMax()!=null){
+                predicates.add(new CustomPredicate<>(vapeDTOFilter.getPowerMax(),Vape_.power,ComparisonType.LESS));
+            }
+            if(vapeDTOFilter.getPower()!=null){
+                predicates.add(new CustomPredicate<>(vapeDTOFilter.getPower(),Vape_.power,ComparisonType.MORE));
+            }
+        }
+        return predicates;
     }
 }

@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import project.vapeshop.dto.filter.ItemDTOFilter;
+import project.vapeshop.dto.filter.RatingDTOFilter;
 import project.vapeshop.dto.product.ItemDTOFullInfo;
 import project.vapeshop.dto.product.ItemDTOInfoForCatalog;
 import project.vapeshop.service.product.CategoryService;
@@ -57,5 +59,11 @@ public class ControllerItem {
     @GetMapping("/category/{category}")
     public ResponseEntity<?> readItemByCategory(@PathVariable("category") String nameCategory) {
         return new ResponseEntity<>(itemService.showItemByCategory(nameCategory), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('READ')")
+    @GetMapping("/filter")
+    public ResponseEntity<?> readByFilter(@RequestBody ItemDTOFilter itemDTOFilter){
+        return new ResponseEntity<>(itemService.itemByFilter(itemDTOFilter),HttpStatus.OK);
     }
 }

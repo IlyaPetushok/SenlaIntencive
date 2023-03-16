@@ -21,5 +21,5 @@ public interface Dao<T, С> {
 
     boolean delete(С id);
 
-    Page<T> selectObjectsByFilter(List<CustomPredicate> customPredicates, Pageable pageable);
+    Page<T> selectObjectsByFilter(List<CustomPredicate<?>> customPredicates, Pageable pageable);
 }

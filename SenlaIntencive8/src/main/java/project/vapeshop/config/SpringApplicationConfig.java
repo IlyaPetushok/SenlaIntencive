@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan("project.vapeshop")
 @EnableTransactionManagement
 @EnableWebMvc
+//@EnableAspectJAutoProxy
 @PropertySource("classpath:aplication.properties")
 public class SpringApplicationConfig implements WebMvcConfigurer {
 

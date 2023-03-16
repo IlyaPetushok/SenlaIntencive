@@ -40,20 +40,16 @@ public class Item implements EntityId<Integer> {
     private String photo;
     @Column(name = "name")
     private String name;
-
+    @Column(name = "price")
+    private BigDecimal price;
+    @Column(name = "quantity")
+    private int quantity;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_category", referencedColumnName = "id_category")
     private Category category;
-
-    @Column(name = "price")
-    private BigDecimal price;
-
-    @Column(name = "quantity")
-    private int quantity;
-
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import project.vapeshop.dto.filter.LiquideDTOFilter;
 import project.vapeshop.dto.product.LiquideDTOFullInfo;
 import project.vapeshop.service.product.LiquideService;
 
@@ -54,5 +55,11 @@ public class ControllerLiquide {
     @GetMapping("/type/{typeNicotine}")
     public ResponseEntity<?> showLiquideTypeNicotine(@PathVariable("typeNicotine") String typeNicotine){
         return new ResponseEntity<>(service.showLiquideByNicotine(typeNicotine), HttpStatus.UPGRADE_REQUIRED);
+    }
+
+    @PreAuthorize("hasAuthority('READ')")
+    @GetMapping("/filter")
+    public ResponseEntity<?> readByFilter(@RequestBody LiquideDTOFilter liquideDTOFilter){
+        return new ResponseEntity<>(service.liquideByFilter(liquideDTOFilter),HttpStatus.OK);
     }
 }

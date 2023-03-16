@@ -1,4 +1,4 @@
-package project.vapeshop.dto;
+package project.vapeshop.dto.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,5 +12,6 @@ import lombok.Setter;
 public class FilterRequest {
     private Integer page;
     private Integer size;
-    private String sort;
+    private String sortDirection;
+    private String sortByName;
 }

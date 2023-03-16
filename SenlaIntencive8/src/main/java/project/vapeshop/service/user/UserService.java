@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,8 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.vapeshop.dao.IUserDao;
+import project.vapeshop.dto.filter.CustomSortDirection;
 import project.vapeshop.dto.user.UserDTOAfterAuthorization;
-import project.vapeshop.dto.user.UserDTOFilter;
+import project.vapeshop.dto.filter.UserDTOFilter;
 import project.vapeshop.dto.user.UserDTOForAuthorization;
 import project.vapeshop.dto.user.UserDTOForRegistration;
 import project.vapeshop.entity.user.User;
@@ -22,7 +22,6 @@ import project.vapeshop.exception.NotFoundException;
 import project.vapeshop.exception.UnAuthorizationException;
 import project.vapeshop.predicate.CustomPredicate;
 import project.vapeshop.predicate.ComparisonType;
-
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,29 +115,36 @@ public class UserService {
     }
 
     public List<UserDTOAfterAuthorization> userFindByFilter(UserDTOFilter userDTOFilter) {
-        List<CustomPredicate> predicates = new ArrayList<>();
-        if (userDTOFilter.getName() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getName(), User_.NAME, ComparisonType.EQUAL));
-        }
-        if (userDTOFilter.getPatronymic() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getPatronymic(), User_.PATRONYMIC, ComparisonType.EQUAL));
-        }
-        if (userDTOFilter.getSurname() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getSurname(), User_.SURNAME, ComparisonType.EQUAL));
-        }
-        if (userDTOFilter.getLogin() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getLogin(), User_.LOGIN, ComparisonType.EQUAL));
-        }
-        if (userDTOFilter.getPassword() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getPassword(), User_.PASSWORD, ComparisonType.EQUAL));
-        }
-        if (userDTOFilter.getMail() != null) {
-            predicates.add(new CustomPredicate(userDTOFilter.getMail(), User_.MAIL, ComparisonType.EQUAL));
-        }
-        Pageable pageable = PageRequest.of(userDTOFilter.getPage(), userDTOFilter.getSize(), Sort.by(Sort.Direction.ASC,userDTOFilter.getSort()));
-        Page<User> users = dao.selectObjectsByFilter(predicates,pageable);
-        return users.stream()
+        Sort.Direction sortDirection=CustomSortDirection.getSortDirection(userDTOFilter.getSortDirection());
+        Pageable pageable = PageRequest.of(userDTOFilter.getPage(), userDTOFilter.getSize(), Sort.by(sortDirection,userDTOFilter.getSortByName()));
+        return dao.selectObjectsByFilter(generateCustomPredicate(userDTOFilter),pageable).stream()
                 .map(user -> modelMapper.map(user, UserDTOAfterAuthorization.class))
                 .collect(Collectors.toList());
+    }
+
+    private List<CustomPredicate<?>> generateCustomPredicate(UserDTOFilter userDTOFilter){
+        List<CustomPredicate<?>> predicates = new ArrayList<>();
+        if(userDTOFilter.getId()!=null){
+            predicates.add(new CustomPredicate<>(userDTOFilter.getId(),User_.id,ComparisonType.LESS));
+        }
+        if (userDTOFilter.getName() != null) {
+            predicates.add(new CustomPredicate<>(userDTOFilter.getName(), User_.name, ComparisonType.LIKE));
+        }
+        if (userDTOFilter.getPatronymic() != null) {
+            predicates.add(new CustomPredicate<>(userDTOFilter.getPatronymic(), User_.patronymic, ComparisonType.LIKE));
+        }
+        if (userDTOFilter.getSurname() != null) {
+            predicates.add(new CustomPredicate<>(userDTOFilter.getSurname(), User_.surname, ComparisonType.LIKE));
+        }
+        if (userDTOFilter.getLogin() != null) {
+            predicates.add(new CustomPredicate<>(userDTOFilter.getLogin(), User_.login, ComparisonType.EQUAL));
+        }
+        if (userDTOFilter.getPassword() != null) {
+            predicates.add(new CustomPredicate<>(userDTOFilter.getPassword(), User_.password, ComparisonType.EQUAL));
+        }
+        if (userDTOFilter.getMail() != null) {
+            predicates.add(new CustomPredicate<>(userDTOFilter.getMail(), User_.mail, ComparisonType.EQUAL));
+        }
+        return predicates;
     }
 }

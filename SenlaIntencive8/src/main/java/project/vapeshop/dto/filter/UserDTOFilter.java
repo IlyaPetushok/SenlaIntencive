@@ -1,10 +1,9 @@
-package project.vapeshop.dto.user;
+package project.vapeshop.dto.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import project.vapeshop.dto.FilterRequest;
 
 @Getter
 @Setter

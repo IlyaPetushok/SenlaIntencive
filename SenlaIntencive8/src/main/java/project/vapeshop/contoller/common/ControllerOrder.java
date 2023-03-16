@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.vapeshop.dto.common.OrderDTOFullInfo;
+import project.vapeshop.dto.filter.OrderDTOFilter;
 import project.vapeshop.dto.user.UserDTOForCommon;
 import project.vapeshop.service.common.OrderService;
 
@@ -61,5 +62,11 @@ public class ControllerOrder {
     @PostMapping("/users")
     public ResponseEntity<?> readByUser(@RequestBody UserDTOForCommon userDTOForCommon) {
         return new ResponseEntity<>(service.showObjectsFindByUser(userDTOForCommon), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('READ')")
+    @GetMapping("/filter")
+    public ResponseEntity<?> readByFilter(@RequestBody OrderDTOFilter orderDTOFilter){
+        return new ResponseEntity<>(service.orderFindByFilter(orderDTOFilter),HttpStatus.OK);
     }
 }

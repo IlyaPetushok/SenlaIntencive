@@ -13,15 +13,15 @@ public class CategoryDao extends AbstractDao<Category,Integer>  implements ICate
     public static final String SELECT_CATEGORY_ALL = "SELECT cat FROM Category as cat";
 
 
-    @Override
-    public List<Category> selectObjects() {
-        Query query= entityManager.createQuery(SELECT_CATEGORY_ALL);
-        return query.getResultList();
-    }
-
-    @Override
-    public Category selectObject(Integer id) {
-        return entityManager.find(Category.class,id);
-    }
+//    @Override
+//    public List<Category> selectObjects() {
+//        Query query= entityManager.createQuery(SELECT_CATEGORY_ALL);
+//        return query.getResultList();
+//    }
+//
+//    @Override
+//    public Category selectObject(Integer id) {
+//        return entityManager.find(Category.class,id);
+//    }
 
 }
