@@ -12,7 +12,6 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +34,12 @@ public class RatingDao extends AbstractDao<Rating,Integer> {
 
     @Override
     public Rating selectObject(Integer id) {
-        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
-        CriteriaQuery<Rating> criteriaQuery= criteriaBuilder.createQuery(Rating.class);
-        Root<Rating> ratingRoot=criteriaQuery.from(Rating.class);
-        criteriaQuery.where(criteriaBuilder.equal(ratingRoot.get(Rating_.id),id));
-        TypedQuery<Rating> query=entityManager.createQuery(criteriaQuery);
-        return query.getSingleResult();
+        Query query= entityManager.createQuery("select rat from Rating as rat where rat=?1");
+        query.setParameter(1,id);
+        return (Rating) query.getSingleResult();
     }
 
+    @Transactional
     @Override
     public Rating update(Rating rating) {
         Rating rating1=entityManager.find(Rating.class,rating.getId());
@@ -53,6 +50,7 @@ public class RatingDao extends AbstractDao<Rating,Integer> {
         return rating1;
     }
 
+    @Transactional
     @Override
     public boolean delete(Integer id) {
         CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();

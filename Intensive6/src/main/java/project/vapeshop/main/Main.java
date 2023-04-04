@@ -14,7 +14,7 @@ import project.vapeshop.contoller.user.ControllerUser;
 public class Main{
     public static void main(String[] args) {
         ApplicationContext applicationContext=new AnnotationConfigApplicationContext(SpringConfig.class);
-        ControllerOrder controllerItem =applicationContext.getBean(ControllerOrder.class);
+        ControllerRating controllerItem =applicationContext.getBean(ControllerRating.class);
         controllerItem.execute();
     }
 }

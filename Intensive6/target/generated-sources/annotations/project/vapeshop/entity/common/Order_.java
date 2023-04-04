@@ -17,7 +17,7 @@ public abstract class Order_ {
 	public static volatile SingularAttribute<Order, Integer> id;
 	public static volatile SingularAttribute<Order, User> user;
 	public static volatile ListAttribute<Order, Item> items;
-	public static volatile SingularAttribute<Order, StatusOrder> status;
+	public static volatile SingularAttribute<Order, String> status;
 
 	public static final String DATE = "date";
 	public static final String PRICE = "price";

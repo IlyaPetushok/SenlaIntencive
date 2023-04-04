@@ -1,26 +1,25 @@
 package project.vapeshop.dto.common;
 
-import project.vapeshop.entity.common.StatusOrder;
-
 import java.util.Date;
 
-public class OrderDTOForBasket {
+public class OrderDTOForBasket{
     private Integer id;
+    //    change
     private Date date;
-
-    private StatusOrder status;
+    //    Enum
+    private String status;
     private double price;
 
     public OrderDTOForBasket() {
     }
 
-    public OrderDTOForBasket(Date date, StatusOrder status, double price) {
+    public OrderDTOForBasket(Date date, String status, double price) {
         this.date = date;
         this.status = status;
         this.price = price;
     }
 
-    public OrderDTOForBasket(Integer id, Date date, StatusOrder status, double price) {
+    public OrderDTOForBasket(Integer id, Date date, String status, double price) {
         this.id = id;
         this.date = date;
         this.status = status;
@@ -43,11 +42,11 @@ public class OrderDTOForBasket {
         this.date = date;
     }
 
-    public StatusOrder getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(StatusOrder status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

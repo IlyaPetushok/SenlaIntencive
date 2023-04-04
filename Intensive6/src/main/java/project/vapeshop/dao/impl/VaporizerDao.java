@@ -46,6 +46,7 @@ public class VaporizerDao extends AbstractDao<Vaporizer, Integer> {
         return (Vaporizer) query.getSingleResult();
     }
 
+    @Transactional
     @Override
     public Vaporizer update(Vaporizer vaporizer) {
         Vaporizer vaporizer1=entityManager.find(Vaporizer.class,vaporizer.getId());

@@ -55,9 +55,9 @@
         <sqlFile encoding="utf8" path="script_sql/12.create_table_order_item.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="insert-data-vapeshop" author="Ilya Petushok">
-        <sqlFile encoding="utf8" path="script_sql/13.dml_for_vapeshop.sql" relativeToChangelogFile="true"/>
-    </changeSet>
+<!--    <changeSet id="insert-data-vapeshop" author="Ilya Petushok">-->
+<!--        <sqlFile encoding="utf8" path="script_sql/13.dml_for_vapeshop.sql" relativeToChangelogFile="true"/>-->
+<!--    </changeSet>-->
 
 <!--    <changeSet id="create_index_for_vapeshop" author="Ilya Petushok">-->
 <!--        <sqlFile encoding="utf8" path="script_sql/14.create_index.sql" relativeToChangelogFile="true"/>-->

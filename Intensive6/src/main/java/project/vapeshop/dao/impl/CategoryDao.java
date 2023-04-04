@@ -24,6 +24,7 @@ public class CategoryDao extends AbstractDao<Category,Integer> {
         return query.getResultList();
     }
 
+    @Transactional
     @Override
     public Category selectObject(Integer id) {
         Query query= entityManager.createQuery(SELECT_CAT_WHERE_CAT_ID);
@@ -31,15 +32,11 @@ public class CategoryDao extends AbstractDao<Category,Integer> {
         return (Category) query.getSingleResult();
     }
 
+    @Transactional
     @Override
     public Category update(Category category) {
         Category category1=entityManager.find(Category.class,category.getId());
         category1.setName(category.getName());
         return category1;
-    }
-
-    @Override
-    public boolean delete(Integer id) {
-        return super.delete(id);
     }
 }
